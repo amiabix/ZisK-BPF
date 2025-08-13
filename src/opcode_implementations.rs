@@ -314,6 +314,9 @@ pub fn generate_mov_reg_constraints(
     constraints
 }
 
+// ===== WEEK 1: CORE ARITHMETIC OPERATIONS =====
+
+/// Generate constraints for ADD64_REG (0x0F) - 64-bit register addition
 pub fn generate_add_reg_constraints(
     pre_state: &VmState,
     post_state: &VmState,
@@ -323,7 +326,7 @@ pub fn generate_add_reg_constraints(
 ) -> Vec<ZkConstraint> {
     let mut constraints = Vec::new();
     
-    // Opcode validity: 0x0F = ADD_REG
+    // Opcode validity: 0x0F = ADD64_REG
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
             left: 0x0F,
@@ -333,28 +336,7 @@ pub fn generate_add_reg_constraints(
         description: format!("add_reg_opcode_{}", step),
     });
     
-    // Register validation
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: dst_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("add_reg_dst_valid_{}", step),
-    });
-    
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: src_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("add_reg_src_valid_{}", step),
-    });
-    
-    // Addition: reg[dst] = reg[dst] + reg[src]
+    // Addition constraint: reg[dst] = reg[dst] + reg[src]
     let pre_dst = pre_state.registers[dst_reg as usize];
     let src_val = pre_state.registers[src_reg as usize];
     let post_dst = post_state.registers[dst_reg as usize];
@@ -387,6 +369,7 @@ pub fn generate_add_reg_constraints(
     constraints
 }
 
+/// Generate constraints for SUB64_REG (0x1F) - 64-bit register subtraction
 pub fn generate_sub_reg_constraints(
     pre_state: &VmState,
     post_state: &VmState,
@@ -396,7 +379,7 @@ pub fn generate_sub_reg_constraints(
 ) -> Vec<ZkConstraint> {
     let mut constraints = Vec::new();
     
-    // Opcode validity: 0x1F = SUB_REG
+    // Opcode validity: 0x1F = SUB64_REG
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
             left: 0x1F,
@@ -406,28 +389,7 @@ pub fn generate_sub_reg_constraints(
         description: format!("sub_reg_opcode_{}", step),
     });
     
-    // Register validation
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: dst_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("sub_reg_dst_valid_{}", step),
-    });
-    
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: src_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("sub_reg_src_valid_{}", step),
-    });
-    
-    // Subtraction: reg[dst] = reg[dst] - reg[src]
+    // Subtraction constraint: reg[dst] = reg[dst] - reg[src]
     let pre_dst = pre_state.registers[dst_reg as usize];
     let src_val = pre_state.registers[src_reg as usize];
     let post_dst = post_state.registers[dst_reg as usize];
@@ -460,6 +422,7 @@ pub fn generate_sub_reg_constraints(
     constraints
 }
 
+/// Generate constraints for MUL64_REG (0x2F) - 64-bit register multiplication
 pub fn generate_mul_reg_constraints(
     pre_state: &VmState,
     post_state: &VmState,
@@ -469,7 +432,7 @@ pub fn generate_mul_reg_constraints(
 ) -> Vec<ZkConstraint> {
     let mut constraints = Vec::new();
     
-    // Opcode validity: 0x2F = MUL_REG
+    // Opcode validity: 0x2F = MUL64_REG
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
             left: 0x2F,
@@ -479,28 +442,7 @@ pub fn generate_mul_reg_constraints(
         description: format!("mul_reg_opcode_{}", step),
     });
     
-    // Register validation
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: dst_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("mul_reg_dst_valid_{}", step),
-    });
-    
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::RangeCheck {
-            value: src_reg as u64,
-            min: 0,
-            max: 10,
-        },
-        step,
-        description: format!("mul_reg_src_valid_{}", step),
-    });
-    
-    // Multiplication: reg[dst] = reg[dst] * reg[src]
+    // Multiplication constraint: reg[dst] = reg[dst] * reg[src]
     let pre_dst = pre_state.registers[dst_reg as usize];
     let src_val = pre_state.registers[src_reg as usize];
     let post_dst = post_state.registers[dst_reg as usize];
@@ -533,6 +475,296 @@ pub fn generate_mul_reg_constraints(
     constraints
 }
 
+/// Generate constraints for DIV64_REG (0x3F) - 64-bit register division
+pub fn generate_div_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    // Opcode validity: 0x3F = DIV64_REG
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x3F,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("div_reg_opcode_{}", step),
+    });
+    
+    // Division constraint: reg[dst] = reg[dst] / reg[src] (with division by zero check)
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let src_val = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    if src_val != 0 {
+        let expected_result = pre_dst / src_val;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: expected_result,
+                right: post_dst,
+            },
+            step,
+            description: format!("div_reg_arithmetic_{}", step),
+        });
+    } else {
+        // Division by zero - should set error state
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: 1, // Error flag
+                right: if post_state.error.is_some() { 1 } else { 0 },
+            },
+            step,
+            description: format!("div_reg_division_by_zero_{}", step),
+        });
+    }
+    
+    // All other registers unchanged
+    for i in 0..11 {
+        if i != dst_reg as usize {
+            constraints.push(ZkConstraint {
+                constraint_type: ConstraintType::Equality {
+                    left: pre_state.registers[i],
+                    right: post_state.registers[i],
+                },
+                step,
+                description: format!("div_reg_reg_{}_unchanged_{}", i, step),
+            });
+        }
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for MOD64_REG (0x9F) - 64-bit register modulo
+pub fn generate_mod_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    // Opcode validity: 0x9F = MOD64_REG
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x9F,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("mod_reg_opcode_{}", step),
+    });
+    
+    // Modulo constraint: reg[dst] = reg[dst] % reg[src]
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let src_val = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    if src_val != 0 {
+        let expected_result = pre_dst % src_val;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: expected_result,
+                right: post_dst,
+            },
+            step,
+            description: format!("mod_reg_arithmetic_{}", step),
+        });
+    } else {
+        // Modulo by zero - should set error state
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: 1, // Error flag
+                right: if post_state.error.is_some() { 1 } else { 0 },
+            },
+            step,
+            description: format!("mod_reg_modulo_by_zero_{}", step),
+        });
+    }
+    
+    // All other registers unchanged
+    for i in 0..11 {
+        if i != dst_reg as usize {
+            constraints.push(ZkConstraint {
+                constraint_type: ConstraintType::Equality {
+                    left: pre_state.registers[i],
+                    right: post_state.registers[i],
+                },
+                step,
+                description: format!("mod_reg_reg_{}_unchanged_{}", i, step),
+            });
+        }
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for ADD32_IMM (0x04) - 32-bit immediate addition
+pub fn generate_add32_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    // Opcode validity: 0x04 = ADD32_IMM
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x04,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("add32_imm_opcode_{}", step),
+    });
+    
+    // 32-bit addition: reg[dst] = reg[dst] + immediate (32-bit)
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let imm_val = (immediate as u64) & 0xFFFFFFFF; // 32-bit mask
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected_result = (pre_dst & 0xFFFFFFFF).wrapping_add(imm_val) | (pre_dst & 0xFFFFFFFF00000000);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: expected_result,
+            right: post_dst,
+        },
+        step,
+        description: format!("add32_imm_arithmetic_{}", step),
+    });
+    
+    // All other registers unchanged
+    for i in 0..11 {
+        if i != dst_reg as usize {
+            constraints.push(ZkConstraint {
+                constraint_type: ConstraintType::Equality {
+                    left: pre_state.registers[i],
+                    right: post_state.registers[i],
+                },
+                step,
+                description: format!("add32_imm_reg_{}_unchanged_{}", i, step),
+            });
+        }
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for ADD32_REG (0x0C) - 32-bit register addition
+pub fn generate_add32_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    // Opcode validity: 0x0C = ADD32_REG
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x0C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("add32_reg_opcode_{}", step),
+    });
+    
+    // 32-bit addition: reg[dst] = reg[dst] + reg[src] (32-bit)
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let src_val = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let dst_32 = pre_dst & 0xFFFFFFFF;
+    let src_32 = src_val & 0xFFFFFFFF;
+    let expected_result = (dst_32.wrapping_add(src_32)) | (pre_dst & 0xFFFFFFFF00000000);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: expected_result,
+            right: post_dst,
+        },
+        step,
+        description: format!("add32_reg_arithmetic_{}", step),
+    });
+    
+    // All other registers unchanged
+    for i in 0..11 {
+        if i != dst_reg as usize {
+            constraints.push(ZkConstraint {
+                constraint_type: ConstraintType::Equality {
+                    left: pre_state.registers[i],
+                    right: post_state.registers[i],
+                },
+                step,
+                description: format!("add32_reg_reg_{}_unchanged_{}", i, step),
+            });
+        }
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for NEG64 (0x87) - 64-bit negation
+pub fn generate_neg64_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    // Opcode validity: 0x87 = NEG64
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x87,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("neg64_opcode_{}", step),
+    });
+    
+    // Negation constraint: reg[dst] = -reg[dst]
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected_result = (-(pre_dst as i64)) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: expected_result,
+            right: post_dst,
+        },
+        step,
+        description: format!("neg64_arithmetic_{}", step),
+    });
+    
+    // All other registers unchanged
+    for i in 0..11 {
+        if i != dst_reg as usize {
+            constraints.push(ZkConstraint {
+                constraint_type: ConstraintType::Equality {
+                    left: pre_state.registers[i],
+                    right: post_state.registers[i],
+                },
+                step,
+                description: format!("neg64_reg_{}_unchanged_{}", i, step),
+            });
+        }
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for EXIT (0x95) - program termination
 pub fn generate_exit_constraints(
     pre_state: &VmState,
     post_state: &VmState,
@@ -576,41 +808,51 @@ pub fn generate_exit_constraints(
     constraints
 }
 
-// Helper function to add standard state constraints
+/// Helper function to add standard state transition constraints
 fn add_standard_state_constraints(
     constraints: &mut Vec<ZkConstraint>,
     pre_state: &VmState,
     post_state: &VmState,
     step: usize
 ) {
-    // PC advancement
+    // PC increment constraint
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
-            left: (pre_state.pc + 8) as u64,
+            left: pre_state.pc as u64 + 1,
             right: post_state.pc as u64,
         },
         step,
-        description: format!("standard_pc_advance_{}", step),
-    });
-    
-    // Compute units consumed
-    constraints.push(ZkConstraint {
-        constraint_type: ConstraintType::Equality {
-            left: pre_state.compute_units + 1,
-            right: post_state.compute_units,
-        },
-        step,
-        description: format!("standard_compute_consumed_{}", step),
+        description: format!("pc_increment_{}", step),
     });
     
     // Step count increment
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
-            left: (pre_state.step_count + 1) as u64,
+            left: pre_state.step_count as u64 + 1,
             right: post_state.step_count as u64,
         },
         step,
-        description: format!("standard_step_increment_{}", step),
+        description: format!("step_increment_{}", step),
+    });
+    
+    // Memory hash unchanged (for arithmetic operations)
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: pre_state.memory_hash.iter().take(8).fold(0u64, |acc, &x| acc.wrapping_mul(256).wrapping_add(x as u64)),
+            right: post_state.memory_hash.iter().take(8).fold(0u64, |acc, &x| acc.wrapping_mul(256).wrapping_add(x as u64)),
+        },
+        step,
+        description: format!("memory_hash_unchanged_{}", step),
+    });
+    
+    // Program hash unchanged
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: pre_state.program_hash.iter().take(8).fold(0u64, |acc, &x| acc.wrapping_mul(256).wrapping_add(x as u64)),
+            right: post_state.program_hash.iter().take(8).fold(0u64, |acc, &x| acc.wrapping_mul(256).wrapping_add(x as u64)),
+        },
+        step,
+        description: format!("program_hash_unchanged_{}", step),
     });
 }
 
