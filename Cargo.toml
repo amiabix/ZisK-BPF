@@ -1,0 +1,12 @@
+[package]
+name = "zisk_solana_prover"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+ziskos = { git = "https://github.com/0xPolygonHermez/zisk.git" }
+anyhow = "1.0"
+thiserror = "1.0"
+
+[profile.release]
+panic = "abort"

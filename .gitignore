@@ -1,0 +1,26 @@
+# Rust build artifacts
+target/
+Cargo.lock
+
+# ZisK build artifacts
+*.elf
+*.o
+*.so
+
+# Proof outputs
+proof_output/
+proof/
+output/
+tmp/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# IDE files
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
