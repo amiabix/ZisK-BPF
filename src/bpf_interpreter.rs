@@ -302,5 +302,13 @@ impl BpfExecutionContext {
     }
 }
 
-// Re-export AccountData for use in main.rs
-pub use super::AccountData;
+// AccountData type definition
+#[derive(Debug, Clone)]
+pub struct AccountData {
+    pub pubkey: [u8; 32],
+    pub lamports: u64,
+    pub data: Vec<u8>,
+    pub owner: [u8; 32],
+    pub executable: bool,
+    pub rent_epoch: u64,
+}
