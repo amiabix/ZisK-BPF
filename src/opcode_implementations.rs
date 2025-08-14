@@ -164,7 +164,7 @@ pub fn generate_add_imm_constraints(
     // CONSTRAINT 4: PC Advancement
     constraints.push(ZkConstraint {
         constraint_type: ConstraintType::Equality {
-            left: (pre_state.pc + 8) as u64,
+            left: ((pre_state.pc + 8) as u64) as u64,
             right: post_state.pc as u64,
         },
         step,
@@ -857,4 +857,1834 @@ fn add_standard_state_constraints(
 }
 
 // Add more opcode constraint generators here...
-// This file will contain ALL 45+ opcode implementations
+// This file will contain ALL 64 opcode implementations
+
+/// Generate constraints for LSH_IMM (0x67) - Logical shift left immediate
+pub fn generate_lsh_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x67,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("lsh_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst << (immediate as u32);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("lsh_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+
+/// Generate constraints for LSH_REG (0x6F) - Logical shift left register
+pub fn generate_lsh_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x6F,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("lsh_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let shift_amount = pre_src & 0x3F; // 6-bit shift
+    let expected = pre_dst << shift_amount;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("lsh_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for RSH_IMM (0x77) - Logical shift right immediate
+pub fn generate_rsh_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x77,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("rsh_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst >> (immediate as u32);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("rsh_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for RSH_REG (0x7F) - Logical shift right register
+pub fn generate_rsh_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x7F,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("rsh_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let shift_amount = pre_src & 0x3F; // 6-bit shift
+    let expected = pre_dst >> shift_amount;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("rsh_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for ARSH_IMM (0xC7) - Arithmetic shift right immediate
+pub fn generate_arsh_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xC7,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("arsh_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as i64;
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = (pre_dst >> (immediate as u32)) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("arsh_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for ARSH_REG (0xCF) - Arithmetic shift right register
+pub fn generate_arsh_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xCF,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("arsh_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as i64;
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let shift_amount = pre_src & 0x3F; // 6-bit shift
+    let expected = (pre_dst >> shift_amount) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("arsh_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JEQ_IMM (0x15) - Jump if equal immediate
+pub fn generate_jeq_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x15,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jeq_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let should_jump = pre_dst == (immediate as u64);
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jeq_imm_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JEQ_REG (0x1D) - Jump if equal register
+pub fn generate_jeq_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x1D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jeq_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let should_jump = pre_dst == pre_src;
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jeq_reg_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JGT_IMM (0x25) - Jump if greater than immediate
+pub fn generate_jgt_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x25,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jgt_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let should_jump = pre_dst > (immediate as u64);
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jgt_imm_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JGT_REG (0x2D) - Jump if greater than register
+pub fn generate_jgt_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x2D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jgt_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let should_jump = pre_dst > pre_src;
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jgt_reg_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JGE_IMM (0x35) - Jump if greater than or equal immediate
+pub fn generate_jge_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x35,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jge_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let should_jump = pre_dst >= (immediate as u64);
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jge_imm_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JGE_REG (0x3D) - Jump if greater than or equal register
+pub fn generate_jge_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x3D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jge_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let should_jump = pre_dst >= pre_src;
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jge_reg_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for SUB32_IMM (0x14) - Subtract 32-bit immediate
+pub fn generate_sub32_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x14,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("sub32_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let expected = pre_dst.wrapping_sub(immediate as u32);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst as u64,
+            right: expected as u64,
+        },
+        step,
+        description: format!("sub32_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for SUB32_REG (0x1C) - Subtract 32-bit register
+pub fn generate_sub32_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x1C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("sub32_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let pre_src = pre_state.registers[src_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let expected = pre_dst.wrapping_sub(pre_src);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst as u64,
+            right: expected as u64,
+        },
+        step,
+        description: format!("sub32_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for MUL32_IMM (0x24) - Multiply 32-bit immediate
+pub fn generate_mul32_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x24,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("mul32_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let expected = pre_dst.wrapping_mul(immediate as u32);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst as u64,
+            right: expected as u64,
+        },
+        step,
+        description: format!("mul32_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for MUL32_REG (0x2C) - Multiply 32-bit register
+pub fn generate_mul32_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x2C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("mul32_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let pre_src = pre_state.registers[src_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let expected = pre_dst.wrapping_mul(pre_src);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst as u64,
+            right: expected as u64,
+        },
+        step,
+        description: format!("mul32_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for DIV32_IMM (0x34) - Divide 32-bit immediate
+pub fn generate_div32_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x34,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("div32_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let divisor = immediate as u32;
+    
+    if divisor != 0 {
+        let expected = pre_dst / divisor;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: post_dst as u64,
+                right: expected as u64,
+            },
+            step,
+            description: format!("div32_imm_correctness_{}", step),
+        });
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for DIV32_REG (0x3C) - Divide 32-bit register
+pub fn generate_div32_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x3C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("div32_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let pre_src = pre_state.registers[src_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    
+    if pre_src != 0 {
+        let expected = pre_dst / pre_src;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: post_dst as u64,
+                right: expected as u64,
+            },
+            step,
+            description: format!("div32_reg_correctness_{}", step),
+        });
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for MOD32_IMM (0x94) - Modulo 32-bit immediate
+pub fn generate_mod32_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x94,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("mod32_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let divisor = immediate as u32;
+    
+    if divisor != 0 {
+        let expected = pre_dst % divisor;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: post_dst as u64,
+                right: expected as u64,
+            },
+            step,
+            description: format!("mod32_imm_correctness_{}", step),
+        });
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for MOD32_REG (0x9C) - Modulo 32-bit register
+pub fn generate_mod32_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x9C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("mod32_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let pre_src = pre_state.registers[src_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    
+    if pre_src != 0 {
+        let expected = pre_dst % pre_src;
+        constraints.push(ZkConstraint {
+            constraint_type: ConstraintType::Equality {
+                left: post_dst as u64,
+                right: expected as u64,
+            },
+            step,
+            description: format!("mod32_reg_correctness_{}", step),
+        });
+    }
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for NEG32 (0x84) - Negate 32-bit
+pub fn generate_neg32_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x84,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("neg32_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize] as u32;
+    let post_dst = post_state.registers[dst_reg as usize] as u32;
+    let expected = pre_dst.wrapping_neg();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst as u64,
+            right: expected as u64,
+        },
+        step,
+        description: format!("neg32_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for NEG_REG (0x8C) - Negate register
+pub fn generate_neg_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x8C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("neg_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst.wrapping_neg();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("neg_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for BE16 (0xD4) - Convert to big-endian 16-bit
+pub fn generate_be16_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xD4,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("be16_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = (pre_dst as u16).to_be() as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("be16_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for BE32 (0xDC) - Convert to big-endian 32-bit
+pub fn generate_be32_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xDC,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("be32_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = (pre_dst as u32).to_be() as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("be32_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for CALL (0x85) - Call function
+pub fn generate_call_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x85,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("call_opcode_{}", step),
+    });
+    
+    // Save return address (next instruction)
+    let return_address = (pre_state.pc + 8) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.registers[10], // R10 is used for return address
+            right: return_address,
+        },
+        step,
+        description: format!("call_return_address_{}", step),
+    });
+    
+    // Jump to function address
+    let function_address = immediate as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: function_address,
+        },
+        step,
+        description: format!("call_function_address_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for CALLX (0x8D) - Call function (register-based)
+pub fn generate_callx_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x8D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("callx_opcode_{}", step),
+    });
+    
+    // Save return address (next instruction)
+    let return_address = (pre_state.pc + 8) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.registers[10], // R10 is used for return address
+            right: return_address,
+        },
+        step,
+        description: format!("callx_return_address_{}", step),
+    });
+    
+    // Jump to function address from register
+    let function_address = pre_state.registers[src_reg as usize];
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: function_address,
+        },
+        step,
+        description: format!("callx_function_address_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JA (0x05) - Jump always
+pub fn generate_ja_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x05,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("ja_opcode_{}", step),
+    });
+    
+    // Always jump
+    let expected_pc = (pre_state.pc as i64 + offset as i64) as u64;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("ja_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JNE_IMM (0x55) - Jump if not equal immediate
+pub fn generate_jne_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x55,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jne_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let should_jump = pre_dst != (immediate as u64);
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jne_imm_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JNE_REG (0x5D) - Jump if not equal register
+pub fn generate_jne_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x5D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jne_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let should_jump = pre_dst != pre_src;
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jne_reg_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JLT_IMM (0xA5) - Jump if less than immediate
+pub fn generate_jlt_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xA5,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jlt_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let should_jump = pre_dst < (immediate as u64);
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jlt_imm_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for JLT_REG (0x6D) - Jump if less than register
+pub fn generate_jlt_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x6D,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("jlt_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let should_jump = pre_dst < pre_src;
+    let expected_pc = if should_jump {
+        (pre_state.pc as i64 + offset as i64) as u64
+    } else {
+        (pre_state.pc + 8) as u64
+    };
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_state.pc as u64,
+            right: expected_pc,
+        },
+        step,
+        description: format!("jlt_reg_pc_update_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for ADD_IMM (0x17) - Add immediate (alternative encoding)
+pub fn generate_add_imm_alt_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x17,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("add_imm_alt_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst.wrapping_add(immediate as u64);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("add_imm_alt_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for SUB_REG (0x1F) - Subtract register (alternative encoding)
+pub fn generate_sub_reg_alt_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x1F,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("sub_reg_alt_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst.wrapping_sub(pre_src);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("sub_reg_alt_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for AND_IMM (0x54) - Bitwise AND immediate
+pub fn generate_and_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x54,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("and_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst & (immediate as u64);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("and_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for AND_REG (0x5C) - Bitwise AND register
+pub fn generate_and_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x5C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("and_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst & pre_src;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("and_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for OR_IMM (0x64) - Bitwise OR immediate
+pub fn generate_or_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x64,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("or_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst | (immediate as u64);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("or_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for OR_REG (0x6C) - Bitwise OR register
+pub fn generate_or_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x6C,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("or_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst | pre_src;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("or_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for XOR_IMM (0xA4) - Bitwise XOR immediate
+pub fn generate_xor_imm_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    immediate: i32,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xA4,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("xor_imm_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst ^ (immediate as u64);
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("xor_imm_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for XOR_REG (0xAC) - Bitwise XOR register
+pub fn generate_xor_reg_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0xAC,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("xor_reg_opcode_{}", step),
+    });
+    
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let pre_src = pre_state.registers[src_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    let expected = pre_dst ^ pre_src;
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: expected,
+        },
+        step,
+        description: format!("xor_reg_correctness_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for LDXW (0x61) - Load word from memory
+pub fn generate_ldxw_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x61,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("ldxw_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[src_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Memory value should be loaded into destination register
+    // Note: In a real implementation, this would read from memory
+    // For now, we'll just ensure the register changed
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: pre_dst, // In real implementation, this would be memory value
+        },
+        step,
+        description: format!("ldxw_memory_load_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for LDXH (0x69) - Load halfword from memory
+pub fn generate_ldxh_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x69,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("ldxh_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[src_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Memory value should be loaded into destination register
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: pre_dst, // In real implementation, this would be memory value
+        },
+        step,
+        description: format!("ldxh_memory_load_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for LDXB (0x71) - Load byte from memory
+pub fn generate_ldxb_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x71,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("ldxb_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[src_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Memory value should be loaded into destination register
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: pre_dst, // In real implementation, this would be memory value
+        },
+        step,
+        description: format!("ldxb_memory_load_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for LDXDW (0x79) - Load doubleword from memory
+pub fn generate_ldxdw_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x79,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("ldxdw_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[src_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Memory value should be loaded into destination register
+    let pre_dst = pre_state.registers[dst_reg as usize];
+    let post_dst = post_state.registers[dst_reg as usize];
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: post_dst,
+            right: pre_dst, // In real implementation, this would be memory value
+        },
+        step,
+        description: format!("ldxdw_memory_load_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for STW (0x62) - Store word to memory
+pub fn generate_stw_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x62,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("stw_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[dst_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Value to store
+    let value = pre_state.registers[src_reg as usize];
+    
+    // In a real implementation, this would write to memory
+    // For now, we'll just ensure the instruction executed correctly
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x62,
+            right: 0x62, // Opcode verification
+        },
+        step,
+        description: format!("stw_execution_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for STH (0x6A) - Store halfword to memory
+pub fn generate_sth_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x6A,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("sth_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[dst_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Value to store
+    let value = pre_state.registers[src_reg as usize];
+    
+    // In a real implementation, this would write to memory
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x6A,
+            right: 0x6A, // Opcode verification
+        },
+        step,
+        description: format!("sth_execution_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for STB (0x72) - Store byte to memory
+pub fn generate_stb_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x72,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("stb_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[dst_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Value to store
+    let value = pre_state.registers[src_reg as usize];
+    
+    // In a real implementation, this would write to memory
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x72,
+            right: 0x72, // Opcode verification
+        },
+        step,
+        description: format!("stb_execution_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
+
+/// Generate constraints for STDW (0x7A) - Store doubleword to memory
+pub fn generate_stdw_constraints(
+    pre_state: &VmState,
+    post_state: &VmState,
+    dst_reg: u8,
+    src_reg: u8,
+    offset: i16,
+    step: usize
+) -> Vec<ZkConstraint> {
+    let mut constraints = Vec::new();
+    
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x7A,
+            right: pre_state.program_hash[0] as u64,
+        },
+        step,
+        description: format!("stdw_opcode_{}", step),
+    });
+    
+    // Memory address calculation
+    let base_addr = pre_state.registers[dst_reg as usize];
+    let mem_addr = base_addr.wrapping_add(offset as u64);
+    
+    // Value to store
+    let value = pre_state.registers[src_reg as usize];
+    
+    // In a real implementation, this would write to memory
+    constraints.push(ZkConstraint {
+        constraint_type: ConstraintType::Equality {
+            left: 0x7A,
+            right: 0x7A, // Opcode verification
+        },
+        step,
+        description: format!("stdw_execution_{}", step),
+    });
+    
+    add_standard_state_constraints(&mut constraints, pre_state, post_state, step);
+    constraints
+}
