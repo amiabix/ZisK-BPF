@@ -51,26 +51,31 @@ impl RealBpfLoader {
     pub fn load_program(&mut self, program_id: &str, program_data: &[u8]) -> Result<()> {
         println!("[RBPF] Loading program {} ({} bytes)", program_id, program_data.len());
         
-        // Validate ELF header
-        if program_data.len() < 4 || &program_data[0..4] != b"\x7fELF" {
-            return Err(anyhow::anyhow!("Invalid ELF header in program {}", program_id));
+        // Check if this is ELF format or raw BPF bytecode
+        if program_data.len() >= 4 && &program_data[0..4] == b"\x7fELF" {
+            // ELF format - use standard RBPF loading
+            println!("[RBPF] Detected ELF format, using standard loader");
+            
+            let executable = Executable::<TestContextObject>::from_elf(
+                program_data,
+                Arc::new(BuiltinProgram::new_mock()),
+            ).map_err(|e| anyhow::anyhow!("Failed to create executable for program {}: {:?}", program_id, e))?;
+            
+            self.loaded_programs.insert(program_id.to_string(), Arc::new(executable));
+            println!("[RBPF] Program {} compiled successfully from ELF", program_id);
+        } else {
+            // Raw BPF bytecode - store directly for now
+            println!("[RBPF] Detected raw BPF bytecode, storing for direct execution");
+            
+            // For raw BPF, we'll store the bytecode and handle execution differently
+            // This bypasses the ELF requirement temporarily
+            println!("[RBPF] Raw BPF loading temporarily disabled - ELF format required");
+            
+            // Return error for now - we need to implement proper ELF generation
+            return Err(anyhow::anyhow!("Raw BPF loading not yet implemented - ELF format required"));
         }
-
-        // Create RBPF configuration with Solana-compatible settings
-        let config = Config::default();
-
-        // Create the executable with real RBPF using 0.8.2 API
-        let executable = Executable::<TestContextObject>::from_elf(
-            program_data,
-            Arc::new(BuiltinProgram::new_mock()),
-        ).map_err(|e| anyhow::anyhow!("Failed to create executable for program {}: {:?}", program_id, e))?;
-
-        println!("[RBPF] Program {} compiled successfully", program_id);
         
-        // Store the compiled executable
-        self.loaded_programs.insert(program_id.to_string(), Arc::new(executable));
-        self.execution_logs.push(format!("Loaded and compiled BPF program: {}", program_id));
-        
+        self.execution_logs.push(format!("Loaded BPF program: {}", program_id));
         Ok(())
     }
 
@@ -151,6 +156,41 @@ impl RealBpfLoader {
         
         println!("[RBPF] Created {} memory regions", regions.len());
         Ok(regions)
+    }
+    
+    /// Create a minimal ELF wrapper around raw BPF bytecode
+    fn create_minimal_elf(&self, bpf_code: &[u8]) -> Result<Vec<u8>> {
+        // Create a very simple ELF64 file that RBPF can parse
+        // This is a minimal approach for testing
+        
+        let mut elf = Vec::new();
+        
+        // ELF64 header (little-endian)
+        elf.extend_from_slice(b"\x7fELF\x02\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00");
+        elf.extend_from_slice(b"\x03\x00\x3e\x00\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00");
+        elf.extend_from_slice(b"\x00\x00\x00\x00\x00\x00\x00\x00\x40\x00\x00\x00\x00\x00\x00\x00");
+        elf.extend_from_slice(b"\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x40\x00\x38\x00");
+        elf.extend_from_slice(b"\x01\x00\x00\x00\x00\x00\x00\x00");
+        
+        // Program header entry (PT_LOAD)
+        elf.extend_from_slice(b"\x01\x00\x00\x00"); // p_type: PT_LOAD
+        elf.extend_from_slice(b"\x05\x00\x00\x00"); // p_flags: PF_R | PF_X
+        elf.extend_from_slice(b"\x78\x00\x00\x00\x00\x00\x00\x00"); // p_offset: 0x78 (120)
+        elf.extend_from_slice(b"\x00\x00\x40\x00\x00\x00\x00\x00"); // p_vaddr: 0x400000
+        elf.extend_from_slice(b"\x00\x00\x40\x00\x00\x00\x00\x00"); // p_paddr: 0x400000
+        elf.extend_from_slice(&(bpf_code.len() as u64).to_le_bytes()); // p_filesz
+        elf.extend_from_slice(&(bpf_code.len() as u64).to_le_bytes()); // p_memsz
+        elf.extend_from_slice(b"\x00\x10\x00\x00\x00\x00\x00\x00"); // p_align: 0x1000
+        
+        // Pad to code offset (0x78 = 120 bytes)
+        while elf.len() < 120 {
+            elf.push(0);
+        }
+        
+        // Add the BPF code
+        elf.extend_from_slice(bpf_code);
+        
+        Ok(elf)
     }
 }
 
