@@ -11,6 +11,12 @@ pub mod real_bpf_loader;
 pub mod constraint_generator;
 pub mod bpf_interpreter;
 pub mod week1_test;
+pub mod trace_recorder;
+pub mod zisk_io;
+pub mod elf_parser;
+pub mod opcode_witness;
+pub mod enhanced_trace_recorder;
+pub mod enhanced_bpf_loader;
 
 // Re-export main types for easy access
 pub use opcode_implementations::{

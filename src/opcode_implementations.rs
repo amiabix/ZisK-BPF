@@ -30,6 +30,10 @@ pub enum ConstraintType {
     Equality { left: u64, right: u64 },
     RangeCheck { value: u64, min: u64, max: u64 },
     MemoryAccess { address: u64, value: u64, permission: MemoryPermission },
+    BitwiseOperation { operation: BitwiseOp, inputs: Vec<u64>, output: u64 },
+    JumpCondition { condition: JumpCondition, register: u64, immediate: i64, target_pc: usize },
+    StackOperation { operation: StackOp, stack_pointer: u64, value: u64 },
+    CallOperation { function_id: u64, return_address: usize, parameters: Vec<u64> },
 }
 
 #[derive(Debug)]
@@ -37,6 +41,35 @@ pub enum MemoryPermission {
     Read,
     Write,
     Execute,
+}
+
+#[derive(Debug)]
+pub enum BitwiseOp {
+    And,
+    Or,
+    Xor,
+    Not,
+    LeftShift,
+    RightShift,
+    ArithmeticRightShift,
+}
+
+#[derive(Debug)]
+pub enum JumpCondition {
+    Equal,
+    NotEqual,
+    GreaterThan,
+    GreaterEqual,
+    LessThan,
+    LessEqual,
+    Always,
+}
+
+#[derive(Debug)]
+pub enum StackOp {
+    Push,
+    Pop,
+    Peek,
 }
 
 #[derive(Debug)]

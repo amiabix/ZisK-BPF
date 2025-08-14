@@ -6,34 +6,72 @@ use bincode;
 mod real_bpf_loader;
 mod opcode_implementations;
 mod zisk_io;
+mod elf_parser;
+mod bin_generator;
+mod trace_recorder;
 
 use real_bpf_loader::{RealBpfLoader, BpfAccount, TransactionContext};
 use opcode_implementations::{ZkConstraintSystem, VmState, BpfInstruction, decode_bpf_instruction};
 use zisk_io::{SolanaExecutionInput, SolanaExecutionOutput, generate_test_input, convert_accounts, convert_execution_params};
+use bin_generator::ensure_input_bin_exists;
+use trace_recorder::TraceRecorder;
 
 fn main() {
     println!("🚀 [ZISK-SOLANA] Starting structured I/O execution...");
     
-    // Step 1: Read structured input from ZisK
-    let execution_input: SolanaExecutionInput = match read_input() {
-        input if !input.is_empty() => {
-            // Try to deserialize as structured input
-            match bincode::deserialize(&input) {
+    // Step 1: Ensure input.bin exists (generate from Test.so if needed)
+    // TEMPORARILY COMMENTED OUT FOR EMULATION TESTING
+    // ensure_input_bin_exists().expect("Failed to ensure input.bin exists");
+    
+    // Step 2: Initialize trace recorder for ZK proof generation
+    let mut trace_recorder = TraceRecorder::new();
+    
+    // Step 3: Read structured input from input.bin file
+    let execution_input: SolanaExecutionInput = match std::fs::read("input.bin") {
+        Ok(input_data) if !input_data.is_empty() => {
+            // Try to deserialize as structured input from input.bin
+            match bincode::deserialize(&input_data) {
                 Ok(parsed_input) => {
-                    println!("✅ [I/O] Successfully parsed structured input from ZisK");
+                    println!("✅ [ZISK] Successfully parsed structured input from ZisK");
                     parsed_input
                 },
-                Err(_) => {
-                    println!("⚠️  [I/O] Raw input detected, creating test input");
-                    SolanaExecutionInput::create_test_input()
+                Err(e) => {
+                    println!("⚠️  [ZISK] Failed to deserialize ZisK input: {}", e);
+                    println!("📝 [ZISK] Attempting to use Test.so directly...");
+                    
+                    // Try to read Test.so directly as a fallback
+                    match std::fs::read("Test.so") {
+                        Ok(test_so_data) => {
+                            println!("✅ [ZISK] Successfully read Test.so ({} bytes)", test_so_data.len());
+                            SolanaExecutionInput {
+                                program_data: test_so_data,
+                                instruction_data: vec![1, 2, 3, 4],
+                                accounts: vec![],
+                                execution_params: zisk_io::ExecutionParams {
+                                    compute_unit_limit: 1_400_000,
+                                    max_call_depth: 64,
+                                    enable_logging: true,
+                                    enable_stack_traces: false,
+                                    memory_regions: vec![],
+                                },
+                                program_id: Some("TestProgram".to_string()),
+                            }
+                        },
+                        Err(e) => {
+                            println!("⚠️  [ZISK] Failed to read Test.so: {}, falling back to test input", e);
+                            SolanaExecutionInput::create_test_input()
+                        }
+                    }
                 }
             }
         },
         _ => {
-            println!("📝 [I/O] No input received, generating test input");
+            println!("📝 [ZISK] No input received from ZisK, using test input");
             SolanaExecutionInput::create_test_input()
         }
     };
+    
+    println!("📊 [ZISK] Using input with {} bytes of program data", execution_input.program_data.len());
     
     println!("📊 [I/O] Input Summary:");
     println!("   Program size: {} bytes", execution_input.program_data.len());
@@ -65,7 +103,7 @@ fn main() {
         }
     }
     
-    // Step 5: Execute the BPF program
+    // Step 6: Execute the BPF program
     println!("⚡ [RBPF] Executing BPF program...");
     let execution_result = match loader.execute_program("main_program", &execution_input.instruction_data, &accounts) {
         Ok(result) => {
@@ -85,7 +123,23 @@ fn main() {
         }
     };
     
-    // Step 6: Create structured output
+    // Step 7: Get the trace from the execution result and export it
+    if let Some(execution_trace) = execution_result.execution_trace {
+        if let Err(e) = execution_trace.export_trace("execution_trace.json") {
+            println!("⚠️  [TRACE] Failed to export trace: {}", e);
+        } else {
+            println!("✅ [TRACE] Execution trace exported to execution_trace.json");
+            println!("📊 [TRACE] Trace contains {} steps, {} constraints", 
+                    execution_trace.get_trace().steps.len(),
+                    execution_trace.get_constraint_count());
+        }
+    } else {
+        println!("⚠️  [TRACE] No execution trace available");
+    }
+    
+    // Note: Execution trace is already exported from the BPF execution result above
+    
+    // Step 8: Create structured output
     let mut output = SolanaExecutionOutput::create_success();
     // Note: ProgramExecutionResult doesn't have exit_code, using success instead
     output.exit_code = if execution_result.success { 0 } else { 1 };
@@ -103,7 +157,7 @@ fn main() {
         });
     }
     
-    // Step 7: Test constraint generation system
+    // Step 9: Test constraint generation system
     println!("🧮 [ZK] Testing constraint generation system...");
     
     let mut vm_state = VmState {
@@ -151,7 +205,7 @@ fn main() {
     output.stats.instructions_executed = constraint_system.constraints.len() as u64;
     output.logs.push(format!("Generated {} ZK constraints", constraint_system.constraints.len()));
     
-    // Step 8: Set output for ZisK
+    // Step 10: Set output for ZisK
     println!("📤 [I/O] Setting structured output for ZisK...");
     // Set output using ZisK's set_output format
     set_output(0, 0); // Success flag
@@ -438,7 +492,7 @@ fn generate_constraints_from_execution(
                         vm_state.error = Some("Modulo by zero".to_string());
                     }
                 }
-                vm_state.pc += instruction_size;
+                        vm_state.pc += instruction_size;
                 
                 let constraints = opcode_implementations::generate_mod_reg_constraints(
                     &pre_state, &vm_state, instruction.dst, instruction.src, step
@@ -451,7 +505,7 @@ fn generate_constraints_from_execution(
                 if dst < vm_state.registers.len() && src < vm_state.registers.len() {
                     vm_state.registers[dst] ^= vm_state.registers[src];
                 }
-                vm_state.pc += instruction_size;
+                    vm_state.pc += instruction_size;
                 
                 let constraints = opcode_implementations::generate_xor_reg_constraints(
                     &pre_state, &vm_state, instruction.dst, instruction.src, step
@@ -476,8 +530,8 @@ fn generate_constraints_from_execution(
                 let dst = instruction.dst as usize;
                 if dst < vm_state.registers.len() {
                     vm_state.registers[dst] = (instruction.imm as u32) as u64;
-                }
-                vm_state.pc += instruction_size;
+                    }
+                    vm_state.pc += instruction_size;
                 
                 let constraints = opcode_implementations::generate_mov_imm_constraints(
                     &pre_state, &vm_state, instruction.dst, instruction.imm.into(), step
@@ -495,7 +549,7 @@ fn generate_constraints_from_execution(
                         _ => value,
                     };
                 }
-                vm_state.pc += instruction_size;
+                    vm_state.pc += instruction_size;
                 
                 let constraints = opcode_implementations::generate_be32_constraints(
                     &pre_state, &vm_state, instruction.dst, step
