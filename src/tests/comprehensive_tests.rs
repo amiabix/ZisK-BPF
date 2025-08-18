@@ -2289,14 +2289,14 @@ mod comprehensive_tests {
             let constraints = result.unwrap();
             
             // Debug output to see actual count
-            println!("🔍 Actual constraint count: {}", constraints.len());
+            println!("Actual constraint count: {}", constraints.len());
             
             // Verify constraint count is within expected bounds
             // Lowered threshold to be more realistic for current implementation
             assert!(constraints.len() >= 50, "Too few constraints generated: {}", constraints.len());
             assert!(constraints.len() <= 100_000, "Too many constraints generated: {}", constraints.len());
             
-            println!("✅ Constraint count: {} (within bounds)", constraints.len());
+            println!("Constraint count: {} (within bounds)", constraints.len());
         }
         
         #[test]
@@ -2318,7 +2318,7 @@ mod comprehensive_tests {
             assert_eq!(constraints1.len(), constraints2.len(), 
                       "Constraint generation should be deterministic");
             
-            println!("✅ Deterministic constraint generation verified");
+            println!("Deterministic constraint generation verified");
         }
         
         #[test]
@@ -2349,7 +2349,7 @@ mod comprehensive_tests {
                 assert!(has_final, "SHA256 should have final output constraint");
             }
             
-            println!("✅ SHA256 constraint validity verified");
+            println!("SHA256 constraint validity verified");
         }
         
         #[test]
@@ -2378,7 +2378,7 @@ mod comprehensive_tests {
             // In our test implementation, this might not be exactly a due to modular reduction
             assert_ne!(one_result, Field::from_u64(0), "Multiplication by one should not be zero");
             
-            println!("✅ Field arithmetic properties verified");
+            println!("Field arithmetic properties verified");
         }
     }
     
@@ -2412,7 +2412,7 @@ mod comprehensive_tests {
             };
             assert_ne!(hash1, expected_xor, "Should not be using XOR implementation");
             
-            println!("✅ Real cryptography regression test passed");
+            println!("Cryptography regression test passed");
         }
         
         #[test]
@@ -2451,7 +2451,7 @@ mod comprehensive_tests {
             // Should have variety of constraint types
             assert!(type_counts.len() >= 5, "Should have multiple constraint types");
             
-            println!("✅ Constraint type coverage verified");
+            println!("Constraint type coverage verified");
         }
         
         #[test]
