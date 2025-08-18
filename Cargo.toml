@@ -8,14 +8,13 @@ ziskos = { git = "https://github.com/0xPolygonHermez/zisk.git" }
 anyhow = "1.0"
 thiserror = "1.0"
 serde = { version = "1.0", features = ["derive"] }
-bincode = "1.3"
+bincode = "1.3.3"
+sha2 = "0.10.8"
+hex = "0.4.3"
 serde_json = "1.0"
-once_cell = "1.19"
-solana_rbpf = { version = "0.8.2", features = ["debugger"] }
-
-[[bin]]
-name = "test_mathematical_proof"
-path = "src/bin/test_mathematical_proof.rs"
+once_cell = "1.19.0"
+solana_rbpf = "0.4.0"
+rand = "0.8"
 
 [[bin]]
 name = "generate_input"
@@ -28,6 +27,18 @@ path = "src/bin/create_test_program.rs"
 [[bin]]
 name = "test_bpf_runner"
 path = "src/bin/test_bpf_runner.rs"
+
+[[bin]]
+name = "test_mathematical_proof"
+path = "src/bin/test_mathematical_proof.rs"
+
+[[bin]]
+name = "test_cpi"
+path = "src/bin/test_cpi.rs"
+
+[[bin]]
+name = "bpf_prover_tests"
+path = "src/bin/bpf_prover_tests.rs"
 
 [profile.release]
 panic = "abort"

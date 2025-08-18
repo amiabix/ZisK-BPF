@@ -9,7 +9,6 @@ use solana_rbpf::{
     vm::{Config, EbpfVm, TestContextObject},
     memory_region::{MemoryRegion, MemoryMapping},
     error::EbpfError,
-    program::{BuiltinProgram, FunctionRegistry},
     verifier::RequisiteVerifier,
 };
 
@@ -18,63 +17,30 @@ use solana_rbpf::{
 // =====================================================
 
 pub struct RealBpfLoader {
-    loaded_programs: HashMap<String, Arc<Executable<TestContextObject>>>,
+    loaded_programs: HashMap<String, Arc<Executable<RequisiteVerifier, TestContextObject>>>,
     raw_bpf_programs: HashMap<String, Vec<u8>>, // Store raw BPF bytecode
-    function_registry: FunctionRegistry<TestContextObject>,
+    // function_registry removed - not available in solana_rbpf 0.4.0
     execution_logs: Vec<String>,
 }
 
 impl RealBpfLoader {
     pub fn new() -> Result<Self> {
-        let mut function_registry = FunctionRegistry::default();
-        
-        // Register essential Solana syscalls
-        Self::register_solana_syscalls(&mut function_registry)?;
-        
         Ok(Self {
             loaded_programs: HashMap::new(),
             raw_bpf_programs: HashMap::new(),
-            function_registry,
             execution_logs: Vec::new(),
         })
     }
 
-    /// Register real Solana syscalls that BPF programs need
-    fn register_solana_syscalls(
-        _registry: &mut FunctionRegistry<TestContextObject>
-    ) -> Result<()> {
-        // For now, skip syscall registration to get basic compilation working
-        // TODO: Implement proper syscall registration once basic RBPF is working
-        println!("[RBPF] Syscall registration skipped for now");
-        Ok(())
-    }
+
 
     /// Load and compile a real BPF program
     pub fn load_program(&mut self, program_id: &str, program_data: &[u8]) -> Result<()> {
         println!("[RBPF] Loading program {} ({} bytes)", program_id, program_data.len());
         
-        // Check if this is ELF format or raw BPF bytecode
-        if program_data.len() >= 4 && &program_data[0..4] == b"\x7fELF" {
-            // ELF format - use standard RBPF loading
-            println!("[RBPF] Detected ELF format, using standard loader");
-            
-            let executable = Executable::<TestContextObject>::from_elf(
-                program_data,
-                Arc::new(BuiltinProgram::new_mock()),
-            ).map_err(|e| anyhow::anyhow!("Failed to create executable for program {}: {:?}", program_id, e))?;
-            
-            self.loaded_programs.insert(program_id.to_string(), Arc::new(executable));
-            println!("[RBPF] Program {} compiled successfully from ELF", program_id);
-        } else {
-            // Raw BPF bytecode - this is what we want from ELF extraction!
-            println!("[RBPF] Raw BPF bytecode detected, storing for direct execution");
-            
-            // Store the raw BPF bytecode directly for execution
-            // We'll handle execution in the execute_program method
-            // Don't store in loaded_programs since we're using raw execution
-            self.raw_bpf_programs.insert(program_id.to_string(), program_data.to_vec());
-            println!("[RBPF] Successfully loaded {} bytes of raw BPF bytecode", program_data.len());
-        }
+        // For now, just store as raw BPF bytecode for direct execution
+        println!("[RBPF] Storing {} bytes as raw BPF bytecode", program_data.len());
+        self.raw_bpf_programs.insert(program_id.to_string(), program_data.to_vec());
         
         self.execution_logs.push(format!("Loaded BPF program: {}", program_id));
         Ok(())

@@ -1,0 +1,1024 @@
+use std::collections::HashMap;
+
+// Field element for ZK constraints
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub struct Field(pub [u64; 4]);
+
+impl Field {
+    pub const ZERO: Field = Field([0, 0, 0, 0]);
+    pub const ONE: Field = Field([1, 0, 0, 0]);
+    
+    pub fn from_u64(x: u64) -> Self {
+        Field([x, 0, 0, 0])
+    }
+    
+    pub fn from_bytes(bytes: &[u8; 32]) -> Self {
+        let mut limbs = [0u64; 4];
+        for i in 0..4 {
+            limbs[i] = u64::from_le_bytes([
+                bytes[i*8], bytes[i*8+1], bytes[i*8+2], bytes[i*8+3],
+                bytes[i*8+4], bytes[i*8+5], bytes[i*8+6], bytes[i*8+7],
+            ]);
+        }
+        Field(limbs)
+    }
+}
+
+// Constraint types for ZK proving
+#[derive(Debug, Clone)]
+pub enum Constraint {
+    Equal(Field, Field),
+    Add(Field, Field, Field),
+    Mul(Field, Field, Field),
+    Sha256Hash(Vec<u8>, [u8; 32]),
+    Ed25519CurveCheck([u8; 32], bool), // address, is_on_curve
+    AccountPermission {
+        account: [u8; 32],
+        is_signer: bool,
+        is_writable: bool,
+        authority: AccountAuthority,
+    },
+    PdaDerivation {
+        seeds: Vec<Vec<u8>>,
+        program_id: [u8; 32],
+        bump: u8,
+        derived_address: [u8; 32],
+    },
+    PrivilegeInheritance {
+        parent_privileges: AccountPrivileges,
+        child_privileges: AccountPrivileges,
+        account: [u8; 32],
+    },
+    ComputeUnitDeduction {
+        pre_units: u64,
+        post_units: u64,
+        consumed: u64,
+    },
+}
+
+// 1) Message & Privilege Derivation Witness
+#[derive(Debug, Clone)]
+pub struct MessageWitness {
+    pub header: MessageHeader,
+    pub account_keys: Vec<[u8; 32]>,
+    pub recent_blockhash: [u8; 32],
+    pub instructions: Vec<CompiledInstruction>,
+    pub derived_privileges: Vec<AccountPrivileges>,
+}
+
+#[derive(Debug, Clone)]
+pub struct MessageHeader {
+    pub num_required_signatures: u8,
+    pub num_readonly_signed_accounts: u8,
+    pub num_readonly_unsigned_accounts: u8,
+}
+
+#[derive(Debug, Clone)]
+pub struct CompiledInstruction {
+    pub program_id_index: u8,
+    pub accounts: Vec<u8>, // Account indices
+    pub data: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountPrivileges {
+    pub pubkey: [u8; 32],
+    pub is_signer: bool,
+    pub is_writable: bool,
+    pub is_payer: bool,
+}
+
+#[derive(Debug, Clone)]
+pub enum AccountAuthority {
+    MessageSigner(u8),     // Index in message signers
+    PdaAuthority(PdaAuth), // PDA with seeds
+}
+
+#[derive(Debug, Clone)]
+pub struct PdaAuth {
+    pub seeds: Vec<Vec<u8>>,
+    pub program_id: [u8; 32],
+    pub bump: u8,
+}
+
+// 2) Address Lookup Table (ALT) Witness
+#[derive(Debug, Clone)]
+pub struct AltWitness {
+    pub lookup_table_accounts: Vec<AltAccount>,
+    pub resolved_addresses: Vec<[u8; 32]>,
+    pub writable_indices: Vec<u8>,
+    pub readonly_indices: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct AltAccount {
+    pub address: [u8; 32],
+    pub authority: [u8; 32],
+    pub deactivation_slot: Option<u64>,
+    pub addresses: Vec<[u8; 32]>,
+}
+
+// 3) Program Loader & Executable Mapping Witness
+#[derive(Debug, Clone)]
+pub struct LoaderWitness {
+    pub program_account: ProgramAccount,
+    pub programdata_account: Option<ProgramDataAccount>,
+    pub loader_id: [u8; 32],
+    pub executable_bytes: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ProgramAccount {
+    pub address: [u8; 32],
+    pub owner: [u8; 32],        // Should be loader program
+    pub executable: bool,       // Must be true
+    pub programdata_address: Option<[u8; 32]>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ProgramDataAccount {
+    pub address: [u8; 32],
+    pub upgrade_authority: Option<[u8; 32]>,
+    pub slot: u64,
+    pub elf_bytes: Vec<u8>,
+}
+
+// 4) ELF / rBPF Verification Witness
+#[derive(Debug, Clone)]
+pub struct ElfWitness {
+    pub elf_header: ElfHeader,
+    pub sections: Vec<ElfSection>,
+    pub relocations: Vec<RelocationEntry>,
+    pub verified_opcodes: Vec<u8>,
+    pub syscall_whitelist: Vec<u32>,
+}
+
+#[derive(Debug, Clone)]
+pub struct ElfHeader {
+    pub entry_point: u64,
+    pub section_header_offset: u64,
+    pub flags: u32,
+}
+
+#[derive(Debug, Clone)]
+pub struct ElfSection {
+    pub name: String,
+    pub section_type: u32,
+    pub flags: u64,
+    pub address: u64,
+    pub offset: u64,
+    pub size: u64,
+    pub data: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct RelocationEntry {
+    pub offset: u64,
+    pub symbol: u32,
+    pub relocation_type: u32,
+    pub addend: i64,
+}
+
+// 5) Account State Commitment Witness (Pre/Post Roots)
+#[derive(Debug, Clone)]
+pub struct StateCommitmentWitness {
+    pub pre_state_root: [u8; 32],
+    pub post_state_root: [u8; 32],
+    pub account_transitions: Vec<AccountTransition>,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountTransition {
+    pub pubkey: [u8; 32],
+    pub pre_state: Option<AccountState>,
+    pub post_state: Option<AccountState>,
+    pub pre_inclusion_proof: MerkleProof,
+    pub post_inclusion_proof: MerkleProof,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountState {
+    pub lamports: u64,
+    pub data: Vec<u8>,
+    pub owner: [u8; 32],
+    pub executable: bool,
+    pub rent_epoch: u64,
+}
+
+#[derive(Debug, Clone)]
+pub struct MerkleProof {
+    pub leaf_hash: [u8; 32],
+    pub proof_path: Vec<[u8; 32]>,
+    pub path_indices: Vec<bool>,
+}
+
+// 6) Instruction Execution & Compute Meter Witness
+#[derive(Debug, Clone)]
+pub struct ExecutionWitness {
+    pub vm_trace: Vec<VmStep>,
+    pub pre_compute_units: u64,
+    pub post_compute_units: u64,
+    pub total_consumed: u64,
+}
+
+#[derive(Debug, Clone)]
+pub struct VmStep {
+    pub program_counter: u64,
+    pub instruction: [u8; 8],
+    pub compute_cost: u64,
+    pub memory_operations: Vec<MemoryOp>,
+    pub syscall: Option<SyscallInvocation>,
+}
+
+#[derive(Debug, Clone)]
+pub struct MemoryOp {
+    pub address: u64,
+    pub size: u8,
+    pub is_write: bool,
+    pub data: Vec<u8>,
+}
+
+#[derive(Debug, Clone)]
+pub struct SyscallInvocation {
+    pub syscall_id: u32,
+    pub args: Vec<u64>,
+    pub return_value: u64,
+    pub compute_cost: u64,
+}
+
+// 7) CPI / Invoke Stack Witness (THE HEART OF sol_invoke_signed)
+#[derive(Debug, Clone)]
+pub struct CpiStackWitness {
+    pub pre_stack: InvokeStack,
+    pub post_stack: InvokeStack,
+    pub invoke_instruction: InvokeInstruction,
+    pub signer_seeds: Vec<Vec<Vec<u8>>>,
+    pub max_invoke_depth: u8,
+}
+
+#[derive(Debug, Clone)]
+pub struct InvokeStack {
+    pub frames: Vec<InvokeFrame>,
+    pub depth: u8,
+}
+
+#[derive(Debug, Clone)]
+pub struct InvokeFrame {
+    pub program_id: [u8; 32],
+    pub loader_id: [u8; 32],
+    pub instruction: CompiledInstruction,
+    pub account_indices: Vec<u8>,
+    pub account_infos: Vec<AccountInfo>,
+    pub return_data: Option<(Vec<u8>, [u8; 32])>, // (data, program_id)
+    pub signer_seeds: Vec<Vec<Vec<u8>>>,
+}
+
+#[derive(Debug, Clone)]
+pub struct InvokeInstruction {
+    pub target_program_id: [u8; 32],
+    pub instruction_data: Vec<u8>,
+    pub account_metas: Vec<AccountMeta>,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountMeta {
+    pub pubkey: [u8; 32],
+    pub is_signer: bool,
+    pub is_writable: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct AccountInfo {
+    pub key: [u8; 32],
+    pub lamports: u64,
+    pub data: Vec<u8>,
+    pub owner: [u8; 32],
+    pub executable: bool,
+    pub rent_epoch: u64,
+}
+
+// 8) System Program & Mutation Semantics Witness
+#[derive(Debug, Clone)]
+pub struct SystemProgramWitness {
+    pub mutations: Vec<SystemMutation>,
+    pub rent_calculations: Vec<RentCalculation>,
+    pub fee_deductions: Vec<FeeDeduction>,
+}
+
+#[derive(Debug, Clone)]
+pub enum SystemMutation {
+    Transfer {
+        from: [u8; 32],
+        to: [u8; 32],
+        lamports: u64,
+    },
+    Allocate {
+        account: [u8; 32],
+        space: u64,
+        owner: [u8; 32],
+    },
+    Assign {
+        account: [u8; 32],
+        new_owner: [u8; 32],
+    },
+    CreateAccount {
+        from: [u8; 32],
+        to: [u8; 32],
+        lamports: u64,
+        space: u64,
+        owner: [u8; 32],
+    },
+}
+
+#[derive(Debug, Clone)]
+pub struct RentCalculation {
+    pub account: [u8; 32],
+    pub data_length: u64,
+    pub rent_per_byte_year: u64,
+    pub years_exempt: u64,
+    pub minimum_balance: u64,
+    pub is_rent_exempt: bool,
+}
+
+#[derive(Debug, Clone)]
+pub struct FeeDeduction {
+    pub payer: [u8; 32],
+    pub base_fee: u64,
+    pub priority_fee: u64,
+    pub compute_unit_fee: u64,
+    pub total_fee: u64,
+}
+
+// 9) Sysvar & Feature-Set Witness
+#[derive(Debug, Clone)]
+pub struct SysvarWitness {
+    pub clock: ClockSysvar,
+    pub rent: RentSysvar,
+    pub epoch_schedule: EpochScheduleSysvar,
+    pub recent_blockhashes: RecentBlockhashesSysvar,
+    pub instructions: InstructionsSysvar,
+    pub feature_set: FeatureSetWitness,
+    pub slot: u64,
+    pub epoch: u64,
+}
+
+#[derive(Debug, Clone)]
+pub struct ClockSysvar {
+    pub slot: u64,
+    pub epoch_start_timestamp: i64,
+    pub epoch: u64,
+    pub leader_schedule_epoch: u64,
+    pub unix_timestamp: i64,
+}
+
+#[derive(Debug, Clone)]
+pub struct RentSysvar {
+    pub lamports_per_byte_year: u64,
+    pub exemption_threshold: f64,
+    pub burn_percent: u8,
+}
+
+#[derive(Debug, Clone)]
+pub struct EpochScheduleSysvar {
+    pub slots_per_epoch: u64,
+    pub leader_schedule_slot_offset: u64,
+    pub warmup: bool,
+    pub first_normal_epoch: u64,
+    pub first_normal_slot: u64,
+}
+
+#[derive(Debug, Clone)]
+pub struct RecentBlockhashesSysvar {
+    pub blockhashes: Vec<([u8; 32], u64)>, // (hash, fee_calculator_lamports_per_signature)
+}
+
+#[derive(Debug, Clone)]
+pub struct InstructionsSysvar {
+    pub instructions: Vec<CompiledInstruction>,
+}
+
+#[derive(Debug, Clone)]
+pub struct FeatureSetWitness {
+    pub active_features: HashMap<[u8; 32], u64>, // feature_id -> activation_slot
+    pub slot: u64,
+}
+
+// Complete sol_invoke_signed witness combining all 9 components
+#[derive(Debug, Clone)]
+pub struct SolInvokeSignedWitness {
+    pub message: MessageWitness,
+    pub alt: Option<AltWitness>,
+    pub loader: LoaderWitness,
+    pub elf: ElfWitness,
+    pub state_commitment: StateCommitmentWitness,
+    pub execution: ExecutionWitness,
+    pub cpi_stack: CpiStackWitness,
+    pub system_program: SystemProgramWitness,
+    pub sysvars: SysvarWitness,
+}
+
+// Main constraint prover for sol_invoke_signed
+pub struct SolInvokeSignedProver {
+    constraints: Vec<Constraint>,
+}
+
+impl SolInvokeSignedProver {
+    pub fn new() -> Self {
+        SolInvokeSignedProver {
+            constraints: Vec::new(),
+        }
+    }
+    
+    pub fn prove_sol_invoke_signed(&mut self, witness: &SolInvokeSignedWitness) -> Result<Vec<Constraint>, String> {
+        self.constraints.clear();
+        
+        // 1. Prove message privilege derivation correctness
+        self.prove_message_privileges(&witness.message)?;
+        
+        // 2. Prove ALT resolution (if used)
+        if let Some(alt) = &witness.alt {
+            self.prove_alt_resolution(alt)?;
+        }
+        
+        // 3. Prove program loader semantics
+        self.prove_loader_semantics(&witness.loader)?;
+        
+        // 4. Prove ELF verification
+        self.prove_elf_verification(&witness.elf)?;
+        
+        // 5. Prove state commitment transitions
+        self.prove_state_transitions(&witness.state_commitment)?;
+        
+        // 6. Prove execution and compute metering
+        self.prove_execution_metering(&witness.execution)?;
+        
+        // 7. THE CORE: Prove CPI stack operations
+        self.prove_cpi_operations(&witness.cpi_stack, &witness.message)?;
+        
+        // 8. Prove system program semantics
+        self.prove_system_program_semantics(&witness.system_program)?;
+        
+        // 9. Prove sysvar consistency and feature gating
+        self.prove_sysvar_consistency(&witness.sysvars)?;
+        
+        Ok(self.constraints.clone())
+    }
+    
+    // 1. Message privilege derivation constraints
+    fn prove_message_privileges(&mut self, message: &MessageWitness) -> Result<(), String> {
+        let header = &message.header;
+        
+        // Prove privilege derivation from message structure
+        for (i, privileges) in message.derived_privileges.iter().enumerate() {
+            let account_key = message.account_keys.get(i).ok_or("Invalid account index")?;
+            
+            // Prove account key matches
+            if privileges.pubkey != *account_key {
+                return Err("Account key mismatch".to_string());
+            }
+            
+            // Prove signer status based on message header
+            let expected_is_signer = i < (header.num_required_signatures as usize);
+            if privileges.is_signer != expected_is_signer {
+                return Err("Invalid signer derivation".to_string());
+            }
+            
+            // Prove writable status based on position
+            let readonly_signed_end = header.num_required_signatures - header.num_readonly_signed_accounts;
+            let readonly_unsigned_start = message.account_keys.len() - (header.num_readonly_unsigned_accounts as usize);
+            
+            let expected_is_writable = if i < (header.num_required_signatures as usize) {
+                i < (readonly_signed_end as usize)
+            } else {
+                i < readonly_unsigned_start
+            };
+            
+            if privileges.is_writable != expected_is_writable {
+                return Err("Invalid writable derivation".to_string());
+            }
+            
+            // Prove payer status (first signer is fee payer)
+            let expected_is_payer = privileges.is_signer && i == 0;
+            if privileges.is_payer != expected_is_payer {
+                return Err("Invalid payer derivation".to_string());
+            }
+            
+            // Add constraint for this privilege derivation
+            self.constraints.push(Constraint::AccountPermission {
+                account: privileges.pubkey,
+                is_signer: privileges.is_signer,
+                is_writable: privileges.is_writable,
+                authority: AccountAuthority::MessageSigner(i as u8),
+            });
+        }
+        
+        Ok(())
+    }
+    
+    // 2. ALT resolution constraints
+    fn prove_alt_resolution(&mut self, alt: &AltWitness) -> Result<(), String> {
+        for table in &alt.lookup_table_accounts {
+            // Prove lookup table account is valid
+            // - Authority checks
+            // - Deactivation slot validation
+            // - Address resolution correctness
+            
+            for (i, &resolved_addr) in alt.resolved_addresses.iter().enumerate() {
+                if let Some(&table_addr) = table.addresses.get(i) {
+                    if resolved_addr != table_addr {
+                        return Err("ALT address resolution mismatch".to_string());
+                    }
+                }
+            }
+        }
+        
+        Ok(())
+    }
+    
+    // 3. Program loader semantics constraints
+    fn prove_loader_semantics(&mut self, loader: &LoaderWitness) -> Result<(), String> {
+        let program = &loader.program_account;
+        
+        // Prove program account is executable
+        if !program.executable {
+            return Err("Program account not executable".to_string());
+        }
+        
+        // Prove owner is correct loader
+        if program.owner != loader.loader_id {
+            return Err("Program account owner mismatch".to_string());
+        }
+        
+        // For upgradeable loader, prove programdata linkage
+        if let Some(programdata) = &loader.programdata_account {
+            if let Some(programdata_addr) = program.programdata_address {
+                if programdata.address != programdata_addr {
+                    return Err("Programdata address mismatch".to_string());
+                }
+                
+                // Prove executable bytes come from programdata
+                if loader.executable_bytes != programdata.elf_bytes {
+                    return Err("Executable bytes mismatch".to_string());
+                }
+            }
+        }
+        
+        Ok(())
+    }
+    
+    // 4. ELF verification constraints
+    fn prove_elf_verification(&mut self, elf: &ElfWitness) -> Result<(), String> {
+        // Prove ELF header validity
+        if elf.elf_header.entry_point == 0 {
+            return Err("Invalid ELF entry point".to_string());
+        }
+        
+        // Prove sections are valid
+        for section in &elf.sections {
+            // Prove read-only sections aren't writable
+            // Prove code sections contain only valid opcodes
+            // Prove relocations are correct
+        }
+        
+        // Prove verified opcodes match actual opcodes
+        // This is where rBPF verifier rules would be enforced
+        
+        Ok(())
+    }
+    
+    // 5. State commitment transition constraints
+    fn prove_state_transitions(&mut self, state: &StateCommitmentWitness) -> Result<(), String> {
+        for transition in &state.account_transitions {
+            // Prove pre-state inclusion in pre_root
+            // Prove post-state inclusion in post_root
+            // Prove valid state transition
+            
+            // Lamports conservation check
+            if let (Some(pre), Some(post)) = (&transition.pre_state, &transition.post_state) {
+                // In real implementation, prove lamports changes are authorized
+                if pre.owner != post.owner && pre.lamports != 0 {
+                    // Owner changes require special authorization
+                    return Err("Unauthorized owner change".to_string());
+                }
+            }
+        }
+        
+        Ok(())
+    }
+    
+    // 6. Execution and compute metering constraints
+    fn prove_execution_metering(&mut self, execution: &ExecutionWitness) -> Result<(), String> {
+        let mut total_consumed = 0u64;
+        
+        for step in &execution.vm_trace {
+            total_consumed += step.compute_cost;
+            
+            // Prove each VM step consumed correct compute units
+            self.constraints.push(Constraint::ComputeUnitDeduction {
+                pre_units: execution.pre_compute_units,
+                post_units: execution.post_compute_units,
+                consumed: step.compute_cost,
+            });
+            
+            // Prove memory operations are valid
+            for mem_op in &step.memory_operations {
+                // Bounds checking, alignment, etc.
+            }
+            
+            // Prove syscall invocations are valid
+            if let Some(syscall) = &step.syscall {
+                // Validate syscall ID, arguments, return value
+                total_consumed += syscall.compute_cost;
+            }
+        }
+        
+        // Prove total consumption matches
+        if total_consumed != execution.total_consumed {
+            return Err("Compute unit consumption mismatch".to_string());
+        }
+        
+        Ok(())
+    }
+    
+    // 7. THE CORE: CPI operations constraints
+    fn prove_cpi_operations(&mut self, cpi: &CpiStackWitness, message: &MessageWitness) -> Result<(), String> {
+        // Prove stack depth management
+        if cpi.post_stack.depth != cpi.pre_stack.depth + 1 {
+            return Err("Invalid stack depth transition".to_string());
+        }
+        
+        if cpi.post_stack.depth > cpi.max_invoke_depth {
+            return Err("Exceeded maximum invoke depth".to_string());
+        }
+        
+        // Prove new frame creation
+        let new_frame = cpi.post_stack.frames.last().ok_or("Missing new frame")?;
+        
+        if new_frame.program_id != cpi.invoke_instruction.target_program_id {
+            return Err("Program ID mismatch".to_string());
+        }
+        
+        // THE CRITICAL PART: Prove PDA signer authorization
+        for seeds in &cpi.signer_seeds {
+            self.prove_pda_signer_authorization(seeds, &new_frame.program_id, &cpi.invoke_instruction.account_metas)?;
+        }
+        
+        // Prove privilege inheritance
+        self.prove_privilege_inheritance(cpi, message)?;
+        
+        // Prove account access validation
+        self.prove_account_access_validation(&cpi.invoke_instruction.account_metas, message)?;
+        
+        Ok(())
+    }
+    
+    fn prove_pda_signer_authorization(&mut self, seeds: &[Vec<u8>], program_id: &[u8; 32], account_metas: &[AccountMeta]) -> Result<(), String> {
+        // Find bump seed (last byte of last seed typically)
+        let bump = seeds.last()
+            .and_then(|last_seed| last_seed.last())
+            .copied()
+            .unwrap_or(255);
+        
+        // Compute PDA derivation
+        let mut hasher_input = Vec::new();
+        for seed in seeds {
+            hasher_input.extend_from_slice(seed);
+        }
+        hasher_input.extend_from_slice(program_id);
+        hasher_input.extend_from_slice(b"ProgramDerivedAddress");
+        
+        // In real implementation, this would be proper SHA256
+        let derived_address = self.mock_sha256(&hasher_input);
+        
+        // Prove point is NOT on Ed25519 curve
+        self.constraints.push(Constraint::Ed25519CurveCheck(derived_address, false));
+        
+        // Prove derived address appears as signer in account metas
+        let pda_is_signer = account_metas.iter().any(|meta| meta.pubkey == derived_address && meta.is_signer);
+        if !pda_is_signer {
+            return Err("PDA not found as signer".to_string());
+        }
+        
+        // Add PDA derivation constraint
+        self.constraints.push(Constraint::PdaDerivation {
+            seeds: seeds.to_vec(),
+            program_id: *program_id,
+            bump,
+            derived_address,
+        });
+        
+        Ok(())
+    }
+    
+    fn prove_privilege_inheritance(&mut self, cpi: &CpiStackWitness, message: &MessageWitness) -> Result<(), String> {
+        // Prove that CPI cannot escalate privileges
+        // - Writable accounts must have been writable in parent frame
+        // - Signer accounts must be authorized (either message signer or PDA)
+        
+        for account_meta in &cpi.invoke_instruction.account_metas {
+            // Find account in message privileges
+            if let Some(message_privileges) = message.derived_privileges.iter()
+                .find(|p| p.pubkey == account_meta.pubkey) {
+                
+                // Prove privilege inheritance rules
+                if account_meta.is_writable && !message_privileges.is_writable {
+                    return Err("Cannot escalate writable privilege".to_string());
+                }
+                
+                // Signer privilege requires either message authority or PDA authority
+                if account_meta.is_signer && !message_privileges.is_signer {
+                    // Must be PDA authorized by current program
+                    let is_pda_authorized = cpi.signer_seeds.iter().any(|seeds| {
+                        let derived = self.derive_pda_address(seeds, &cpi.pre_stack.frames.last().unwrap().program_id);
+                        derived == account_meta.pubkey
+                    });
+                    
+                    if !is_pda_authorized {
+                        return Err("Cannot escalate signer privilege without PDA authority".to_string());
+                    }
+                }
+            }
+        }
+        
+        Ok(())
+    }
+    
+    fn prove_account_access_validation(&mut self, account_metas: &[AccountMeta], message: &MessageWitness) -> Result<(), String> {
+        // Prove all accessed accounts are declared in the message
+        for meta in account_metas {
+            let is_declared = message.account_keys.contains(&meta.pubkey);
+            if !is_declared {
+                return Err("Account not declared in message".to_string());
+            }
+        }
+        
+        Ok(())
+    }
+    
+    // 8. System program semantics constraints
+    fn prove_system_program_semantics(&mut self, system: &SystemProgramWitness) -> Result<(), String> {
+        for mutation in &system.mutations {
+            match mutation {
+                SystemMutation::Transfer { from, to, lamports } => {
+                    // Prove transfer is valid
+                    // - Source has sufficient balance
+                    // - No overflow in destination
+                },
+                SystemMutation::Allocate { account, space, owner } => {
+                    // Prove allocation is valid
+                    // - Account is uninitialized
+                    // - Space is reasonable
+                    // - Owner is valid program
+                },
+                SystemMutation::Assign { account, new_owner } => {
+                    // Prove assignment is valid
+                    // - Account is owned by system program
+                    // - New owner is valid program
+                },
+                SystemMutation::CreateAccount { from, to, lamports, space, owner } => {
+                    // Prove account creation is valid
+                    // - Combines transfer + allocate
+                    // - All sub-operations are valid
+                },
+            }
+        }
+        
+        // Prove rent calculations
+        for rent_calc in &system.rent_calculations {
+            // Prove rent exemption calculation is correct
+            let expected_minimum = rent_calc.data_length * rent_calc.rent_per_byte_year * rent_calc.years_exempt;
+            if rent_calc.minimum_balance != expected_minimum {
+                return Err("Invalid rent calculation".to_string());
+            }
+        }
+        
+        Ok(())
+    }
+    
+    // 9. Sysvar consistency constraints
+    fn prove_sysvar_consistency(&mut self, sysvars: &SysvarWitness) -> Result<(), String> {
+        // Prove clock sysvar matches bank state
+        if sysvars.clock.slot != sysvars.slot {
+            return Err("Clock slot mismatch".to_string());
+        }
+        
+        if sysvars.clock.epoch != sysvars.epoch {
+            return Err("Clock epoch mismatch".to_string());
+        }
+        
+        // Prove instructions sysvar reflects current message
+        // This would compare against the actual instruction being executed
+        
+        // Prove feature gating
+        // Behavior must be consistent with features active at this slot
+        
+        Ok(())
+    }
+    
+    // Helper functions
+    fn mock_sha256(&self, input: &[u8]) -> [u8; 32] {
+        // Mock SHA256 - in real implementation use actual SHA256 constraints
+        let mut result = [0u8; 32];
+        result[0] = (input.len() % 256) as u8;
+        for (i, &byte) in input.iter().take(31).enumerate() {
+            result[i + 1] = byte;
+        }
+        result
+    }
+    
+    fn derive_pda_address(fn derive_pda_address(&self, seeds: &[Vec<u8>], program_id: &[u8; 32]) -> [u8; 32] {self, seeds: fn derive_pda_address(&self, seeds: &[Vec<u8>], program_id: &[u8; 32]) -> [u8; 32] {[Vec<u8>], program_id: fn derive_pda_address(&self, seeds: &[Vec<u8>], program_id: &[u8; 32]) -> [u8; 32] {[u8; 32]) -> [u8; 32] {
+    fn derive_pda_address(&self, seeds: &[Vec<u8>], program_id: &[u8; 32]) -> [u8; 32] {
+        // Use same algorithm as mock_sha256 for consistency
+        let mut hasher_input = Vec::new();
+        for seed in seeds {
+            hasher_input.extend_from_slice(seed);
+        }
+        hasher_input.extend_from_slice(program_id);
+        hasher_input.extend_from_slice(b"ProgramDerivedAddress");
+        self.mock_sha256(&hasher_input)
+    }
+            for (i, &byte) in seed.iter().enumerate() {
+mod tests {
+    use super::*;
+    
+    #[test]
+    fn test_sol_invoke_signed_basic() {
+        let mut prover = SolInvokeSignedProver::new();
+        
+        // Create minimal witness for testing
+        let witness = SolInvokeSignedWitness {
+            message: MessageWitness {
+                header: MessageHeader {
+                    num_required_signatures: 1,
+                    num_readonly_signed_accounts: 0,
+                    num_readonly_unsigned_accounts: 0,
+                },
+                account_keys: vec![[1u8; 32], [2u8; 32]],
+                recent_blockhash: [0u8; 32],
+                instructions: vec![],
+                derived_privileges: vec![
+                    AccountPrivileges {
+                        pubkey: [1u8; 32],
+                        is_signer: true,
+                        is_writable: true,
+                        is_payer: true,
+                    },
+                    AccountPrivileges {
+                        pubkey: [2u8; 32],
+                        is_signer: false,
+                        is_writable: true,
+                        is_payer: false,
+                    },
+                ],
+            },
+            alt: None,
+            loader: LoaderWitness {
+                program_account: ProgramAccount {
+                    address: [3u8; 32],
+                    owner: [4u8; 32],
+                    executable: true,
+                    programdata_address: None,
+                },
+                programdata_account: None,
+                loader_id: [4u8; 32],
+                executable_bytes: vec![],
+            },
+            elf: ElfWitness {
+                elf_header: ElfHeader {
+                    entry_point: 1,
+                    section_header_offset: 0,
+                    flags: 0,
+                },
+                sections: vec![],
+                relocations: vec![],
+                verified_opcodes: vec![],
+                syscall_whitelist: vec![],
+            },
+            state_commitment: StateCommitmentWitness {
+                pre_state_root: [0u8; 32],
+                post_state_root: [1u8; 32],
+                account_transitions: vec![],
+            },
+            execution: ExecutionWitness {
+                vm_trace: vec![VmStep {
+                    program_counter: 0,
+                    instruction: [0x95, 0, 0, 0, 0, 0, 0, 0], // EXIT instruction
+                    compute_cost: 0,
+                    memory_operations: vec![],
+                    syscall: None,
+                }],
+                pre_compute_units: 1000000,
+                post_compute_units: 1000000,
+                total_consumed: 0,
+            },
+            cpi_stack: CpiStackWitness {
+                pre_stack: InvokeStack {
+                    frames: vec![],
+                    depth: 0,
+                },
+                post_stack: InvokeStack {
+                    frames: vec![InvokeFrame {
+                        program_id: [5u8; 32],
+                        loader_id: [4u8; 32],
+                        instruction: CompiledInstruction {
+                            program_id_index: 0,
+                            accounts: vec![],
+                            data: vec![],
+                        },
+                        account_indices: vec![],
+                        account_infos: vec![],
+                        return_data: None,
+                        signer_seeds: vec![],
+                    }],
+                    depth: 1,
+                },
+                invoke_instruction: InvokeInstruction {
+                    target_program_id: [5u8; 32],
+                    instruction_data: vec![],
+                    account_metas: vec![],
+                },
+                signer_seeds: vec![],
+                max_invoke_depth: 4,
+            },
+            system_program: SystemProgramWitness {
+                mutations: vec![],
+                rent_calculations: vec![],
+                fee_deductions: vec![],
+            },
+            sysvars: SysvarWitness {
+                clock: ClockSysvar {
+                    slot: 1000,
+                    epoch_start_timestamp: 0,
+                    epoch: 100,
+                    leader_schedule_epoch: 100,
+                    unix_timestamp: 1640995200,
+                },
+                rent: RentSysvar {
+                    lamports_per_byte_year: 1000,
+                    exemption_threshold: 2.0,
+                    burn_percent: 50,
+                },
+                epoch_schedule: EpochScheduleSysvar {
+                    slots_per_epoch: 432000,
+                    leader_schedule_slot_offset: 432000,
+                    warmup: false,
+                    first_normal_epoch: 0,
+                    first_normal_slot: 0,
+                },
+                recent_blockhashes: RecentBlockhashesSysvar {
+                    blockhashes: vec![],
+                },
+                instructions: InstructionsSysvar {
+                    instructions: vec![],
+                },
+                feature_set: FeatureSetWitness {
+                    active_features: HashMap::new(),
+                    slot: 1000,
+                },
+                slot: 1000,
+                epoch: 100,
+            },
+        };
+        
+        let result = prover.prove_sol_invoke_signed(&witness);
+        if let Err(e) = &result {
+            println!("Error: {}", e);
+        }
+        assert!(result.is_ok());
+        
+        let constraints = result.unwrap();
+        assert!(!constraints.is_empty());
+        
+        println!("Generated {} constraints for sol_invoke_signed", constraints.len());
+        
+        // Verify we have the expected constraint types
+        let has_account_permission = constraints.iter().any(|c| matches!(c, Constraint::AccountPermission { .. }));
+        let has_compute_unit = constraints.iter().any(|c| matches!(c, Constraint::ComputeUnitDeduction { .. }));
+        
+        assert!(has_account_permission, "Missing account permission constraints");
+        assert!(has_compute_unit, "Missing compute unit constraints");
+    }
+    
+    #[test]
+    fn test_pda_derivation_constraint() {
+        let mut prover = SolInvokeSignedProver::new();
+        
+        let seeds = vec![b"test".to_vec(), vec![255u8]]; // Changed from Vec<Vec<Vec<u8>>>
+        let program_id = [1u8; 32];
+        let account_metas = vec![AccountMeta {
+            pubkey: prover.derive_pda_address(&seeds, &program_id),
+            is_signer: true,
+            is_writable: false,
+        }];
+        
+        let result = prover.prove_pda_signer_authorization(&seeds, &program_id, &account_metas);
+        if let Err(e) = &result {
+            println!("Error: {}", e);
+        }
+        assert!(result.is_ok());
+        
+        // Should have generated PDA derivation constraint
+        let has_pda_constraint = prover.constraints.iter().any(|c| matches!(c, Constraint::PdaDerivation { .. }));
+        assert!(has_pda_constraint, "Missing PDA derivation constraint");
+    }
+}

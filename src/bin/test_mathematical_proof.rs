@@ -5,15 +5,93 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🧮 Testing Mathematical Proof System");
     println!("=====================================");
     
-    // Create a simple BPF program to test mathematical proving capabilities
+    // Test program using ALL the requested opcodes
     let simple_program = vec![
-        // Phase 1: Core Arithmetic Operations
-        0xB7, 0x01, 0x00, 0x00, 0x00, 0x2A, 0x00, 0x00,  // MOV_IMM r1, 42
-        0xB7, 0x02, 0x00, 0x00, 0x00, 0x11, 0x00, 0x00,  // MOV_IMM r2, 17
-        0x0F, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00,  // ADD r1, r2 (r1 = 42 + 17 = 59)
+        // MOV_IMM r1, 42
+        0xB7, 0x01, 0x00, 0x00, 0x00, 42, 0x00, 0x00,
+        // MOV_IMM r2, 17  
+        0xB7, 0x02, 0x00, 0x00, 0x00, 17, 0x00, 0x00,
+        // SUB64_REG r3, r1, r2 (r3 = r1 - r2 = 42 - 17 = 25)
+        0x1F, 0x03, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00,
+        // MUL64_REG r4, r1, r2 (r4 = r1 * r2 = 42 * 17 = 714)
+        0x2F, 0x04, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00,
+        // AND64_REG r5, r1, r2 (r5 = r1 & r2 = 42 & 17 = 0)
+        0x5F, 0x05, 0x01, 0x02, 0x00, 0x00, 0x00, 0x00,
+        // LDXB r6, [r1] (load byte from memory address r1)
+        0x71, 0x06, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // JNE_REG r1, r2 (jump if r1 != r2, which is true)
+        0x25, 0x01, 0x02, 0x08, 0x00, 0x00, 0x00, 0x00,
+        // CALL to next instruction (offset 0)
+        0x85, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // EXIT
+        0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+    ];
+    
+    // Comprehensive CPI test program
+    let cpi_test_program = vec![
+        // MOV_IMM r1, 42 (program ID)
+        0xB7, 0x01, 0x00, 0x00, 0x00, 42, 0x00, 0x00,
+        // MOV_IMM r2, 17 (account count)
+        0xB7, 0x02, 0x00, 0x00, 0x00, 17, 0x00, 0x00,
         
-        // Program termination
-        0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // EXIT
+        // CPI_INVOKE (0xF0) - Basic cross-program invocation
+        // Format: [0xF0, program_id(32), account_count, data_len(2), accounts..., data...]
+        0xF0, 
+        // Program ID (32 bytes) - simplified to 8 bytes for testing
+        0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // Account count: 1
+        0x01,
+        // Data length: 4 bytes
+        0x04, 0x00,
+        // Account 1 (32 bytes) - simplified
+        0xAA, 0xBB, 0xCC, 0xDD, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // Instruction data: 4 bytes
+        0x11, 0x22, 0x33, 0x44,
+        
+        // CPI_INVOKE_SIGNED (0xF1) - Cross-program invocation with signatures
+        // Format: [0xF1, program_id(32), account_count, data_len(2), seeds_count, accounts..., data..., seeds...]
+        0xF1,
+        // Program ID (32 bytes) - simplified
+        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // Account count: 1
+        0x01,
+        // Data length: 4 bytes
+        0x04, 0x00,
+        // Seeds count: 2
+        0x02,
+        // Account 1 (32 bytes)
+        0xEE, 0xFF, 0x00, 0x11, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+        // Instruction data: 4 bytes
+        0x55, 0x66, 0x77, 0x88,
+        // Seed 1: length 3, data "ABC"
+        0x03, 0x41, 0x42, 0x43,
+        // Seed 2: length 3, data "XYZ"
+        0x03, 0x58, 0x59, 0x5A,
+        
+        // CPI_PDA_DERIVATION (0xF2) - Program Derived Address generation
+        // Format: [0xF2, seeds_count, seed1_len, seed1_data..., seed2_len, seed2_data...]
+        0xF2,
+        // Seeds count: 2
+        0x02,
+        // Seed 1: length 4, data "TEST"
+        0x04, 0x54, 0x45, 0x53, 0x54,
+        // Seed 2: length 4, data "PDA"
+        0x04, 0x50, 0x44, 0x41, 0x00,
+        
+        // EXIT
+        0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ];
     
     println!("🧪 MATHEMATICAL PROOF GENERATION TEST");
@@ -21,16 +99,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("📝 Test BPF Program:");
     println!("  MOV_IMM r1, 42  (r1 = 42)");
     println!("  MOV_IMM r2, 17  (r2 = 17)");
-    println!("  ADD r1, r2      (r1 = 42 + 17 = 59)");
+    println!("  SUB64_REG r3, r1, r2  (r3 = 42 - 17 = 25)");
+    println!("  MUL64_REG r4, r1, r2  (r4 = 42 * 17 = 714)");
+    println!("  AND64_REG r5, r1, r2  (r5 = 42 & 17 = 0)");
+    println!("  LDXB r6, [r1]  (r6 = memory[r1])");
+    println!("  JNE_REG r1, r2  (jump if r1 != r2)");
+    println!("  CALL  (function call)");
     println!("  EXIT            (end program)");
     println!("🔍 Expected Final State:");
-    println!("  r1 = 59, r2 = 17");
+    println!("  r1 = 42, r2 = 17, r3 = 25, r4 = 714, r5 = 0, r6 = [memory value]");
     println!("🔍 Mathematical Proof Requirements:");
-    println!("  ✅ MOV_IMM: Prove r1 = 42 (exact assignment)");
-    println!("  ✅ MOV_IMM: Prove r2 = 17 (exact assignment)");
-    println!("  ✅ ADD: Prove r1 = 42 + 17 = 59 (arithmetic correctness)");
+    println!("  ✅ MOV_IMM: Prove r1 = 42, r2 = 17 (exact assignment)");
+    println!("  ✅ SUB64_REG: Prove r3 = 42 - 17 = 25 (subtraction correctness)");
+    println!("  ✅ MUL64_REG: Prove r4 = 42 * 17 = 714 (multiplication correctness)");
+    println!("  ✅ AND64_REG: Prove r5 = 42 & 17 = 0 (bitwise AND correctness)");
+    println!("  ✅ LDXB: Prove r6 = [memory at address 42] (memory load correctness)");
+    println!("  ✅ JNE_REG: Prove jump taken (r1 != r2, so 42 != 17)");
+    println!("  ✅ CALL: Prove function call execution and return");
     println!("  ✅ State Consistency: Prove all other registers unchanged");
-    println!("  ✅ Program Counter: Prove PC advances correctly");
+    println!("  ✅ Program Counter: Prove PC advances correctly with jumps");
     println!("  ✅ Resource Bounds: Prove execution within limits");
     
     // Test individual opcode witnesses
@@ -55,7 +142,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     // Test complete program execution
     println!("🚀 Testing Complete Program Execution:");
-    let mut loader = EnhancedBpfLoader::new();
+            let mut loader = EnhancedBpfLoader::new([0; 4]); // Default program ID
     loader.load_program("test", simple_program)?;
     
     let result = loader.execute_program("test")?;
@@ -80,6 +167,47 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     println!();
     println!("🎯 Mathematical Proof System Test Complete!");
+    
+    // ============================================================================
+    // 🚀 CPI (Cross-Program Invocation) TEST
+    // ============================================================================
+    println!("\n🚀 TESTING CPI AND PDA OPERATIONS");
+    println!("====================================");
+    
+    // Test CPI program
+    println!("📝 CPI Test Program:");
+    println!("  MOV_IMM r1, 42 (program ID)");
+    println!("  MOV_IMM r2, 17 (account count)");
+    println!("  CPI_INVOKE (basic cross-program invocation)");
+    println!("  CPI_INVOKE_SIGNED (with PDA signatures)");
+    println!("  CPI_PDA_DERIVATION (Program Derived Address)");
+    println!("  EXIT");
+    
+            let mut cpi_loader = EnhancedBpfLoader::new([0; 4]);
+    cpi_loader.load_program("cpi_test", cpi_test_program)?;
+    
+    let cpi_result = cpi_loader.execute_program("cpi_test")?;
+    println!("  CPI Execution success: {}", if cpi_result.success { "✅" } else { "❌" });
+    println!("  Final r1 value: {}", cpi_result.final_registers[1]);
+    println!("  Final r2 value: {}", cpi_result.final_registers[2]);
+    println!("  Compute units: {}", cpi_result.compute_units_consumed);
+    
+    if let Some(cpi_proof) = cpi_result.mathematical_proof {
+        println!();
+        println!("📊 CPI Mathematical Proof Summary:");
+        println!("{}", cpi_proof.get_summary());
+        
+        // Export the CPI proof
+        cpi_proof.export_proof("cpi_mathematical_proof.json")?;
+        println!("  CPI Proof exported to: cpi_mathematical_proof.json");
+    }
+    
+    // Export the CPI trace
+    cpi_loader.export_trace("cpi_enhanced_trace.json")?;
+    println!("  CPI Trace exported to: cpi_enhanced_trace.json");
+    
+    println!();
+    println!("🎯 CPI Test Complete!");
     
     // ============================================================================
     // 🧮 COMPREHENSIVE SOUNDNESS ANALYSIS
@@ -284,6 +412,7 @@ fn create_mov_witness() -> OpcodeWitness {
     let operands = OpcodeOperands {
         dst_reg: 1,
         src_reg: 0,
+        src_reg2: 0,
         offset: 0,
         immediate: 42,
     };
@@ -323,6 +452,7 @@ fn create_add_witness() -> OpcodeWitness {
     let operands = OpcodeOperands {
         dst_reg: 1,
         src_reg: 2,
+        src_reg2: 0,
         offset: 0,
         immediate: 0,
     };
@@ -362,6 +492,7 @@ fn create_ldxw_witness() -> OpcodeWitness {
     let operands = OpcodeOperands {
         dst_reg: 1,
         src_reg: 2,
+        src_reg2: 0,
         offset: 0,
         immediate: 0,
     };

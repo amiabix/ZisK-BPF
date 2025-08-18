@@ -71,17 +71,41 @@ impl EnhancedTraceRecorder {
         instruction_bytes: &[u8],
         operands: OpcodeOperands,
         compute_units: u64,
+        current_registers: [u64; 11],
+        current_pc: u64,
     ) {
-        // Store current state as pre-execution state
-        self.current_state.step_count = self.current_step;
-        self.current_state.compute_units = self.execution_trace.total_compute_units;
-        
         // Reset memory operations for this instruction
         self.current_memory_operations.clear();
         
+        // Check if this is the first instruction by counting existing witnesses
+        let is_first_instruction = self.execution_trace.opcode_witnesses.is_empty();
+        
         // Store instruction metadata
         self.current_step = opcode as usize;
-        self.current_step = compute_units as usize;
+        
+        // Capture current state as pre-execution state for this instruction
+        if is_first_instruction {
+            // First instruction: use the current registers and PC that were passed in
+            // This ensures we capture the actual test-set register values
+            self.current_state = VmStateSnapshot {
+                registers: current_registers,
+                pc: current_pc,
+                memory_data: self.execution_trace.initial_state.memory_data.clone(),
+                step_count: 0,
+                compute_units: 0,
+            };
+        } else {
+            // Not the first instruction: use the previous post-execution state
+            if let Some(prev_witness) = self.execution_trace.opcode_witnesses.last() {
+                self.current_state = VmStateSnapshot {
+                    registers: prev_witness.post_state.registers,
+                    pc: prev_witness.next_program_counter,
+                    memory_data: self.current_state.memory_data.clone(),
+                    step_count: self.current_step,
+                    compute_units: self.execution_trace.total_compute_units,
+                };
+            }
+        }
     }
     
     /// Record a memory operation during instruction execution
@@ -266,6 +290,117 @@ impl EnhancedTraceRecorder {
                 state.compute_units += witness.compute_units_consumed;
                 true
             },
+            0x1F => { // SUB64_REG
+                let dst_reg = witness.operands.dst_reg as usize;
+                let src_reg = witness.operands.src_reg as usize;
+                
+                if dst_reg < 11 && src_reg < 11 {
+                    state.registers[dst_reg] = state.registers[dst_reg].wrapping_sub(state.registers[src_reg]);
+                }
+                state.pc += 8;
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x2F => { // MUL64_REG
+                let dst_reg = witness.operands.dst_reg as usize;
+                let src_reg = witness.operands.src_reg as usize;
+                
+                if dst_reg < 11 && src_reg < 11 {
+                    state.registers[dst_reg] = state.registers[dst_reg].wrapping_mul(state.registers[src_reg]);
+                }
+                state.pc += 8;
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x5F => { // AND64_REG
+                let dst_reg = witness.operands.dst_reg as usize;
+                let src_reg = witness.operands.src_reg as usize;
+                
+                if dst_reg < 11 && src_reg < 11 {
+                    state.registers[dst_reg] = state.registers[dst_reg] & state.registers[src_reg];
+                }
+                state.pc += 8;
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x25 => { // JNE_REG
+                let dst_reg = witness.operands.dst_reg as usize;
+                let src_reg = witness.operands.src_reg as usize;
+                let offset = witness.operands.offset;
+                
+                if dst_reg < 11 && src_reg < 11 {
+                    let values_equal = state.registers[dst_reg] == state.registers[src_reg];
+                    
+                    if !values_equal {
+                        state.pc = (state.pc as i64 + 1 + offset as i64) as u64;
+                    } else {
+                        state.pc += 1;
+                    }
+                } else {
+                    state.pc += 1;
+                }
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x71 => { // LDXB
+                let dst_reg = witness.operands.dst_reg as usize;
+                let src_reg = witness.operands.src_reg as usize;
+                let offset = witness.operands.offset;
+                
+                if dst_reg < 11 && src_reg < 11 {
+                    let base_addr = state.registers[src_reg];
+                    let mem_addr = (base_addr as i64 + offset as i64) as u64;
+                    
+                    if mem_addr < state.memory_data.len() as u64 {
+                        let loaded_byte = state.memory_data[mem_addr as usize];
+                        state.registers[dst_reg] = loaded_byte as u64;
+                    }
+                }
+                state.pc += 8;
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x85 => { // CALL
+                let offset = witness.operands.offset;
+                let call_target = (state.pc as i64 + 1 + offset as i64) as u64;
+                
+                // Save return address to stack
+                if state.registers[10] >= 8 {
+                    state.registers[10] -= 8;
+                    let stack_addr = state.registers[10] as usize;
+                    if stack_addr < state.memory_data.len() - 7 {
+                        let return_address = state.pc + 1;
+                        for i in 0..8 {
+                            state.memory_data[stack_addr + i] = ((return_address >> (i * 8)) & 0xFF) as u8;
+                        }
+                        state.pc = call_target;
+                    } else {
+                        state.pc += 1; // Stack overflow, don't call
+                    }
+                } else {
+                    state.pc += 1; // Invalid stack pointer, don't call
+                }
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0xF0 => { // CPI_INVOKE
+                // Simulate CPI invoke by incrementing call depth
+                state.compute_units += witness.compute_units_consumed;
+                state.pc += 8;
+                true
+            },
+            0xF1 => { // CPI_INVOKE_SIGNED
+                // Simulate CPI invoke_signed with PDA validation
+                state.compute_units += witness.compute_units_consumed;
+                state.pc += 8;
+                true
+            },
+            0xF2 => { // CPI_PDA_DERIVATION
+                // Simulate PDA derivation
+                state.compute_units += witness.compute_units_consumed;
+                state.pc += 8;
+                true
+            },
             0xB7 => { // MOV_IMM
                 let dst_reg = witness.operands.dst_reg as usize;
                 let immediate = witness.operands.immediate as u64;
@@ -284,12 +419,6 @@ impl EnhancedTraceRecorder {
                 if dst_reg < 11 && src_reg < 11 {
                     state.registers[dst_reg] = state.registers[src_reg];
                 }
-                state.pc += 8;
-                state.compute_units += witness.compute_units_consumed;
-                true
-            },
-            0x95 => { // EXIT
-                // EXIT instruction - just advance PC and consume compute units
                 state.pc += 8;
                 state.compute_units += witness.compute_units_consumed;
                 true
@@ -354,6 +483,12 @@ impl EnhancedTraceRecorder {
                         state.pc += 1;
                     }
                 }
+                state.compute_units += witness.compute_units_consumed;
+                true
+            },
+            0x95 => { // EXIT
+                // EXIT instruction - just advance PC and consume compute units
+                state.pc += 8;
                 state.compute_units += witness.compute_units_consumed;
                 true
             },

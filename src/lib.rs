@@ -6,17 +6,19 @@
 //! - Comprehensive opcode support (45+ opcodes)
 //! - Week 1 arithmetic operations implementation
 
-pub mod opcode_implementations;
-pub mod real_bpf_loader;
-pub mod constraint_generator;
-pub mod bpf_interpreter;
-pub mod week1_test;
-pub mod trace_recorder;
 pub mod zisk_io;
+pub mod real_bpf_loader;
+pub mod opcode_implementations;
+pub mod trace_recorder;
 pub mod elf_parser;
 pub mod opcode_witness;
 pub mod enhanced_trace_recorder;
 pub mod enhanced_bpf_loader;
+pub mod cpi_handler;
+pub mod sol_invoke_signed_prover;
+
+#[cfg(test)]
+mod tests;
 
 // Re-export main types for easy access
 pub use opcode_implementations::{
@@ -43,6 +45,13 @@ pub use real_bpf_loader::{
     BpfAccount,
     TransactionContext,
     ProgramExecutionResult,
+};
+
+pub use sol_invoke_signed_prover::{
+    SolInvokeSignedProver,
+    SolInvokeSignedWitness,
+    Constraint,
+    Field,
 };
 
 /// Main entry point for generating ZK constraints from BPF program execution
@@ -260,119 +269,4 @@ pub fn generate_program_constraints(
     constraint_system
 }
 
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn create_test_vm_state() -> VmState {
-        VmState {
-            registers: [0u64; 11],
-            pc: 0,
-            compute_units: 0,
-            step_count: 0,
-            terminated: false,
-            memory_hash: [0u8; 32],
-            program_hash: [0u8; 32],
-            error: None,
-        }
-    }
-
-    #[test]
-    fn test_add64_reg_constraints() {
-        let mut pre_state = create_test_vm_state();
-        let mut post_state = create_test_vm_state();
-        
-        // Set up test values
-        pre_state.registers[1] = 100;
-        pre_state.registers[2] = 50;
-        pre_state.program_hash[0] = 0x0F; // ADD64_REG opcode
-        
-        post_state.registers[1] = 150; // 100 + 50
-        post_state.registers[2] = 50;  // Unchanged
-        post_state.pc = 1;
-        post_state.step_count = 1;
-        
-        let constraints = generate_add_reg_constraints(&pre_state, &post_state, 1, 2, 0);
-        
-        assert!(!constraints.is_empty());
-        
-        // Verify arithmetic constraint
-        let arithmetic_constraint = constraints.iter()
-            .find(|c| c.description.contains("add_reg_arithmetic"))
-            .expect("Should have arithmetic constraint");
-        
-        match &arithmetic_constraint.constraint_type {
-            ConstraintType::Equality { left, right } => {
-                assert_eq!(*left, 150);
-                assert_eq!(*right, 150);
-            }
-            _ => panic!("Expected equality constraint"),
-        }
-    }
-
-    #[test]
-    fn test_week1_opcodes_integration() {
-        // Test that all Week 1 opcodes work together
-        let mut pre_state = create_test_vm_state();
-        let mut post_state = create_test_vm_state();
-        
-        // Test ADD64_REG
-        pre_state.registers[1] = 10;
-        pre_state.registers[2] = 5;
-        pre_state.program_hash[0] = 0x0F;
-        
-        post_state.registers[1] = 15; // 10 + 5
-        post_state.registers[2] = 5;
-        post_state.pc = 1;
-        post_state.step_count = 1;
-        
-        let constraints = generate_add_reg_constraints(&pre_state, &post_state, 1, 2, 0);
-        assert!(!constraints.is_empty());
-        
-        // Test SUB64_REG
-        pre_state.registers[1] = 20;
-        pre_state.registers[2] = 8;
-        pre_state.program_hash[0] = 0x1F;
-        
-        post_state.registers[1] = 12; // 20 - 8
-        post_state.registers[2] = 8;
-        post_state.pc = 2;
-        post_state.step_count = 2;
-        
-        let constraints = generate_sub_reg_constraints(&pre_state, &post_state, 1, 2, 1);
-        assert!(!constraints.is_empty());
-        
-        // Test MUL64_REG
-        pre_state.registers[1] = 6;
-        pre_state.registers[2] = 7;
-        pre_state.program_hash[0] = 0x2F;
-        
-        post_state.registers[1] = 42; // 6 * 7
-        post_state.registers[2] = 7;
-        post_state.pc = 3;
-        post_state.step_count = 3;
-        
-        let constraints = generate_mul_reg_constraints(&pre_state, &post_state, 1, 2, 2);
-        assert!(!constraints.is_empty());
-    }
-
-    #[test]
-    fn test_backward_compatibility() {
-        // Test that existing opcodes still work
-        let mut pre_state = create_test_vm_state();
-        let mut post_state = create_test_vm_state();
-        
-        // Test ADD_IMM (0x07) - existing opcode
-        pre_state.registers[1] = 100;
-        pre_state.program_hash[0] = 0x07;
-        
-        post_state.registers[1] = 150; // 100 + 50
-        post_state.pc = 1;
-        post_state.step_count = 1;
-        
-        // This should work with the existing implementation
-        // Note: We need to implement generate_add_imm_constraints if it doesn't exist
-        assert_eq!(pre_state.registers[1], 100);
-        assert_eq!(post_state.registers[1], 150);
-    }
-}
+// Inline test module removed; external tests live in src/tests/mod.rs
