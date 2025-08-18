@@ -830,6 +830,9 @@ mod comprehensive_tests {
             };
             
             let result = prover.prove_loader_semantics_complete(&loader, &elf);
+            if let Err(e) = &result {
+                println!("ELF verification basic test failed with error: {}", e);
+            }
             assert!(result.is_ok());
         }
         
@@ -1022,7 +1025,19 @@ mod comprehensive_tests {
                     program_header_size: 56,
                     section_header_size: 64,
                 },
-                sections: vec![],
+                sections: vec![
+                    ElfSection {
+                        name: ".text".to_string(),
+                        section_type: 1,
+                        flags: 0x4,
+                        address: 0x1000,
+                        offset: 0x1000,
+                        size: 1000,
+                        data: vec![0x95],
+                        is_executable: true,
+                        is_writable: false,
+                    }
+                ],
                 relocations: vec![],
                 verified_opcodes: vec![],
                 stack_frame_config: StackFrameConfig {
@@ -1065,7 +1080,19 @@ mod comprehensive_tests {
                     program_header_size: 56,
                     section_header_size: 64,
                 },
-                sections: vec![],
+                sections: vec![
+                    ElfSection {
+                        name: ".text".to_string(),
+                        section_type: 1,
+                        flags: 0x4,
+                        address: 0x1000,
+                        offset: 0x1000,
+                        size: 1000,
+                        data: vec![0x95],
+                        is_executable: true,
+                        is_writable: false,
+                    }
+                ],
                 relocations: vec![],
                 verified_opcodes: vec![
                     OpcodeValidation { opcode: 0x85, is_allowed: true, requires_syscall: true, stack_impact: 0 },
@@ -1841,6 +1868,9 @@ mod comprehensive_tests {
             };
             
             let result = prover.prove_system_program_semantics_complete(&system);
+            if let Err(e) = &result {
+                println!("Rent calculation test failed with error: {}", e);
+            }
             assert!(result.is_ok());
         }
         
@@ -2881,6 +2911,8 @@ mod comprehensive_tests {
                 parent_privileges: vec![
                     AccountPrivileges { pubkey: [1u8; 32], is_signer: true, is_writable: true, is_payer: true },
                     AccountPrivileges { pubkey: [2u8; 32], is_signer: false, is_writable: true, is_payer: false },
+                    AccountPrivileges { pubkey: [10u8; 32], is_signer: true, is_writable: true, is_payer: false },
+                    AccountPrivileges { pubkey: [20u8; 32], is_signer: true, is_writable: false, is_payer: false },
                 ],
                 child_privileges: vec![
                     AccountPrivileges { pubkey: [10u8; 32], is_signer: true, is_writable: true, is_payer: false },
@@ -3241,7 +3273,7 @@ mod comprehensive_tests {
                     lamports: 5000,
                     rent_per_byte_year: 1000,
                     exemption_threshold: 2.0,
-                    is_rent_exempt: true,
+                    is_rent_exempt: false,
                     minimum_balance: 200000,
                 },
             ],
