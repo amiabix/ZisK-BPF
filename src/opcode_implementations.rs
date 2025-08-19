@@ -1,4 +1,455 @@
 use crate::real_bpf_loader::{BpfAccount, ProgramExecutionResult};
+use std::collections::HashMap;
+
+// Centralized Opcode Registry - Single source of truth for all opcode information
+#[derive(Debug, Clone)]
+pub struct OpcodeInfo {
+    pub name: &'static str,
+    pub category: OpcodeCategory,
+    pub size: u8,  // Instruction size in bytes
+    pub compute_cost: u64,
+    pub description: &'static str,
+    pub operands: Vec<OperandType>,
+    pub flags: OpcodeFlags,
+}
+
+#[derive(Debug, Clone)]
+pub enum OpcodeCategory {
+    Arithmetic,
+    Logic,
+    Memory,
+    ControlFlow,
+    System,
+    Unknown,
+}
+
+#[derive(Debug, Clone)]
+pub enum OperandType {
+    Register,
+    Immediate,
+    Offset,
+    None,
+}
+
+#[derive(Debug, Clone)]
+pub struct OpcodeFlags {
+    pub is_branch: bool,
+    pub is_call: bool,
+    pub modifies_pc: bool,
+    pub has_side_effects: bool,
+}
+
+// Central registry containing ALL opcode information
+pub struct OpcodeRegistry {
+    opcodes: HashMap<u8, OpcodeInfo>,
+}
+
+impl OpcodeRegistry {
+    pub fn new() -> Self {
+        let mut registry = Self {
+            opcodes: HashMap::new(),
+        };
+        registry.initialize_all_opcodes();
+        registry
+    }
+
+    fn initialize_all_opcodes(&mut self) {
+        // Core BPF opcodes
+        self.register_opcode(0x00, OpcodeInfo {
+            name: "EXIT",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 1,
+            description: "Terminate program execution",
+            operands: vec![OperandType::None],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: true, has_side_effects: true },
+        });
+
+        self.register_opcode(0x01, OpcodeInfo {
+            name: "CALL",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 10,
+            description: "Call function by immediate",
+            operands: vec![OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: true, modifies_pc: true, has_side_effects: true },
+        });
+
+        self.register_opcode(0x02, OpcodeInfo {
+            name: "CALLX",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 10,
+            description: "Call function by register",
+            operands: vec![OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: true, modifies_pc: true, has_side_effects: true },
+        });
+
+        // Arithmetic operations
+        self.register_opcode(0x07, OpcodeInfo {
+            name: "ADD_IMM",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 1,
+            description: "Add immediate to register",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x0F, OpcodeInfo {
+            name: "ADD_REG",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 1,
+            description: "Add register to register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x17, OpcodeInfo {
+            name: "SUB_IMM",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 1,
+            description: "Subtract immediate from register",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x1F, OpcodeInfo {
+            name: "SUB_REG",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 1,
+            description: "Subtract register from register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x27, OpcodeInfo {
+            name: "MUL_IMM",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 2,
+            description: "Multiply register by immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x2F, OpcodeInfo {
+            name: "MUL_REG",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 2,
+            description: "Multiply register by register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x37, OpcodeInfo {
+            name: "DIV_IMM",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 3,
+            description: "Divide register by immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x3F, OpcodeInfo {
+            name: "DIV_REG",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 3,
+            description: "Divide register by register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        // Logic operations
+        self.register_opcode(0x47, OpcodeInfo {
+            name: "OR_IMM",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Bitwise OR with immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x4F, OpcodeInfo {
+            name: "OR_REG",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Bitwise OR with register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x57, OpcodeInfo {
+            name: "AND_IMM",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Bitwise AND with immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x5F, OpcodeInfo {
+            name: "AND_REG",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Bitwise AND with register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x67, OpcodeInfo {
+            name: "LSH_IMM",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Left shift by immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x6F, OpcodeInfo {
+            name: "LSH_REG",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Left shift by register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x77, OpcodeInfo {
+            name: "RSH_IMM",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Right shift by immediate",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0x7F, OpcodeInfo {
+            name: "RSH_REG",
+            category: OpcodeCategory::Logic,
+            size: 8,
+            compute_cost: 1,
+            description: "Right shift by register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        // Control flow
+        self.register_opcode(0x05, OpcodeInfo {
+            name: "BRANCH_EQ",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 2,
+            description: "Branch if equal",
+            operands: vec![OperandType::Register, OperandType::Immediate, OperandType::Offset],
+            flags: OpcodeFlags { is_branch: true, is_call: false, modifies_pc: true, has_side_effects: false },
+        });
+
+        self.register_opcode(0x06, OpcodeInfo {
+            name: "BRANCH_NE",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 2,
+            description: "Branch if not equal",
+            operands: vec![OperandType::Register, OperandType::Immediate, OperandType::Offset],
+            flags: OpcodeFlags { is_branch: true, is_call: false, modifies_pc: true, has_side_effects: false },
+        });
+
+        self.register_opcode(0x15, OpcodeInfo {
+            name: "BRANCH_GT",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 2,
+            description: "Branch if greater than",
+            operands: vec![OperandType::Register, OperandType::Immediate, OperandType::Offset],
+            flags: OpcodeFlags { is_branch: true, is_call: false, modifies_pc: true, has_side_effects: false },
+        });
+
+        self.register_opcode(0x16, OpcodeInfo {
+            name: "BRANCH_GE",
+            category: OpcodeCategory::ControlFlow,
+            size: 8,
+            compute_cost: 2,
+            description: "Branch if greater or equal",
+            operands: vec![OperandType::Register, OperandType::Immediate, OperandType::Offset],
+            flags: OpcodeFlags { is_branch: true, is_call: false, modifies_pc: true, has_side_effects: false },
+        });
+
+        // Data movement
+        self.register_opcode(0xB7, OpcodeInfo {
+            name: "MOV_IMM64",
+            category: OpcodeCategory::Arithmetic,
+            size: 16,
+            compute_cost: 1,
+            description: "Move 64-bit immediate to register",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        self.register_opcode(0xBF, OpcodeInfo {
+            name: "MOV_REG64",
+            category: OpcodeCategory::Arithmetic,
+            size: 8,
+            compute_cost: 1,
+            description: "Move register to register",
+            operands: vec![OperandType::Register, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: false },
+        });
+
+        // Memory operations
+        self.register_opcode(0xE0, OpcodeInfo {
+            name: "LD_ABS_B",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Load absolute byte",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xE1, OpcodeInfo {
+            name: "LD_ABS_H",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Load absolute halfword",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xE2, OpcodeInfo {
+            name: "LD_ABS_W",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Load absolute word",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xE3, OpcodeInfo {
+            name: "LD_ABS_DW",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Load absolute doubleword",
+            operands: vec![OperandType::Register, OperandType::Immediate],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        // Store operations
+        self.register_opcode(0xF4, OpcodeInfo {
+            name: "ST_B",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Store byte",
+            operands: vec![OperandType::Immediate, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xF5, OpcodeInfo {
+            name: "ST_H",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Store halfword",
+            operands: vec![OperandType::Immediate, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xF6, OpcodeInfo {
+            name: "ST_W",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Store word",
+            operands: vec![OperandType::Immediate, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        self.register_opcode(0xF7, OpcodeInfo {
+            name: "ST_DW",
+            category: OpcodeCategory::Memory,
+            size: 8,
+            compute_cost: 5,
+            description: "Store doubleword",
+            operands: vec![OperandType::Immediate, OperandType::Register],
+            flags: OpcodeFlags { is_branch: false, is_call: false, modifies_pc: false, has_side_effects: true },
+        });
+
+        // Add more opcodes as needed...
+        // This covers the most common ones we've seen in execution traces
+    }
+
+    fn register_opcode(&mut self, opcode: u8, info: OpcodeInfo) {
+        self.opcodes.insert(opcode, info);
+    }
+
+    // Public API methods
+    pub fn get_opcode_info(&self, opcode: u8) -> Option<&OpcodeInfo> {
+        self.opcodes.get(&opcode)
+    }
+
+    pub fn get_opcode_name(&self, opcode: u8) -> String {
+        self.opcodes.get(&opcode)
+            .map(|info| info.name.to_string())
+            .unwrap_or_else(|| format!("UNKNOWN_{:02X}", opcode))
+    }
+
+    pub fn is_branch_opcode(&self, opcode: u8) -> bool {
+        self.opcodes.get(&opcode)
+            .map(|info| info.flags.is_branch)
+            .unwrap_or(false)
+    }
+
+    pub fn is_call_opcode(&self, opcode: u8) -> bool {
+        self.opcodes.get(&opcode)
+            .map(|info| info.flags.is_call)
+            .unwrap_or(false)
+    }
+
+    pub fn get_compute_cost(&self, opcode: u8) -> u64 {
+        self.opcodes.get(&opcode)
+            .map(|info| info.compute_cost)
+            .unwrap_or(1) // Default cost for unknown opcodes
+    }
+
+    pub fn get_opcode_category(&self, opcode: u8) -> OpcodeCategory {
+        self.opcodes.get(&opcode)
+            .map(|info| info.category.clone())
+            .unwrap_or(OpcodeCategory::Unknown)
+    }
+
+    pub fn get_all_opcodes(&self) -> &HashMap<u8, OpcodeInfo> {
+        &self.opcodes
+    }
+
+    pub fn get_opcodes_by_category(&self, category: &OpcodeCategory) -> Vec<(u8, &OpcodeInfo)> {
+        self.opcodes.iter()
+            .filter(|(_, info)| std::mem::discriminant(&info.category) == std::mem::discriminant(category))
+            .map(|(opcode, info)| (*opcode, info))
+            .collect()
+    }
+}
+
+// Global instance for easy access
+lazy_static::lazy_static! {
+    pub static ref OPCODE_REGISTRY: OpcodeRegistry = OpcodeRegistry::new();
+}
 
 // BPF instruction structure
 #[derive(Debug, Clone)]

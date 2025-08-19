@@ -152,13 +152,26 @@ pub struct ExecutionStats {
 impl SolanaExecutionInput {
     /// Create a default execution input with test data
     pub fn create_test_input() -> Self {
+        // Read the actual SolInvoke_test.so file
+        let program_data = match std::fs::read("SolInvoke_test.so") {
+            Ok(data) => {
+                println!("📁 [TEST] Loaded SolInvoke_test.so: {} bytes", data.len());
+                data
+            },
+            Err(e) => {
+                println!("⚠️  [TEST] Failed to load SolInvoke_test.so: {}, using fallback", e);
+                // Fallback to hardcoded data
+                vec![
+                    0xB7, 0x01, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,  // MOV r1, 10
+                    0xB7, 0x02, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,  // MOV r2, 5
+                    0x0F, 0x31, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,  // ADD r3, r1, r2
+                    0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // EXIT
+                ]
+            }
+        };
+        
         Self {
-            program_data: vec![
-                0xB7, 0x01, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,  // MOV r1, 10
-                0xB7, 0x02, 0x00, 0x00, 0x05, 0x00, 0x00, 0x00,  // MOV r2, 5
-                0x0F, 0x31, 0x20, 0x00, 0x00, 0x00, 0x00, 0x00,  // ADD r3, r1, r2
-                0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,  // EXIT
-            ],
+            program_data,
             instruction_data: vec![1, 2, 3, 4],
             accounts: vec![
                 AccountInput {

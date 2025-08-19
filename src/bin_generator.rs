@@ -10,7 +10,7 @@ pub fn generate_input_bin_from_so(so_file_path: &str, output_bin_path: &str) -> 
     
     // Extract BPF bytecode from .so file
     let bpf_bytecode = extract_bpf_from_so(so_file_path)?;
-    println!("✅ [BIN] Extracted {} bytes of BPF bytecode", bpf_bytecode.len());
+    println!(" [BIN] Extracted {} bytes of BPF bytecode", bpf_bytecode.len());
     
     // Create structured input for ZisK
     let input = SolanaExecutionInput {
@@ -32,15 +32,15 @@ pub fn generate_input_bin_from_so(so_file_path: &str, output_bin_path: &str) -> 
     let bin_size = bin_data.len();
     fs::write(output_bin_path, &bin_data)?;
     
-    println!("✅ [BIN] Successfully generated {} ({} bytes)", output_bin_path, bin_size);
-    println!("📊 [BIN] Input contains {} bytes of BPF program data", input.program_data.len());
+    println!("[BIN] Successfully generated {} ({} bytes)", output_bin_path, bin_size);
+    println!("[BIN] Input contains {} bytes of BPF program data", input.program_data.len());
     
     Ok(())
 }
 
-/// Generate input.bin from Test.so (default case)
+/// Generate input.bin from SolInvoke_test.so (default case)
 pub fn generate_default_input_bin() -> Result<()> {
-    generate_input_bin_from_so("Test.so", "input.bin")
+    generate_input_bin_from_so("SolInvoke_test.so", "input.bin")
 }
 
 /// Check if input.bin exists and is valid
@@ -59,7 +59,7 @@ pub fn validate_input_bin(bin_path: &str) -> Result<SolanaExecutionInput> {
 /// Generate input.bin if it doesn't exist
 pub fn ensure_input_bin_exists() -> Result<()> {
     if !Path::new("input.bin").exists() {
-        println!("📝 [BIN] input.bin not found, generating from Test.so...");
+        println!("📝 [BIN] input.bin not found, generating from SolInvoke_test.so...");
         generate_default_input_bin()?;
     } else {
         println!("✅ [BIN] input.bin already exists");

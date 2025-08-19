@@ -358,7 +358,7 @@ impl CpiHandler {
     }
 
     /// Validate PDA signature
-    fn validate_pda_signature(&self, pda: &ProgramDerivedAddress, account: &[u8; 32], seeds: &[Vec<u8>]) -> Result<bool, CpiError> {
+    pub fn validate_pda_signature(&self, pda: &ProgramDerivedAddress, account: &[u8; 32], seeds: &[Vec<u8>]) -> Result<bool, CpiError> {
         // Real Solana PDA signature validation
         // 1. Derive the expected PDA from seeds
         let expected_pda = match derive_program_address(seeds, &self.program_id) {

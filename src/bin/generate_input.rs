@@ -87,8 +87,8 @@ fn main() {
         },
         _ => {
             // Generate input.bin from default Test.so
-            println!("📁 [BIN-GEN] Using default Test.so");
-            if let Err(e) = generate_input_bin_from_so("Test.so", "input.bin") {
+            println!("📁 [BIN-GEN] Using default SolInvoke_test.so");
+            if let Err(e) = generate_input_bin_from_so("SolInvoke_test.so", "input.bin") {
                 eprintln!("❌ [BIN-GEN] Failed to generate input.bin: {}", e);
                 std::process::exit(1);
             }

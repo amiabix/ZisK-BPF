@@ -358,14 +358,14 @@
       "step_number": 6,
       "pc": 24,
       "instruction": {
-        "opcode": 200,
-        "dst": 5,
+        "opcode": 216,
+        "dst": 81,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          200,
-          5,
+          216,
+          81,
           0,
           0,
           0,
@@ -417,14 +417,14 @@
       "step_number": 7,
       "pc": 24,
       "instruction": {
-        "opcode": 200,
-        "dst": 5,
+        "opcode": 216,
+        "dst": 81,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          200,
-          5,
+          216,
+          81,
           0,
           0,
           0,
@@ -594,15 +594,15 @@
       "step_number": 10,
       "pc": 40,
       "instruction": {
-        "opcode": 40,
-        "dst": 186,
-        "src": 0,
+        "opcode": 248,
+        "dst": 213,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          40,
-          186,
-          0,
+          248,
+          213,
+          1,
           0,
           0,
           0,
@@ -653,15 +653,15 @@
       "step_number": 11,
       "pc": 40,
       "instruction": {
-        "opcode": 40,
-        "dst": 186,
-        "src": 0,
+        "opcode": 248,
+        "dst": 213,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          40,
-          186,
-          0,
+          248,
+          213,
+          1,
           0,
           0,
           0,
@@ -1420,15 +1420,15 @@
       "step_number": 24,
       "pc": 96,
       "instruction": {
-        "opcode": 216,
-        "dst": 142,
-        "src": 0,
+        "opcode": 128,
+        "dst": 139,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          216,
-          142,
-          0,
+          128,
+          139,
+          1,
           0,
           0,
           0,
@@ -1479,15 +1479,15 @@
       "step_number": 25,
       "pc": 96,
       "instruction": {
-        "opcode": 216,
-        "dst": 142,
-        "src": 0,
+        "opcode": 128,
+        "dst": 139,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          216,
-          142,
-          0,
+          128,
+          139,
+          1,
           0,
           0,
           0,
@@ -1538,15 +1538,15 @@
       "step_number": 26,
       "pc": 104,
       "instruction": {
-        "opcode": 216,
-        "dst": 142,
-        "src": 0,
+        "opcode": 128,
+        "dst": 139,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          216,
-          142,
-          0,
+          128,
+          139,
+          1,
           0,
           0,
           0,
@@ -1597,15 +1597,15 @@
       "step_number": 27,
       "pc": 104,
       "instruction": {
-        "opcode": 216,
-        "dst": 142,
-        "src": 0,
+        "opcode": 128,
+        "dst": 139,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          216,
-          142,
-          0,
+          128,
+          139,
+          1,
           0,
           0,
           0,
@@ -1892,15 +1892,15 @@
       "step_number": 32,
       "pc": 128,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -1951,15 +1951,15 @@
       "step_number": 33,
       "pc": 128,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -2010,15 +2010,15 @@
       "step_number": 34,
       "pc": 136,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -2069,15 +2069,15 @@
       "step_number": 35,
       "pc": 136,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -2128,15 +2128,15 @@
       "step_number": 36,
       "pc": 144,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -2187,15 +2187,15 @@
       "step_number": 37,
       "pc": 144,
       "instruction": {
-        "opcode": 248,
-        "dst": 143,
-        "src": 0,
+        "opcode": 160,
+        "dst": 140,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          248,
-          143,
-          0,
+          160,
+          140,
+          1,
           0,
           0,
           0,
@@ -2246,14 +2246,14 @@
       "step_number": 38,
       "pc": 152,
       "instruction": {
-        "opcode": 192,
-        "dst": 21,
+        "opcode": 240,
+        "dst": 32,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          192,
-          21,
+          240,
+          32,
           0,
           0,
           0,
@@ -2305,14 +2305,14 @@
       "step_number": 39,
       "pc": 152,
       "instruction": {
-        "opcode": 192,
-        "dst": 21,
+        "opcode": 240,
+        "dst": 32,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          192,
-          21,
+          240,
+          32,
           0,
           0,
           0,
@@ -2364,14 +2364,14 @@
       "step_number": 40,
       "pc": 160,
       "instruction": {
-        "opcode": 192,
-        "dst": 21,
+        "opcode": 240,
+        "dst": 32,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          192,
-          21,
+          240,
+          32,
           0,
           0,
           0,
@@ -2423,14 +2423,14 @@
       "step_number": 41,
       "pc": 160,
       "instruction": {
-        "opcode": 192,
-        "dst": 21,
+        "opcode": 240,
+        "dst": 32,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          192,
-          21,
+          240,
+          32,
           0,
           0,
           0,
@@ -2718,15 +2718,15 @@
       "step_number": 46,
       "pc": 184,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -2777,15 +2777,15 @@
       "step_number": 47,
       "pc": 184,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -2836,15 +2836,15 @@
       "step_number": 48,
       "pc": 192,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -2895,15 +2895,15 @@
       "step_number": 49,
       "pc": 192,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -2954,15 +2954,15 @@
       "step_number": 50,
       "pc": 200,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -3013,15 +3013,15 @@
       "step_number": 51,
       "pc": 200,
       "instruction": {
-        "opcode": 104,
-        "dst": 166,
-        "src": 0,
+        "opcode": 64,
+        "dst": 174,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          104,
-          166,
-          0,
+          64,
+          174,
+          1,
           0,
           0,
           0,
@@ -3072,14 +3072,14 @@
       "step_number": 52,
       "pc": 208,
       "instruction": {
-        "opcode": 120,
-        "dst": 19,
+        "opcode": 112,
+        "dst": 39,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          120,
-          19,
+          112,
+          39,
           0,
           0,
           0,
@@ -3131,14 +3131,14 @@
       "step_number": 53,
       "pc": 208,
       "instruction": {
-        "opcode": 120,
-        "dst": 19,
+        "opcode": 112,
+        "dst": 39,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          120,
-          19,
+          112,
+          39,
           0,
           0,
           0,
@@ -3190,14 +3190,14 @@
       "step_number": 54,
       "pc": 216,
       "instruction": {
-        "opcode": 120,
-        "dst": 19,
+        "opcode": 112,
+        "dst": 39,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          120,
-          19,
+          112,
+          39,
           0,
           0,
           0,
@@ -3249,14 +3249,14 @@
       "step_number": 55,
       "pc": 216,
       "instruction": {
-        "opcode": 120,
-        "dst": 19,
+        "opcode": 112,
+        "dst": 39,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          120,
-          19,
+          112,
+          39,
           0,
           0,
           0,
@@ -3544,15 +3544,15 @@
       "step_number": 60,
       "pc": 240,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -3603,15 +3603,15 @@
       "step_number": 61,
       "pc": 240,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -3662,15 +3662,15 @@
       "step_number": 62,
       "pc": 248,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -3721,15 +3721,15 @@
       "step_number": 63,
       "pc": 248,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -3780,15 +3780,15 @@
       "step_number": 64,
       "pc": 256,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -3839,15 +3839,15 @@
       "step_number": 65,
       "pc": 256,
       "instruction": {
-        "opcode": 184,
-        "dst": 165,
-        "src": 0,
+        "opcode": 144,
+        "dst": 173,
+        "src": 1,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          184,
-          165,
-          0,
+          144,
+          173,
+          1,
           0,
           0,
           0,
@@ -4252,14 +4252,14 @@
       "step_number": 72,
       "pc": 288,
       "instruction": {
-        "opcode": 149,
-        "dst": 0,
+        "opcode": 191,
+        "dst": 56,
         "src": 0,
         "offset": 0,
         "immediate": 0,
         "raw_bytes": [
-          149,
-          0,
+          191,
+          56,
           0,
           0,
           0,
@@ -4306,6 +4306,4136 @@
       },
       "memory_accesses": [],
       "compute_units": 1
+    },
+    {
+      "step_number": 73,
+      "pc": 288,
+      "instruction": {
+        "opcode": 191,
+        "dst": 56,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          56,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 288,
+        "step_count": 73,
+        "compute_units": 667
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 296,
+        "step_count": 74,
+        "compute_units": 703
+      },
+      "memory_accesses": [],
+      "compute_units": 36
+    },
+    {
+      "step_number": 74,
+      "pc": 296,
+      "instruction": {
+        "opcode": 191,
+        "dst": 39,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          39,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 296,
+        "step_count": 74,
+        "compute_units": 703
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 304,
+        "step_count": 75,
+        "compute_units": 704
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 75,
+      "pc": 296,
+      "instruction": {
+        "opcode": 191,
+        "dst": 39,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          39,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 296,
+        "step_count": 75,
+        "compute_units": 704
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 304,
+        "step_count": 76,
+        "compute_units": 741
+      },
+      "memory_accesses": [],
+      "compute_units": 37
+    },
+    {
+      "step_number": 76,
+      "pc": 304,
+      "instruction": {
+        "opcode": 191,
+        "dst": 22,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          22,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 304,
+        "step_count": 76,
+        "compute_units": 741
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 312,
+        "step_count": 77,
+        "compute_units": 742
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 77,
+      "pc": 304,
+      "instruction": {
+        "opcode": 191,
+        "dst": 22,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          22,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 304,
+        "step_count": 77,
+        "compute_units": 742
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 312,
+        "step_count": 78,
+        "compute_units": 780
+      },
+      "memory_accesses": [],
+      "compute_units": 38
+    },
+    {
+      "step_number": 78,
+      "pc": 312,
+      "instruction": {
+        "opcode": 21,
+        "dst": 8,
+        "src": 10,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          8,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 312,
+        "step_count": 78,
+        "compute_units": 780
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 320,
+        "step_count": 79,
+        "compute_units": 781
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 79,
+      "pc": 312,
+      "instruction": {
+        "opcode": 21,
+        "dst": 8,
+        "src": 10,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          8,
+          10,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 312,
+        "step_count": 79,
+        "compute_units": 781
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 320,
+        "step_count": 80,
+        "compute_units": 820
+      },
+      "memory_accesses": [],
+      "compute_units": 39
+    },
+    {
+      "step_number": 80,
+      "pc": 320,
+      "instruction": {
+        "opcode": 121,
+        "dst": 65,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          65,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 320,
+        "step_count": 80,
+        "compute_units": 820
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 328,
+        "step_count": 81,
+        "compute_units": 821
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 81,
+      "pc": 320,
+      "instruction": {
+        "opcode": 121,
+        "dst": 65,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          65,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 320,
+        "step_count": 81,
+        "compute_units": 821
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 328,
+        "step_count": 82,
+        "compute_units": 861
+      },
+      "memory_accesses": [],
+      "compute_units": 40
+    },
+    {
+      "step_number": 82,
+      "pc": 328,
+      "instruction": {
+        "opcode": 21,
+        "dst": 1,
+        "src": 17,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          1,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 328,
+        "step_count": 82,
+        "compute_units": 861
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 336,
+        "step_count": 83,
+        "compute_units": 862
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 83,
+      "pc": 328,
+      "instruction": {
+        "opcode": 21,
+        "dst": 1,
+        "src": 17,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          1,
+          17,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 328,
+        "step_count": 83,
+        "compute_units": 862
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 336,
+        "step_count": 84,
+        "compute_units": 903
+      },
+      "memory_accesses": [],
+      "compute_units": 41
+    },
+    {
+      "step_number": 84,
+      "pc": 336,
+      "instruction": {
+        "opcode": 121,
+        "dst": 66,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          66,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 336,
+        "step_count": 84,
+        "compute_units": 903
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 344,
+        "step_count": 85,
+        "compute_units": 904
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 85,
+      "pc": 336,
+      "instruction": {
+        "opcode": 121,
+        "dst": 66,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          66,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 336,
+        "step_count": 85,
+        "compute_units": 904
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 344,
+        "step_count": 86,
+        "compute_units": 946
+      },
+      "memory_accesses": [],
+      "compute_units": 42
+    },
+    {
+      "step_number": 86,
+      "pc": 344,
+      "instruction": {
+        "opcode": 85,
+        "dst": 2,
+        "src": 9,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          85,
+          2,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 344,
+        "step_count": 86,
+        "compute_units": 946
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 352,
+        "step_count": 87,
+        "compute_units": 947
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 87,
+      "pc": 344,
+      "instruction": {
+        "opcode": 85,
+        "dst": 2,
+        "src": 9,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          85,
+          2,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 344,
+        "step_count": 87,
+        "compute_units": 947
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 352,
+        "step_count": 88,
+        "compute_units": 990
+      },
+      "memory_accesses": [],
+      "compute_units": 43
+    },
+    {
+      "step_number": 88,
+      "pc": 352,
+      "instruction": {
+        "opcode": 21,
+        "dst": 7,
+        "src": 24,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          7,
+          24,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 352,
+        "step_count": 88,
+        "compute_units": 990
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 360,
+        "step_count": 89,
+        "compute_units": 991
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 89,
+      "pc": 352,
+      "instruction": {
+        "opcode": 21,
+        "dst": 7,
+        "src": 24,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          7,
+          24,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 352,
+        "step_count": 89,
+        "compute_units": 991
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 360,
+        "step_count": 90,
+        "compute_units": 1035
+      },
+      "memory_accesses": [],
+      "compute_units": 44
+    },
+    {
+      "step_number": 90,
+      "pc": 360,
+      "instruction": {
+        "opcode": 191,
+        "dst": 113,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          113,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 360,
+        "step_count": 90,
+        "compute_units": 1035
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 368,
+        "step_count": 91,
+        "compute_units": 1036
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 91,
+      "pc": 360,
+      "instruction": {
+        "opcode": 191,
+        "dst": 113,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          113,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 360,
+        "step_count": 91,
+        "compute_units": 1036
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 368,
+        "step_count": 92,
+        "compute_units": 1081
+      },
+      "memory_accesses": [],
+      "compute_units": 45
+    },
+    {
+      "step_number": 92,
+      "pc": 368,
+      "instruction": {
+        "opcode": 191,
+        "dst": 130,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          130,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 368,
+        "step_count": 92,
+        "compute_units": 1081
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 376,
+        "step_count": 93,
+        "compute_units": 1082
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 93,
+      "pc": 368,
+      "instruction": {
+        "opcode": 191,
+        "dst": 130,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          130,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 368,
+        "step_count": 93,
+        "compute_units": 1082
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 376,
+        "step_count": 94,
+        "compute_units": 1128
+      },
+      "memory_accesses": [],
+      "compute_units": 46
+    },
+    {
+      "step_number": 94,
+      "pc": 376,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -14336,
+        "immediate": 3272,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          200,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 376,
+        "step_count": 94,
+        "compute_units": 1128
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 384,
+        "step_count": 95,
+        "compute_units": 1129
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 95,
+      "pc": 376,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -14336,
+        "immediate": 3272,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          200,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 376,
+        "step_count": 95,
+        "compute_units": 1129
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 384,
+        "step_count": 96,
+        "compute_units": 1176
+      },
+      "memory_accesses": [],
+      "compute_units": 47
+    },
+    {
+      "step_number": 96,
+      "pc": 384,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 384,
+        "step_count": 96,
+        "compute_units": 1176
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 392,
+        "step_count": 97,
+        "compute_units": 1177
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 97,
+      "pc": 384,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 384,
+        "step_count": 97,
+        "compute_units": 1177
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 392,
+        "step_count": 98,
+        "compute_units": 1225
+      },
+      "memory_accesses": [],
+      "compute_units": 48
+    },
+    {
+      "step_number": 98,
+      "pc": 392,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 21,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          21,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 392,
+        "step_count": 98,
+        "compute_units": 1225
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 400,
+        "step_count": 99,
+        "compute_units": 1226
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 99,
+      "pc": 392,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 21,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          21,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 392,
+        "step_count": 99,
+        "compute_units": 1226
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 400,
+        "step_count": 100,
+        "compute_units": 1275
+      },
+      "memory_accesses": [],
+      "compute_units": 49
+    },
+    {
+      "step_number": 100,
+      "pc": 400,
+      "instruction": {
+        "opcode": 183,
+        "dst": 1,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          183,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 400,
+        "step_count": 100,
+        "compute_units": 1275
+      },
+      "post_state": {
+        "registers": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 408,
+        "step_count": 101,
+        "compute_units": 1276
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 101,
+      "pc": 408,
+      "instruction": {
+        "opcode": 123,
+        "dst": 22,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          22,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 408,
+        "step_count": 101,
+        "compute_units": 1276
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 416,
+        "step_count": 102,
+        "compute_units": 1326
+      },
+      "memory_accesses": [],
+      "compute_units": 50
+    },
+    {
+      "step_number": 102,
+      "pc": 416,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 13,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          13,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 416,
+        "step_count": 102,
+        "compute_units": 1326
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 424,
+        "step_count": 103,
+        "compute_units": 1327
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 103,
+      "pc": 416,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 13,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          13,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 416,
+        "step_count": 103,
+        "compute_units": 1327
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 424,
+        "step_count": 104,
+        "compute_units": 1378
+      },
+      "memory_accesses": [],
+      "compute_units": 51
+    },
+    {
+      "step_number": 104,
+      "pc": 424,
+      "instruction": {
+        "opcode": 121,
+        "dst": 65,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          65,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 424,
+        "step_count": 104,
+        "compute_units": 1378
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 432,
+        "step_count": 105,
+        "compute_units": 1379
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 105,
+      "pc": 424,
+      "instruction": {
+        "opcode": 121,
+        "dst": 65,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          121,
+          65,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 424,
+        "step_count": 105,
+        "compute_units": 1379
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 432,
+        "step_count": 106,
+        "compute_units": 1431
+      },
+      "memory_accesses": [],
+      "compute_units": 52
+    },
+    {
+      "step_number": 106,
+      "pc": 432,
+      "instruction": {
+        "opcode": 191,
+        "dst": 131,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          131,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 432,
+        "step_count": 106,
+        "compute_units": 1431
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 440,
+        "step_count": 107,
+        "compute_units": 1432
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 107,
+      "pc": 432,
+      "instruction": {
+        "opcode": 191,
+        "dst": 131,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          131,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 432,
+        "step_count": 107,
+        "compute_units": 1432
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 440,
+        "step_count": 108,
+        "compute_units": 1485
+      },
+      "memory_accesses": [],
+      "compute_units": 53
+    },
+    {
+      "step_number": 108,
+      "pc": 440,
+      "instruction": {
+        "opcode": 191,
+        "dst": 116,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          116,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 440,
+        "step_count": 108,
+        "compute_units": 1485
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 448,
+        "step_count": 109,
+        "compute_units": 1486
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 109,
+      "pc": 440,
+      "instruction": {
+        "opcode": 191,
+        "dst": 116,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          116,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 440,
+        "step_count": 109,
+        "compute_units": 1486
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 448,
+        "step_count": 110,
+        "compute_units": 1540
+      },
+      "memory_accesses": [],
+      "compute_units": 54
+    },
+    {
+      "step_number": 110,
+      "pc": 448,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -15616,
+        "immediate": 3267,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          195,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 448,
+        "step_count": 110,
+        "compute_units": 1540
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 456,
+        "step_count": 111,
+        "compute_units": 1541
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 111,
+      "pc": 448,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -15616,
+        "immediate": 3267,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          195,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 448,
+        "step_count": 111,
+        "compute_units": 1541
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 456,
+        "step_count": 112,
+        "compute_units": 1596
+      },
+      "memory_accesses": [],
+      "compute_units": 55
+    },
+    {
+      "step_number": 112,
+      "pc": 456,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 7,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 456,
+        "step_count": 112,
+        "compute_units": 1596
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 464,
+        "step_count": 113,
+        "compute_units": 1597
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 113,
+      "pc": 456,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 7,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 456,
+        "step_count": 113,
+        "compute_units": 1597
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 464,
+        "step_count": 114,
+        "compute_units": 1653
+      },
+      "memory_accesses": [],
+      "compute_units": 56
+    },
+    {
+      "step_number": 114,
+      "pc": 464,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 12,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 464,
+        "step_count": 114,
+        "compute_units": 1653
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 472,
+        "step_count": 115,
+        "compute_units": 1654
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 115,
+      "pc": 464,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 12,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          12,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 464,
+        "step_count": 115,
+        "compute_units": 1654
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 472,
+        "step_count": 116,
+        "compute_units": 1711
+      },
+      "memory_accesses": [],
+      "compute_units": 57
+    },
+    {
+      "step_number": 116,
+      "pc": 472,
+      "instruction": {
+        "opcode": 21,
+        "dst": 7,
+        "src": 9,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          7,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 472,
+        "step_count": 116,
+        "compute_units": 1711
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 480,
+        "step_count": 117,
+        "compute_units": 1712
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 117,
+      "pc": 472,
+      "instruction": {
+        "opcode": 21,
+        "dst": 7,
+        "src": 9,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          7,
+          9,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 472,
+        "step_count": 117,
+        "compute_units": 1712
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 480,
+        "step_count": 118,
+        "compute_units": 1770
+      },
+      "memory_accesses": [],
+      "compute_units": 58
+    },
+    {
+      "step_number": 118,
+      "pc": 480,
+      "instruction": {
+        "opcode": 191,
+        "dst": 113,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          113,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 480,
+        "step_count": 118,
+        "compute_units": 1770
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 488,
+        "step_count": 119,
+        "compute_units": 1771
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 119,
+      "pc": 480,
+      "instruction": {
+        "opcode": 191,
+        "dst": 113,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          113,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 480,
+        "step_count": 119,
+        "compute_units": 1771
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 488,
+        "step_count": 120,
+        "compute_units": 1830
+      },
+      "memory_accesses": [],
+      "compute_units": 59
+    },
+    {
+      "step_number": 120,
+      "pc": 488,
+      "instruction": {
+        "opcode": 191,
+        "dst": 130,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          130,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 488,
+        "step_count": 120,
+        "compute_units": 1830
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 496,
+        "step_count": 121,
+        "compute_units": 1831
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 121,
+      "pc": 488,
+      "instruction": {
+        "opcode": 191,
+        "dst": 130,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          130,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 488,
+        "step_count": 121,
+        "compute_units": 1831
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 496,
+        "step_count": 122,
+        "compute_units": 1891
+      },
+      "memory_accesses": [],
+      "compute_units": 60
+    },
+    {
+      "step_number": 122,
+      "pc": 496,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -18176,
+        "immediate": 3257,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          185,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 496,
+        "step_count": 122,
+        "compute_units": 1891
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 504,
+        "step_count": 123,
+        "compute_units": 1892
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 123,
+      "pc": 496,
+      "instruction": {
+        "opcode": 133,
+        "dst": 16,
+        "src": 0,
+        "offset": -18176,
+        "immediate": 3257,
+        "raw_bytes": [
+          133,
+          16,
+          0,
+          0,
+          185,
+          12,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 496,
+        "step_count": 123,
+        "compute_units": 1892
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 504,
+        "step_count": 124,
+        "compute_units": 1953
+      },
+      "memory_accesses": [],
+      "compute_units": 61
+    },
+    {
+      "step_number": 124,
+      "pc": 504,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 1,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 504,
+        "step_count": 124,
+        "compute_units": 1953
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 512,
+        "step_count": 125,
+        "compute_units": 1954
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 125,
+      "pc": 504,
+      "instruction": {
+        "opcode": 21,
+        "dst": 0,
+        "src": 1,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          21,
+          0,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 504,
+        "step_count": 125,
+        "compute_units": 1954
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 512,
+        "step_count": 126,
+        "compute_units": 2016
+      },
+      "memory_accesses": [],
+      "compute_units": 62
+    },
+    {
+      "step_number": 126,
+      "pc": 512,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 6,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 512,
+        "step_count": 126,
+        "compute_units": 2016
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 520,
+        "step_count": 127,
+        "compute_units": 2017
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 127,
+      "pc": 512,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 6,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          6,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 512,
+        "step_count": 127,
+        "compute_units": 2017
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 520,
+        "step_count": 128,
+        "compute_units": 2080
+      },
+      "memory_accesses": [],
+      "compute_units": 63
+    },
+    {
+      "step_number": 128,
+      "pc": 520,
+      "instruction": {
+        "opcode": 123,
+        "dst": 134,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          134,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 520,
+        "step_count": 128,
+        "compute_units": 2080
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 528,
+        "step_count": 129,
+        "compute_units": 2081
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 129,
+      "pc": 520,
+      "instruction": {
+        "opcode": 123,
+        "dst": 134,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          134,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 520,
+        "step_count": 129,
+        "compute_units": 2081
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 528,
+        "step_count": 130,
+        "compute_units": 2145
+      },
+      "memory_accesses": [],
+      "compute_units": 64
+    },
+    {
+      "step_number": 130,
+      "pc": 528,
+      "instruction": {
+        "opcode": 123,
+        "dst": 118,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          118,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 528,
+        "step_count": 130,
+        "compute_units": 2145
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 536,
+        "step_count": 131,
+        "compute_units": 2146
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 131,
+      "pc": 528,
+      "instruction": {
+        "opcode": 123,
+        "dst": 118,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          118,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 528,
+        "step_count": 131,
+        "compute_units": 2146
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 536,
+        "step_count": 132,
+        "compute_units": 2211
+      },
+      "memory_accesses": [],
+      "compute_units": 65
+    },
+    {
+      "step_number": 132,
+      "pc": 536,
+      "instruction": {
+        "opcode": 183,
+        "dst": 1,
+        "src": 0,
+        "offset": 256,
+        "immediate": 1,
+        "raw_bytes": [
+          183,
+          1,
+          0,
+          0,
+          1,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 536,
+        "step_count": 132,
+        "compute_units": 2211
+      },
+      "post_state": {
+        "registers": [
+          0,
+          1054331,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 544,
+        "step_count": 133,
+        "compute_units": 2212
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 133,
+      "pc": 544,
+      "instruction": {
+        "opcode": 5,
+        "dst": 0,
+        "src": 5,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          5,
+          0,
+          5,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 544,
+        "step_count": 133,
+        "compute_units": 2212
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 552,
+        "step_count": 134,
+        "compute_units": 2278
+      },
+      "memory_accesses": [],
+      "compute_units": 66
+    },
+    {
+      "step_number": 134,
+      "pc": 552,
+      "instruction": {
+        "opcode": 183,
+        "dst": 7,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          183,
+          7,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 552,
+        "step_count": 134,
+        "compute_units": 2278
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "pc": 560,
+        "step_count": 135,
+        "compute_units": 2279
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 135,
+      "pc": 560,
+      "instruction": {
+        "opcode": 191,
+        "dst": 128,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          191,
+          128,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 560,
+        "step_count": 135,
+        "compute_units": 2279
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 568,
+        "step_count": 136,
+        "compute_units": 2346
+      },
+      "memory_accesses": [],
+      "compute_units": 67
+    },
+    {
+      "step_number": 136,
+      "pc": 568,
+      "instruction": {
+        "opcode": 123,
+        "dst": 118,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          118,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 568,
+        "step_count": 136,
+        "compute_units": 2346
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 576,
+        "step_count": 137,
+        "compute_units": 2347
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 137,
+      "pc": 568,
+      "instruction": {
+        "opcode": 123,
+        "dst": 118,
+        "src": 16,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          118,
+          16,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 568,
+        "step_count": 137,
+        "compute_units": 2347
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 576,
+        "step_count": 138,
+        "compute_units": 2415
+      },
+      "memory_accesses": [],
+      "compute_units": 68
+    },
+    {
+      "step_number": 138,
+      "pc": 576,
+      "instruction": {
+        "opcode": 123,
+        "dst": 6,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          6,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 576,
+        "step_count": 138,
+        "compute_units": 2415
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 584,
+        "step_count": 139,
+        "compute_units": 2416
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 139,
+      "pc": 576,
+      "instruction": {
+        "opcode": 123,
+        "dst": 6,
+        "src": 8,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          6,
+          8,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 576,
+        "step_count": 139,
+        "compute_units": 2416
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 584,
+        "step_count": 140,
+        "compute_units": 2485
+      },
+      "memory_accesses": [],
+      "compute_units": 69
+    },
+    {
+      "step_number": 140,
+      "pc": 584,
+      "instruction": {
+        "opcode": 183,
+        "dst": 1,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          183,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 584,
+        "step_count": 140,
+        "compute_units": 2485
+      },
+      "post_state": {
+        "registers": [
+          0,
+          327685,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 592,
+        "step_count": 141,
+        "compute_units": 2486
+      },
+      "memory_accesses": [],
+      "compute_units": 1
+    },
+    {
+      "step_number": 141,
+      "pc": 592,
+      "instruction": {
+        "opcode": 123,
+        "dst": 22,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          123,
+          22,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          5755,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 592,
+        "step_count": 141,
+        "compute_units": 2486
+      },
+      "post_state": {
+        "registers": [
+          0,
+          5755,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 600,
+        "step_count": 142,
+        "compute_units": 2556
+      },
+      "memory_accesses": [],
+      "compute_units": 70
+    },
+    {
+      "step_number": 142,
+      "pc": 600,
+      "instruction": {
+        "opcode": 149,
+        "dst": 0,
+        "src": 0,
+        "offset": 0,
+        "immediate": 0,
+        "raw_bytes": [
+          149,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ]
+      },
+      "pre_state": {
+        "registers": [
+          0,
+          5755,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 600,
+        "step_count": 142,
+        "compute_units": 2556
+      },
+      "post_state": {
+        "registers": [
+          0,
+          5755,
+          0,
+          0,
+          0,
+          0,
+          0,
+          32959,
+          0,
+          0,
+          0
+        ],
+        "pc": 608,
+        "step_count": 143,
+        "compute_units": 2557
+      },
+      "memory_accesses": [],
+      "compute_units": 1
     }
   ],
   "initial_state": {
@@ -4329,21 +8459,3041 @@
   "final_state": {
     "registers": [
       0,
+      5755,
       0,
       0,
       0,
       0,
       0,
-      0,
-      0,
+      32959,
       0,
       0,
       0
     ],
-    "pc": 288,
-    "step_count": 73,
-    "compute_units": 667
+    "pc": 600,
+    "step_count": 143,
+    "compute_units": 2557
   },
-  "compute_units_consumed": 667,
-  "success": true
+  "compute_units_consumed": 2557,
+  "success": true,
+  "opcode_frequency": {
+    "112": {
+      "count": 4,
+      "first_seen_at": 52,
+      "last_seen_at": 55,
+      "pc_locations": [
+        208,
+        208,
+        216,
+        216
+      ],
+      "compute_units_total": 55,
+      "average_compute_units": 13.75
+    },
+    "248": {
+      "count": 2,
+      "first_seen_at": 10,
+      "last_seen_at": 11,
+      "pc_locations": [
+        40,
+        40
+      ],
+      "compute_units_total": 6,
+      "average_compute_units": 3.0
+    },
+    "144": {
+      "count": 6,
+      "first_seen_at": 60,
+      "last_seen_at": 65,
+      "pc_locations": [
+        240,
+        240,
+        248,
+        248,
+        256,
+        256
+      ],
+      "compute_units_total": 96,
+      "average_compute_units": 16.0
+    },
+    "8": {
+      "count": 2,
+      "first_seen_at": 70,
+      "last_seen_at": 71,
+      "pc_locations": [
+        280,
+        280
+      ],
+      "compute_units_total": 36,
+      "average_compute_units": 18.0
+    },
+    "0": {
+      "count": 10,
+      "first_seen_at": 2,
+      "last_seen_at": 57,
+      "pc_locations": [
+        8,
+        8,
+        48,
+        48,
+        112,
+        112,
+        168,
+        168,
+        224,
+        224
+      ],
+      "compute_units_total": 75,
+      "average_compute_units": 7.5
+    },
+    "1": {
+      "count": 6,
+      "first_seen_at": 16,
+      "last_seen_at": 45,
+      "pc_locations": [
+        64,
+        64,
+        120,
+        120,
+        176,
+        176
+      ],
+      "compute_units_total": 48,
+      "average_compute_units": 8.0
+    },
+    "127": {
+      "count": 2,
+      "first_seen_at": 0,
+      "last_seen_at": 1,
+      "pc_locations": [
+        0,
+        0
+      ],
+      "compute_units_total": 1,
+      "average_compute_units": 0.5
+    },
+    "32": {
+      "count": 6,
+      "first_seen_at": 18,
+      "last_seen_at": 23,
+      "pc_locations": [
+        72,
+        72,
+        80,
+        80,
+        88,
+        88
+      ],
+      "compute_units_total": 33,
+      "average_compute_units": 5.5
+    },
+    "191": {
+      "count": 19,
+      "first_seen_at": 72,
+      "last_seen_at": 135,
+      "pc_locations": [
+        288,
+        288,
+        296,
+        296,
+        304,
+        304,
+        360,
+        360,
+        368,
+        368,
+        432,
+        432,
+        440,
+        440,
+        480,
+        480,
+        488,
+        488,
+        560
+      ],
+      "compute_units_total": 504,
+      "average_compute_units": 26.526315789473685
+    },
+    "216": {
+      "count": 2,
+      "first_seen_at": 6,
+      "last_seen_at": 7,
+      "pc_locations": [
+        24,
+        24
+      ],
+      "compute_units_total": 4,
+      "average_compute_units": 2.0
+    },
+    "21": {
+      "count": 14,
+      "first_seen_at": 78,
+      "last_seen_at": 125,
+      "pc_locations": [
+        312,
+        312,
+        328,
+        328,
+        352,
+        352,
+        384,
+        384,
+        456,
+        456,
+        472,
+        472,
+        504,
+        504
+      ],
+      "compute_units_total": 355,
+      "average_compute_units": 25.357142857142858
+    },
+    "176": {
+      "count": 4,
+      "first_seen_at": 66,
+      "last_seen_at": 69,
+      "pc_locations": [
+        264,
+        264,
+        272,
+        272
+      ],
+      "compute_units_total": 69,
+      "average_compute_units": 17.25
+    },
+    "85": {
+      "count": 2,
+      "first_seen_at": 86,
+      "last_seen_at": 87,
+      "pc_locations": [
+        344,
+        344
+      ],
+      "compute_units_total": 44,
+      "average_compute_units": 22.0
+    },
+    "133": {
+      "count": 6,
+      "first_seen_at": 94,
+      "last_seen_at": 123,
+      "pc_locations": [
+        376,
+        376,
+        448,
+        448,
+        496,
+        496
+      ],
+      "compute_units_total": 166,
+      "average_compute_units": 27.666666666666668
+    },
+    "2": {
+      "count": 2,
+      "first_seen_at": 58,
+      "last_seen_at": 59,
+      "pc_locations": [
+        232,
+        232
+      ],
+      "compute_units_total": 30,
+      "average_compute_units": 15.0
+    },
+    "183": {
+      "count": 4,
+      "first_seen_at": 100,
+      "last_seen_at": 140,
+      "pc_locations": [
+        400,
+        536,
+        552,
+        584
+      ],
+      "compute_units_total": 4,
+      "average_compute_units": 1.0
+    },
+    "149": {
+      "count": 1,
+      "first_seen_at": 142,
+      "last_seen_at": 142,
+      "pc_locations": [
+        600
+      ],
+      "compute_units_total": 1,
+      "average_compute_units": 1.0
+    },
+    "121": {
+      "count": 6,
+      "first_seen_at": 80,
+      "last_seen_at": 105,
+      "pc_locations": [
+        320,
+        320,
+        336,
+        336,
+        424,
+        424
+      ],
+      "compute_units_total": 137,
+      "average_compute_units": 22.833333333333332
+    },
+    "64": {
+      "count": 8,
+      "first_seen_at": 8,
+      "last_seen_at": 51,
+      "pc_locations": [
+        32,
+        32,
+        184,
+        184,
+        192,
+        192,
+        200,
+        200
+      ],
+      "compute_units_total": 80,
+      "average_compute_units": 10.0
+    },
+    "5": {
+      "count": 9,
+      "first_seen_at": 98,
+      "last_seen_at": 133,
+      "pc_locations": [
+        392,
+        392,
+        416,
+        416,
+        464,
+        464,
+        512,
+        512,
+        544
+      ],
+      "compute_units_total": 290,
+      "average_compute_units": 32.22222222222222
+    },
+    "240": {
+      "count": 4,
+      "first_seen_at": 38,
+      "last_seen_at": 41,
+      "pc_locations": [
+        152,
+        152,
+        160,
+        160
+      ],
+      "compute_units_total": 41,
+      "average_compute_units": 10.25
+    },
+    "123": {
+      "count": 10,
+      "first_seen_at": 101,
+      "last_seen_at": 141,
+      "pc_locations": [
+        408,
+        520,
+        520,
+        528,
+        528,
+        568,
+        568,
+        576,
+        576,
+        592
+      ],
+      "compute_units_total": 390,
+      "average_compute_units": 39.0
+    },
+    "3": {
+      "count": 2,
+      "first_seen_at": 4,
+      "last_seen_at": 5,
+      "pc_locations": [
+        16,
+        16
+      ],
+      "compute_units_total": 3,
+      "average_compute_units": 1.5
+    },
+    "128": {
+      "count": 4,
+      "first_seen_at": 24,
+      "last_seen_at": 27,
+      "pc_locations": [
+        96,
+        96,
+        104,
+        104
+      ],
+      "compute_units_total": 27,
+      "average_compute_units": 6.75
+    },
+    "4": {
+      "count": 2,
+      "first_seen_at": 14,
+      "last_seen_at": 15,
+      "pc_locations": [
+        56,
+        56
+      ],
+      "compute_units_total": 8,
+      "average_compute_units": 4.0
+    },
+    "160": {
+      "count": 6,
+      "first_seen_at": 32,
+      "last_seen_at": 37,
+      "pc_locations": [
+        128,
+        128,
+        136,
+        136,
+        144,
+        144
+      ],
+      "compute_units_total": 54,
+      "average_compute_units": 9.0
+    }
+  },
+  "opcode_sequence": [
+    127,
+    127,
+    0,
+    0,
+    3,
+    3,
+    216,
+    216,
+    64,
+    64,
+    248,
+    248,
+    0,
+    0,
+    4,
+    4,
+    1,
+    1,
+    32,
+    32,
+    32,
+    32,
+    32,
+    32,
+    128,
+    128,
+    128,
+    128,
+    0,
+    0,
+    1,
+    1,
+    160,
+    160,
+    160,
+    160,
+    160,
+    160,
+    240,
+    240,
+    240,
+    240,
+    0,
+    0,
+    1,
+    1,
+    64,
+    64,
+    64,
+    64,
+    64,
+    64,
+    112,
+    112,
+    112,
+    112,
+    0,
+    0,
+    2,
+    2,
+    144,
+    144,
+    144,
+    144,
+    144,
+    144,
+    176,
+    176,
+    176,
+    176,
+    8,
+    8,
+    191,
+    191,
+    191,
+    191,
+    191,
+    191,
+    21,
+    21,
+    121,
+    121,
+    21,
+    21,
+    121,
+    121,
+    85,
+    85,
+    21,
+    21,
+    191,
+    191,
+    191,
+    191,
+    133,
+    133,
+    21,
+    21,
+    5,
+    5,
+    183,
+    123,
+    5,
+    5,
+    121,
+    121,
+    191,
+    191,
+    191,
+    191,
+    133,
+    133,
+    21,
+    21,
+    5,
+    5,
+    21,
+    21,
+    191,
+    191,
+    191,
+    191,
+    133,
+    133,
+    21,
+    21,
+    5,
+    5,
+    123,
+    123,
+    123,
+    123,
+    183,
+    5,
+    183,
+    191,
+    123,
+    123,
+    123,
+    123,
+    183,
+    123,
+    149
+  ],
+  "pc_to_opcode": {
+    "0": 127,
+    "8": 0,
+    "16": 3,
+    "24": 216,
+    "32": 64,
+    "40": 248,
+    "48": 0,
+    "56": 4,
+    "64": 1,
+    "72": 32,
+    "80": 32,
+    "88": 32,
+    "96": 128,
+    "104": 128,
+    "112": 0,
+    "120": 1,
+    "128": 160,
+    "136": 160,
+    "144": 160,
+    "152": 240,
+    "160": 240,
+    "168": 0,
+    "176": 1,
+    "184": 64,
+    "192": 64,
+    "200": 64,
+    "208": 112,
+    "216": 112,
+    "224": 0,
+    "232": 2,
+    "240": 144,
+    "248": 144,
+    "256": 144,
+    "264": 176,
+    "272": 176,
+    "280": 8,
+    "288": 191,
+    "296": 191,
+    "304": 191,
+    "312": 21,
+    "320": 121,
+    "328": 21,
+    "336": 121,
+    "344": 85,
+    "352": 21,
+    "360": 191,
+    "368": 191,
+    "376": 133,
+    "384": 21,
+    "392": 5,
+    "400": 183,
+    "408": 123,
+    "416": 5,
+    "424": 121,
+    "432": 191,
+    "440": 191,
+    "448": 133,
+    "456": 21,
+    "464": 5,
+    "472": 21,
+    "480": 191,
+    "488": 191,
+    "496": 133,
+    "504": 21,
+    "512": 5,
+    "520": 123,
+    "528": 123,
+    "536": 183,
+    "544": 5,
+    "552": 183,
+    "560": 191,
+    "568": 123,
+    "576": 123,
+    "584": 183,
+    "592": 123,
+    "600": 149
+  },
+  "opcode_patterns": {
+    "F0->F0": 3,
+    "F0->F0->F0->F0": 1,
+    "B0->B0": 3,
+    "08->08": 1,
+    "80->80->80": 2,
+    "15->15": 7,
+    "90->90->90->B0": 1,
+    "05->B7->7B->05": 1,
+    "01->40->40->40": 1,
+    "00->04->04->01": 1,
+    "BF->BF->BF": 10,
+    "20->80->80": 1,
+    "80->80->00->00": 1,
+    "A0->A0->F0->F0": 1,
+    "40->40->40->70": 1,
+    "BF->BF->BF->85": 3,
+    "7F->00->00->03": 1,
+    "03->D8": 1,
+    "80->00->00": 1,
+    "A0->A0->A0->A0": 3,
+    "F0->00": 1,
+    "04->04->01": 1,
+    "BF->15->15->79": 1,
+    "79->15->15->79": 1,
+    "15->BF->BF->BF": 2,
+    "05->05->15->15": 1,
+    "B7->05->B7": 1,
+    "B0->B0->B0": 2,
+    "15->05": 3,
+    "15->79->79": 2,
+    "01->A0": 1,
+    "BF->BF->BF->BF": 6,
+    "03->D8->D8": 1,
+    "79->79": 3,
+    "7B->B7": 2,
+    "00->02->02": 1,
+    "BF->85": 3,
+    "05->15->15->BF": 1,
+    "F8->F8->00": 1,
+    "80->00->00->01": 1,
+    "05->05->79->79": 1,
+    "85->15->15->05": 3,
+    "04->01->01": 1,
+    "7B->7B": 6,
+    "B7->7B->95": 1,
+    "08->08->BF": 1,
+    "05->7B->7B->7B": 1,
+    "D8->40->40": 1,
+    "40->40->70": 1,
+    "40->F8->F8->00": 1,
+    "15->79->79->15": 1,
+    "7B->05->05->79": 1,
+    "15->05->05->7B": 1,
+    "02->02": 1,
+    "B0->B0->08->08": 1,
+    "15->15->BF": 2,
+    "05->05->15": 1,
+    "40->40->70->70": 1,
+    "40->F8": 1,
+    "B0->B0->08": 1,
+    "B0->08": 1,
+    "80->80": 3,
+    "55->15->15->BF": 1,
+    "05->05->7B->7B": 1,
+    "01->01->A0->A0": 1,
+    "70->70->70": 2,
+    "85->15": 3,
+    "03->03->D8": 1,
+    "79->79->15": 1,
+    "70->00->00": 1,
+    "85->85": 3,
+    "15->15->79": 2,
+    "A0->F0->F0": 1,
+    "79->BF": 1,
+    "90->90->90->90": 3,
+    "05->B7->7B": 1,
+    "00->02": 1,
+    "20->80->80->80": 1,
+    "00->00->02": 1,
+    "BF->BF->BF->15": 1,
+    "05->05->B7->7B": 1,
+    "00->00->04->04": 1,
+    "F0->F0->F0": 2,
+    "08->BF->BF": 1,
+    "80->80->80->00": 1,
+    "B0->B0->B0->B0": 1,
+    "79->BF->BF": 1,
+    "00->03->03->D8": 1,
+    "70->70->00->00": 1,
+    "D8->D8->40->40": 1,
+    "01->01->40": 1,
+    "70->00->00->02": 1,
+    "BF->7B": 1,
+    "55->15->15": 1,
+    "7B->B7->7B->95": 1,
+    "7F->7F->00->00": 1,
+    "00->03": 1,
+    "D8->D8->40": 1,
+    "15->79->79->55": 1,
+    "00->00->01->01": 2,
+    "01->40": 1,
+    "80->80->00": 1,
+    "F0->F0->F0->00": 1,
+    "BF->BF": 14,
+    "7B->B7->7B": 1,
+    "05->7B": 1,
+    "15->79": 2,
+    "A0->F0->F0->F0": 1,
+    "A0->A0": 5,
+    "BF->BF->15->15": 1,
+    "B0->08->08": 1,
+    "A0->A0->A0": 4,
+    "01->01->40->40": 1,
+    "01->20": 1,
+    "05->B7->BF->7B": 1,
+    "04->04": 1,
+    "00->00": 5,
+    "00->04->04": 1,
+    "40->40": 6,
+    "01->40->40": 1,
+    "00->02->02->90": 1,
+    "55->15": 1,
+    "7B->B7->05": 1,
+    "01->A0->A0": 1,
+    "79->79->15->15": 1,
+    "15->05->05->15": 1,
+    "7B->7B->7B->7B": 2,
+    "7F->00": 1,
+    "B7->7B->05->05": 1,
+    "F8->F8->00->00": 1,
+    "20->20->20->80": 1,
+    "00->01->01": 2,
+    "15->05->05": 3,
+    "90->90->B0": 1,
+    "00->00->03->03": 1,
+    "08->BF": 1,
+    "F0->F0->00": 1,
+    "15->BF": 2,
+    "B7->BF->7B": 1,
+    "00->03->03": 1,
+    "04->01->01->20": 1,
+    "02->02->90": 1,
+    "F8->00": 1,
+    "05->05->79": 1,
+    "F0->00->00": 1,
+    "55->55": 1,
+    "01->01->20": 1,
+    "A0->A0->A0->F0": 1,
+    "90->90->B0->B0": 1,
+    "7B->05": 1,
+    "BF->15->15": 1,
+    "03->D8->D8->40": 1,
+    "01->01->20->20": 1,
+    "80->00": 1,
+    "02->90": 1,
+    "15->15->05": 3,
+    "7B->05->05": 1,
+    "00->04": 1,
+    "05->05->7B": 1,
+    "BF->BF->85": 3,
+    "7B->7B->B7->7B": 1,
+    "15->15->05->05": 3,
+    "7B->7B->B7": 2,
+    "B0->B0->B0->08": 1,
+    "F8->00->00->04": 1,
+    "79->55->55": 1,
+    "D8->40": 1,
+    "90->90->90": 4,
+    "40->40->F8->F8": 1,
+    "05->B7->BF": 1,
+    "55->55->15": 1,
+    "15->05->05->B7": 1,
+    "7B->7B->7B": 4,
+    "D8->40->40->F8": 1,
+    "20->20": 5,
+    "20->20->20": 4,
+    "70->00": 1,
+    "02->90->90->90": 1,
+    "BF->85->85": 3,
+    "79->79->55": 1,
+    "00->01->01->A0": 1,
+    "03->03": 1,
+    "90->90": 5,
+    "7F->7F": 1,
+    "05->B7": 2,
+    "40->70->70": 1,
+    "02->90->90": 1,
+    "00->00->01": 2,
+    "A0->F0": 1,
+    "03->03->D8->D8": 1,
+    "40->40->F8": 1,
+    "20->20->80->80": 1,
+    "79->55": 1,
+    "40->40->40": 4,
+    "15->15->79->79": 2,
+    "D8->D8": 1,
+    "05->79": 1,
+    "F8->F8": 1,
+    "7F->7F->00": 1,
+    "01->A0->A0->A0": 1,
+    "01->01": 3,
+    "05->15->15": 1,
+    "7B->B7->05->B7": 1,
+    "05->79->79->BF": 1,
+    "55->55->15->15": 1,
+    "79->79->BF->BF": 1,
+    "01->20->20": 1,
+    "A0->A0->F0": 1,
+    "08->BF->BF->BF": 1,
+    "04->04->01->01": 1,
+    "05->79->79": 1,
+    "70->70->00": 1,
+    "00->00->03": 1,
+    "7F->00->00": 1,
+    "70->70": 3,
+    "70->70->70->70": 1,
+    "90->B0->B0": 1,
+    "79->15->15": 1,
+    "85->85->15": 3,
+    "B7->7B": 2,
+    "40->F8->F8": 1,
+    "01->20->20->20": 1,
+    "85->85->15->15": 3,
+    "05->05->B7": 1,
+    "05->15": 1,
+    "40->40->40->40": 3,
+    "70->70->70->00": 1,
+    "05->7B->7B": 1,
+    "F0->00->00->01": 1,
+    "15->15->BF->BF": 2,
+    "7B->7B->B7->05": 1,
+    "79->15": 1,
+    "B7->BF->7B->7B": 1,
+    "20->20->20->20": 3,
+    "BF->BF->15": 1,
+    "F0->F0->00->00": 1,
+    "F8->00->00": 1,
+    "90->B0": 1,
+    "02->02->90->90": 1,
+    "08->08->BF->BF": 1,
+    "79->79->55->55": 1,
+    "85->15->15": 3,
+    "BF->7B->7B": 1,
+    "00->00->04": 1,
+    "B7->7B->05": 1,
+    "15->BF->BF": 2,
+    "04->01": 1,
+    "00->01->01->40": 1,
+    "20->20->80": 1,
+    "B7->05": 1,
+    "BF->85->85->15": 3,
+    "01->01->A0": 1,
+    "00->01": 2,
+    "90->B0->B0->B0": 1,
+    "7B->7B->7B->B7": 2,
+    "B0->08->08->BF": 1,
+    "40->70": 1,
+    "B7->BF": 1,
+    "00->00->02->02": 1,
+    "20->80": 1,
+    "BF->15": 1,
+    "79->55->55->15": 1,
+    "BF->BF->85->85": 3,
+    "7B->95": 1,
+    "B7->05->B7->BF": 1,
+    "BF->7B->7B->7B": 1,
+    "05->05": 4,
+    "40->70->70->70": 1,
+    "79->BF->BF->BF": 1,
+    "80->80->80->80": 1,
+    "79->79->BF": 1
+  },
+  "register_usage": {
+    "10": {
+      "read_count": 2,
+      "write_count": 0,
+      "opcodes_used_in": [
+        21
+      ],
+      "pc_locations": [
+        312,
+        312
+      ]
+    },
+    "5": {
+      "read_count": 1,
+      "write_count": 0,
+      "opcodes_used_in": [
+        5
+      ],
+      "pc_locations": [
+        544
+      ]
+    },
+    "1": {
+      "read_count": 37,
+      "write_count": 0,
+      "opcodes_used_in": [
+        248,
+        32,
+        128,
+        160,
+        64,
+        144,
+        21,
+        183
+      ],
+      "pc_locations": [
+        40,
+        40,
+        72,
+        72,
+        80,
+        80,
+        88,
+        88,
+        96,
+        96,
+        104,
+        104,
+        128,
+        128,
+        136,
+        136,
+        144,
+        144,
+        184,
+        184,
+        192,
+        192,
+        200,
+        200,
+        240,
+        240,
+        248,
+        248,
+        256,
+        256,
+        328,
+        328,
+        400,
+        504,
+        504,
+        536,
+        584
+      ]
+    },
+    "9": {
+      "read_count": 4,
+      "write_count": 0,
+      "opcodes_used_in": [
+        85,
+        21
+      ],
+      "pc_locations": [
+        344,
+        344,
+        472,
+        472
+      ]
+    },
+    "6": {
+      "read_count": 4,
+      "write_count": 0,
+      "opcodes_used_in": [
+        5,
+        123
+      ],
+      "pc_locations": [
+        512,
+        512,
+        576,
+        576
+      ]
+    },
+    "7": {
+      "read_count": 7,
+      "write_count": 0,
+      "opcodes_used_in": [
+        21,
+        183
+      ],
+      "pc_locations": [
+        352,
+        352,
+        456,
+        456,
+        472,
+        472,
+        552
+      ]
+    },
+    "8": {
+      "read_count": 8,
+      "write_count": 0,
+      "opcodes_used_in": [
+        21,
+        121,
+        123
+      ],
+      "pc_locations": [
+        312,
+        312,
+        336,
+        336,
+        528,
+        528,
+        576,
+        576
+      ]
+    },
+    "0": {
+      "read_count": 94,
+      "write_count": 0,
+      "opcodes_used_in": [
+        0,
+        3,
+        216,
+        64,
+        4,
+        1,
+        32,
+        240,
+        112,
+        2,
+        176,
+        8,
+        191,
+        133,
+        21,
+        5,
+        183,
+        121,
+        123,
+        149
+      ],
+      "pc_locations": [
+        8,
+        8,
+        16,
+        16,
+        24,
+        24,
+        32,
+        32,
+        48,
+        48,
+        56,
+        56,
+        64,
+        64,
+        72,
+        72,
+        80,
+        80,
+        88,
+        88,
+        112,
+        112,
+        120,
+        120,
+        152,
+        152,
+        160,
+        160,
+        168,
+        168,
+        176,
+        176,
+        208,
+        208,
+        216,
+        216,
+        224,
+        224,
+        232,
+        232,
+        264,
+        264,
+        272,
+        272,
+        280,
+        280,
+        288,
+        288,
+        296,
+        296,
+        304,
+        304,
+        360,
+        360,
+        368,
+        368,
+        376,
+        376,
+        384,
+        384,
+        392,
+        392,
+        400,
+        416,
+        416,
+        424,
+        424,
+        432,
+        432,
+        440,
+        440,
+        448,
+        448,
+        456,
+        456,
+        464,
+        464,
+        480,
+        480,
+        488,
+        488,
+        496,
+        496,
+        504,
+        504,
+        512,
+        512,
+        536,
+        544,
+        552,
+        560,
+        584,
+        592,
+        600
+      ]
+    },
+    "2": {
+      "read_count": 2,
+      "write_count": 0,
+      "opcodes_used_in": [
+        85
+      ],
+      "pc_locations": [
+        344,
+        344
+      ]
+    }
+  },
+  "memory_access_patterns": {},
+  "execution_flow": [
+    {
+      "step_number": 0,
+      "pc": 0,
+      "opcode": 127,
+      "opcode_name": "RSH_REG",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 1,
+      "pc": 0,
+      "opcode": 127,
+      "opcode_name": "RSH_REG",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 2,
+      "pc": 8,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 3,
+      "pc": 8,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 4,
+      "pc": 16,
+      "opcode": 3,
+      "opcode_name": "UNKNOWN_03",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 5,
+      "pc": 16,
+      "opcode": 3,
+      "opcode_name": "UNKNOWN_03",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 6,
+      "pc": 24,
+      "opcode": 216,
+      "opcode_name": "UNKNOWN_D8",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 7,
+      "pc": 24,
+      "opcode": 216,
+      "opcode_name": "UNKNOWN_D8",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 8,
+      "pc": 32,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 9,
+      "pc": 32,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 10,
+      "pc": 40,
+      "opcode": 248,
+      "opcode_name": "UNKNOWN_F8",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 11,
+      "pc": 40,
+      "opcode": 248,
+      "opcode_name": "UNKNOWN_F8",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 12,
+      "pc": 48,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 13,
+      "pc": 48,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 14,
+      "pc": 56,
+      "opcode": 4,
+      "opcode_name": "UNKNOWN_04",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 15,
+      "pc": 56,
+      "opcode": 4,
+      "opcode_name": "UNKNOWN_04",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 16,
+      "pc": 64,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 5
+    },
+    {
+      "step_number": 17,
+      "pc": 64,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 5
+    },
+    {
+      "step_number": 18,
+      "pc": 72,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 19,
+      "pc": 72,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 20,
+      "pc": 80,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 21,
+      "pc": 80,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 22,
+      "pc": 88,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 23,
+      "pc": 88,
+      "opcode": 32,
+      "opcode_name": "UNKNOWN_20",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 24,
+      "pc": 96,
+      "opcode": 128,
+      "opcode_name": "UNKNOWN_80",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 25,
+      "pc": 96,
+      "opcode": 128,
+      "opcode_name": "UNKNOWN_80",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 26,
+      "pc": 104,
+      "opcode": 128,
+      "opcode_name": "UNKNOWN_80",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 27,
+      "pc": 104,
+      "opcode": 128,
+      "opcode_name": "UNKNOWN_80",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 28,
+      "pc": 112,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 29,
+      "pc": 112,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 30,
+      "pc": 120,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 6
+    },
+    {
+      "step_number": 31,
+      "pc": 120,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 6
+    },
+    {
+      "step_number": 32,
+      "pc": 128,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 33,
+      "pc": 128,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 34,
+      "pc": 136,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 35,
+      "pc": 136,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 36,
+      "pc": 144,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 37,
+      "pc": 144,
+      "opcode": 160,
+      "opcode_name": "UNKNOWN_A0",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 38,
+      "pc": 152,
+      "opcode": 240,
+      "opcode_name": "UNKNOWN_F0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 39,
+      "pc": 152,
+      "opcode": 240,
+      "opcode_name": "UNKNOWN_F0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 40,
+      "pc": 160,
+      "opcode": 240,
+      "opcode_name": "UNKNOWN_F0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 41,
+      "pc": 160,
+      "opcode": 240,
+      "opcode_name": "UNKNOWN_F0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 42,
+      "pc": 168,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 43,
+      "pc": 168,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 44,
+      "pc": 176,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 4
+    },
+    {
+      "step_number": 45,
+      "pc": 176,
+      "opcode": 1,
+      "opcode_name": "CALL",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 4
+    },
+    {
+      "step_number": 46,
+      "pc": 184,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 47,
+      "pc": 184,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 48,
+      "pc": 192,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 49,
+      "pc": 192,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 50,
+      "pc": 200,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 51,
+      "pc": 200,
+      "opcode": 64,
+      "opcode_name": "UNKNOWN_40",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 52,
+      "pc": 208,
+      "opcode": 112,
+      "opcode_name": "UNKNOWN_70",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 53,
+      "pc": 208,
+      "opcode": 112,
+      "opcode_name": "UNKNOWN_70",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 54,
+      "pc": 216,
+      "opcode": 112,
+      "opcode_name": "UNKNOWN_70",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 55,
+      "pc": 216,
+      "opcode": 112,
+      "opcode_name": "UNKNOWN_70",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 56,
+      "pc": 224,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 57,
+      "pc": 224,
+      "opcode": 0,
+      "opcode_name": "EXIT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 58,
+      "pc": 232,
+      "opcode": 2,
+      "opcode_name": "CALLX",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 6
+    },
+    {
+      "step_number": 59,
+      "pc": 232,
+      "opcode": 2,
+      "opcode_name": "CALLX",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": 6
+    },
+    {
+      "step_number": 60,
+      "pc": 240,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 61,
+      "pc": 240,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 62,
+      "pc": 248,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 63,
+      "pc": 248,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 64,
+      "pc": 256,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 65,
+      "pc": 256,
+      "opcode": 144,
+      "opcode_name": "UNKNOWN_90",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 66,
+      "pc": 264,
+      "opcode": 176,
+      "opcode_name": "UNKNOWN_B0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 67,
+      "pc": 264,
+      "opcode": 176,
+      "opcode_name": "UNKNOWN_B0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 68,
+      "pc": 272,
+      "opcode": 176,
+      "opcode_name": "UNKNOWN_B0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 69,
+      "pc": 272,
+      "opcode": 176,
+      "opcode_name": "UNKNOWN_B0",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 70,
+      "pc": 280,
+      "opcode": 8,
+      "opcode_name": "UNKNOWN_08",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 71,
+      "pc": 280,
+      "opcode": 8,
+      "opcode_name": "UNKNOWN_08",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 72,
+      "pc": 288,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 73,
+      "pc": 288,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 74,
+      "pc": 296,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 75,
+      "pc": 296,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 76,
+      "pc": 304,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 77,
+      "pc": 304,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 78,
+      "pc": 312,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        8,
+        10
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 312,
+      "call_target": null
+    },
+    {
+      "step_number": 79,
+      "pc": 312,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        8,
+        10
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 312,
+      "call_target": null
+    },
+    {
+      "step_number": 80,
+      "pc": 320,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 81,
+      "pc": 320,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 82,
+      "pc": 328,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 328,
+      "call_target": null
+    },
+    {
+      "step_number": 83,
+      "pc": 328,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 328,
+      "call_target": null
+    },
+    {
+      "step_number": 84,
+      "pc": 336,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 85,
+      "pc": 336,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 86,
+      "pc": 344,
+      "opcode": 85,
+      "opcode_name": "UNKNOWN_55",
+      "registers_changed": [
+        2,
+        9
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 87,
+      "pc": 344,
+      "opcode": 85,
+      "opcode_name": "UNKNOWN_55",
+      "registers_changed": [
+        2,
+        9
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 88,
+      "pc": 352,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        7
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 352,
+      "call_target": null
+    },
+    {
+      "step_number": 89,
+      "pc": 352,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        7
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 352,
+      "call_target": null
+    },
+    {
+      "step_number": 90,
+      "pc": 360,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 91,
+      "pc": 360,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 92,
+      "pc": 368,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 93,
+      "pc": 368,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 94,
+      "pc": 376,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 95,
+      "pc": 376,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 96,
+      "pc": 384,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 384,
+      "call_target": null
+    },
+    {
+      "step_number": 97,
+      "pc": 384,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 384,
+      "call_target": null
+    },
+    {
+      "step_number": 98,
+      "pc": 392,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 392,
+      "call_target": null
+    },
+    {
+      "step_number": 99,
+      "pc": 392,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 392,
+      "call_target": null
+    },
+    {
+      "step_number": 100,
+      "pc": 400,
+      "opcode": 183,
+      "opcode_name": "MOV_IMM64",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 101,
+      "pc": 408,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 102,
+      "pc": 416,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 416,
+      "call_target": null
+    },
+    {
+      "step_number": 103,
+      "pc": 416,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 416,
+      "call_target": null
+    },
+    {
+      "step_number": 104,
+      "pc": 424,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 105,
+      "pc": 424,
+      "opcode": 121,
+      "opcode_name": "UNKNOWN_79",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 106,
+      "pc": 432,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 107,
+      "pc": 432,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 108,
+      "pc": 440,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 109,
+      "pc": 440,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 110,
+      "pc": 448,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 111,
+      "pc": 448,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 112,
+      "pc": 456,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0,
+        7
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 456,
+      "call_target": null
+    },
+    {
+      "step_number": 113,
+      "pc": 456,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0,
+        7
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 456,
+      "call_target": null
+    },
+    {
+      "step_number": 114,
+      "pc": 464,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 464,
+      "call_target": null
+    },
+    {
+      "step_number": 115,
+      "pc": 464,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 464,
+      "call_target": null
+    },
+    {
+      "step_number": 116,
+      "pc": 472,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        7,
+        9
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 472,
+      "call_target": null
+    },
+    {
+      "step_number": 117,
+      "pc": 472,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        7,
+        9
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 472,
+      "call_target": null
+    },
+    {
+      "step_number": 118,
+      "pc": 480,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 119,
+      "pc": 480,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 120,
+      "pc": 488,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 121,
+      "pc": 488,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 122,
+      "pc": 496,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 123,
+      "pc": 496,
+      "opcode": 133,
+      "opcode_name": "UNKNOWN_85",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 124,
+      "pc": 504,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0,
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 504,
+      "call_target": null
+    },
+    {
+      "step_number": 125,
+      "pc": 504,
+      "opcode": 21,
+      "opcode_name": "BRANCH_GT",
+      "registers_changed": [
+        0,
+        1
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 504,
+      "call_target": null
+    },
+    {
+      "step_number": 126,
+      "pc": 512,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0,
+        6
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 512,
+      "call_target": null
+    },
+    {
+      "step_number": 127,
+      "pc": 512,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0,
+        6
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 512,
+      "call_target": null
+    },
+    {
+      "step_number": 128,
+      "pc": 520,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 129,
+      "pc": 520,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 130,
+      "pc": 528,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 131,
+      "pc": 528,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 132,
+      "pc": 536,
+      "opcode": 183,
+      "opcode_name": "MOV_IMM64",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 133,
+      "pc": 544,
+      "opcode": 5,
+      "opcode_name": "BRANCH_EQ",
+      "registers_changed": [
+        0,
+        5
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": 544,
+      "call_target": null
+    },
+    {
+      "step_number": 134,
+      "pc": 552,
+      "opcode": 183,
+      "opcode_name": "MOV_IMM64",
+      "registers_changed": [
+        7,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 135,
+      "pc": 560,
+      "opcode": 191,
+      "opcode_name": "MOV_REG64",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 136,
+      "pc": 568,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 137,
+      "pc": 568,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 138,
+      "pc": 576,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [
+        6,
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 139,
+      "pc": 576,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [
+        6,
+        8
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 140,
+      "pc": 584,
+      "opcode": 183,
+      "opcode_name": "MOV_IMM64",
+      "registers_changed": [
+        1,
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 141,
+      "pc": 592,
+      "opcode": 123,
+      "opcode_name": "UNKNOWN_7B",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    },
+    {
+      "step_number": 142,
+      "pc": 600,
+      "opcode": 149,
+      "opcode_name": "UNKNOWN_95",
+      "registers_changed": [
+        0
+      ],
+      "memory_accessed": false,
+      "compute_units": 1,
+      "branch_target": null,
+      "call_target": null
+    }
+  ],
+  "mathematical_witnesses": [],
+  "total_constraints": 0,
+  "mathematical_proof_valid": false
 }

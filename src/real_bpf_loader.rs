@@ -4,13 +4,69 @@
 use anyhow::{Context, Result};
 use std::collections::HashMap;
 use std::sync::Arc;
-use solana_rbpf::{
-    elf::Executable,
-    vm::{Config, EbpfVm, TestContextObject},
-    memory_region::{MemoryRegion, MemoryMapping},
-    error::EbpfError,
-    verifier::RequisiteVerifier,
-};
+// Memory constants (replacing solana_rbpf dependencies)
+const MM_INPUT_START: u64 = 0x100000000;
+const MM_STACK_START: u64 = 0x200000000;
+
+// Custom types to replace solana_rbpf dependencies
+#[derive(Debug, Clone)]
+pub struct Executable<T, U> {
+    pub data: Vec<u8>,
+    _phantom: std::marker::PhantomData<(T, U)>,
+}
+
+#[derive(Debug)]
+pub struct TestContextObject {
+    pub compute_units: u64,
+    pub consumed_units: u64,
+}
+
+impl TestContextObject {
+    pub fn new(compute_units: u64) -> Self {
+        Self {
+            compute_units,
+            consumed_units: 0,
+        }
+    }
+    
+    pub fn consume(&mut self, units: u64) -> Result<()> {
+        if self.consumed_units + units > self.compute_units {
+            return Err(anyhow::anyhow!("Compute unit limit exceeded"));
+        }
+        self.consumed_units += units;
+        Ok(())
+    }
+}
+
+#[derive(Debug)]
+pub struct RequisiteVerifier;
+
+pub type EbpfError = anyhow::Error;
+
+// Memory region type to replace solana_rbpf dependency
+#[derive(Debug)]
+pub struct MemoryRegion {
+    pub data: &'static [u8],
+    pub start_address: u64,
+}
+
+impl MemoryRegion {
+    pub fn new_readonly(data: Box<[u8]>, start_address: u64) -> Self {
+        Self {
+            data: Box::leak(data),
+            start_address,
+        }
+    }
+    
+    pub fn new_writable(data: Box<[u8]>, start_address: u64) -> Self {
+        Self {
+            data: Box::leak(data),
+            start_address,
+        }
+    }
+}
+
+use crate::opcode_implementations::OPCODE_REGISTRY;
 
 // =====================================================
 // 1. REAL BPF LOADER WITH ACTUAL RBPF EXECUTION
@@ -119,18 +175,18 @@ impl RealBpfLoader {
         // Input region for instruction data
         if !instruction_data.is_empty() {
             regions.push(MemoryRegion::new_readonly(
-                instruction_data,
-                solana_rbpf::ebpf::MM_INPUT_START,
+                instruction_data.into(),
+                MM_INPUT_START,
             ));
         }
         
         // Account data regions
-        let mut current_address = solana_rbpf::ebpf::MM_INPUT_START + 0x10000;
+        let mut current_address = MM_INPUT_START + 0x10000;
         
         for account in accounts {
             if !account.data.is_empty() {
                 regions.push(MemoryRegion::new_writable(
-                    &mut account.data.clone(),
+                    account.data.clone().into_boxed_slice(),
                     current_address,
                 ));
                 current_address += account.data.len() as u64 + 0x1000; // Add padding
@@ -141,8 +197,8 @@ impl RealBpfLoader {
         let stack_size = 0x8000; // 32KB stack
         let stack_data = vec![0u8; stack_size];
         regions.push(MemoryRegion::new_writable(
-            Box::leak(stack_data.into_boxed_slice()),
-            solana_rbpf::ebpf::MM_STACK_START,
+            Box::leak(stack_data.into_boxed_slice()).into(),
+            MM_STACK_START,
         ));
         
         println!("[RBPF] Created {} memory regions", regions.len());
@@ -256,15 +312,19 @@ impl RealBpfLoader {
             
             step_count += 1;
             
+            // Get opcode info from centralized registry
+            let opcode_info = OPCODE_REGISTRY.get_opcode_info(opcode);
+            let opcode_name = opcode_info.map(|info| info.name).unwrap_or("UNKNOWN");
+            
             match opcode {
                 0x95 => { // EXIT
-                    logs.push(format!("EXIT instruction at PC={}", pc));
+                    logs.push(format!("{} instruction at PC={}", opcode_name, pc));
                     break;
                 },
                 0xBF => { // MOV rX, imm (32-bit)
                     if dst < 11 {
                         registers[dst as usize] = imm as u64;
-                        logs.push(format!("MOV r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0xB7 => { // MOV rX, imm (64-bit)
@@ -274,128 +334,128 @@ impl RealBpfLoader {
                             bpf_bytecode[pc + 12], bpf_bytecode[pc + 13], bpf_bytecode[pc + 14], bpf_bytecode[pc + 15]
                         ]);
                         registers[dst as usize] = imm64;
-                        logs.push(format!("MOV r{}, {} (PC={})", dst, imm64, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm64, pc));
                         pc += 8; // Skip the additional 8 bytes
                     }
                 },
                 0x07 => { // ADD rX, imm
                     if dst < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_add(imm as u64);
-                        logs.push(format!("ADD r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x0F => { // ADD rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_add(registers[src as usize]);
-                        logs.push(format!("ADD r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x17 => { // SUB rX, imm
                     if dst < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_sub(imm as u64);
-                        logs.push(format!("SUB r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x1F => { // SUB rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_sub(registers[src as usize]);
-                        logs.push(format!("SUB r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x27 => { // MUL rX, imm
                     if dst < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_mul(imm as u64);
-                        logs.push(format!("MUL r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x2F => { // MUL rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_mul(registers[src as usize]);
-                        logs.push(format!("MUL r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x37 => { // DIV rX, imm
                     if dst < 11 && imm != 0 {
                         registers[dst as usize] = registers[dst as usize].wrapping_div(imm as u64);
-                        logs.push(format!("DIV r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x3F => { // DIV rX, rY
                     if dst < 11 && src < 11 && registers[src as usize] != 0 {
                         registers[dst as usize] = registers[dst as usize].wrapping_div(registers[src as usize]);
-                        logs.push(format!("DIV r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x47 => { // AND rX, imm
                     if dst < 11 {
                         registers[dst as usize] &= imm as u64;
-                        logs.push(format!("AND r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x4F => { // AND rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] &= registers[src as usize];
-                        logs.push(format!("AND r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x57 => { // OR rX, imm
                     if dst < 11 {
                         registers[dst as usize] |= imm as u64;
-                        logs.push(format!("OR r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x5F => { // OR rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] |= registers[src as usize];
-                        logs.push(format!("OR r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x67 => { // XOR rX, imm
                     if dst < 11 {
                         registers[dst as usize] ^= imm as u64;
-                        logs.push(format!("XOR r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x6F => { // XOR rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] ^= registers[src as usize];
-                        logs.push(format!("XOR r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x87 => { // LSH rX, imm
                     if dst < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_shl(imm as u32);
-                        logs.push(format!("LSH r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x8F => { // LSH rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_shl(registers[src as usize] as u32);
-                        logs.push(format!("LSH r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0x97 => { // RSH rX, imm
                     if dst < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_shr(imm as u32);
-                        logs.push(format!("RSH r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0x9F => { // RSH rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = registers[dst as usize].wrapping_shr(registers[src as usize] as u32);
-                        logs.push(format!("RSH r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0xA7 => { // ARSH rX, imm
                     if dst < 11 {
                         registers[dst as usize] = (registers[dst as usize] as i64).wrapping_shr(imm as u32) as u64;
-                        logs.push(format!("ARSH r{}, {} (PC={})", dst, imm, pc));
+                        logs.push(format!("{} r{}, {} (PC={})", opcode_name, dst, imm, pc));
                     }
                 },
                 0xAF => { // ARSH rX, rY
                     if dst < 11 && src < 11 {
                         registers[dst as usize] = (registers[dst as usize] as i64).wrapping_shr(registers[src as usize] as u32) as u64;
-                        logs.push(format!("ARSH r{}, r{} (PC={})", dst, src, pc));
+                        logs.push(format!("{} r{}, r{} (PC={})", opcode_name, dst, src, pc));
                     }
                 },
                 0xE5 => { // JNE rX, imm, offset
@@ -403,11 +463,11 @@ impl RealBpfLoader {
                                         let jump_offset = offset as i64;
                 if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                     pc = (pc as i64 + jump_offset * 8) as usize;
-                    logs.push(format!("JNE r{}, {}, jump to PC={}", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                     continue; // Skip the normal pc increment
                 }
                     }
-                    logs.push(format!("JNE r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                                 // Memory Load Operations
                 0x61 => { // LDXW rX, [rY+off] (load 32-bit word)
@@ -415,9 +475,9 @@ impl RealBpfLoader {
                         let addr = registers[src as usize].wrapping_add(offset as u64);
                         if let Some(value) = read_memory(&memory_data, addr, 4) {
                             registers[dst as usize] = value;
-                            logs.push(format!("LDXW r{}, [r{}+{}] = {} (PC={})", dst, src, offset, value, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = {} (PC={})", opcode_name, dst, src, offset, value, pc));
                         } else {
-                            logs.push(format!("LDXW r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", dst, src, offset, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", opcode_name, dst, src, offset, pc));
                         }
                     }
                 },
@@ -426,9 +486,9 @@ impl RealBpfLoader {
                         let addr = registers[src as usize].wrapping_add(offset as u64);
                         if let Some(value) = read_memory(&memory_data, addr, 2) {
                             registers[dst as usize] = value;
-                            logs.push(format!("LDXH r{}, [r{}+{}] = {} (PC={})", dst, src, offset, value, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = {} (PC={})", opcode_name, dst, src, offset, value, pc));
                         } else {
-                            logs.push(format!("LDXH r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", dst, src, offset, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", opcode_name, dst, src, offset, pc));
                         }
                     }
                 },
@@ -437,9 +497,9 @@ impl RealBpfLoader {
                         let addr = registers[src as usize].wrapping_add(offset as u64);
                         if let Some(value) = read_memory(&memory_data, addr, 1) {
                             registers[dst as usize] = value;
-                            logs.push(format!("LDXB r{}, [r{}+{}] = {} (PC={})", dst, src, offset, value, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = {} (PC={})", opcode_name, dst, src, offset, value, pc));
                         } else {
-                            logs.push(format!("LDXB r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", dst, src, offset, pc));
+                            logs.push(format!("{} r{}, [r{}+{}] = MEMORY_ACCESS_ERROR (PC={})", opcode_name, dst, src, offset, pc));
                         }
                     }
                 },
@@ -449,9 +509,9 @@ impl RealBpfLoader {
                         let addr = registers[dst as usize].wrapping_add(offset as u64);
                         let value = registers[src as usize];
                         if write_memory(&mut memory_data, addr, value, 4) {
-                            logs.push(format!("STW [r{}+{}], r{} = {} (PC={})", dst, offset, src, value, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = {} (PC={})", opcode_name, dst, offset, src, value, pc));
                         } else {
-                            logs.push(format!("STW [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", dst, offset, src, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", opcode_name, dst, offset, src, pc));
                         }
                     }
                 },
@@ -460,9 +520,9 @@ impl RealBpfLoader {
                         let addr = registers[dst as usize].wrapping_add(offset as u64);
                         let value = registers[src as usize];
                         if write_memory(&mut memory_data, addr, value, 2) {
-                            logs.push(format!("STH [r{}+{}], r{} = {} (PC={})", dst, offset, src, value, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = {} (PC={})", opcode_name, dst, offset, src, value, pc));
                         } else {
-                            logs.push(format!("STH [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", dst, offset, src, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", opcode_name, dst, offset, src, pc));
                         }
                     }
                 },
@@ -471,9 +531,9 @@ impl RealBpfLoader {
                         let addr = registers[dst as usize].wrapping_add(offset as u64);
                         let value = registers[src as usize];
                         if write_memory(&mut memory_data, addr, value, 1) {
-                            logs.push(format!("STB [r{}+{}], r{} = {} (PC={})", dst, offset, src, value, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = {} (PC={})", opcode_name, dst, offset, src, value, pc));
                         } else {
-                            logs.push(format!("STB [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", dst, offset, src, pc));
+                            logs.push(format!("{} [r{}+{}], r{} = MEMORY_WRITE_ERROR (PC={})", opcode_name, dst, offset, src, pc));
                         }
                     }
                 },
@@ -482,67 +542,67 @@ impl RealBpfLoader {
                         let jump_offset = offset as i64;
                         if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                             pc = (pc as i64 + jump_offset * 8) as usize;
-                            logs.push(format!("JEQ r{}, {}, jump to PC={}", dst, imm, pc));
+                            logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                             continue; // Skip the normal pc increment
                         }
                     }
-                    logs.push(format!("JEQ r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                 0xE3 => { // JGT rX, imm, offset
                     if dst < 11 && registers[dst as usize] > imm as u64 {
                         let jump_offset = offset as i64;
                         if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                             pc = (pc as i64 + jump_offset * 8) as usize;
-                            logs.push(format!("JGT r{}, {}, jump to PC={}", dst, imm, pc));
+                            logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                             continue; // Skip the normal pc increment
                         }
                     }
-                    logs.push(format!("JGT r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                 0xE7 => { // JGE rX, imm, offset
                     if dst < 11 && registers[dst as usize] >= imm as u64 {
                         let jump_offset = offset as i64;
                         if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                             pc = (pc as i64 + jump_offset * 8) as usize;
-                            logs.push(format!("JGE r{}, {}, jump to PC={}", dst, imm, pc));
+                            logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                             continue; // Skip the normal pc increment
                         }
                     }
-                    logs.push(format!("JGE r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                 0xE9 => { // JLT rX, imm, offset
                     if dst < 11 && registers[dst as usize] < imm as u64 {
                         let jump_offset = offset as i64;
                         if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                             pc = (pc as i64 + jump_offset * 8) as usize;
-                            logs.push(format!("JLT r{}, {}, no jump (PC={})", dst, imm, pc));
+                            logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                             continue; // Skip the normal pc increment
                         }
                     }
-                    logs.push(format!("JLT r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                 0xEB => { // JLE rX, imm, offset
-                    if dst < 11 && registers[dst as usize] <= imm as u64 {
+                    if dst < 11 && src < 11 && registers[dst as usize] <= imm as u64 {
                         let jump_offset = offset as i64;
                         if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                             pc = (pc as i64 + jump_offset * 8) as usize;
-                            logs.push(format!("JLE r{}, {}, jump to PC={}", dst, imm, pc));
+                            logs.push(format!("{} r{}, {}, jump to PC={}", opcode_name, dst, imm, pc));
                             continue; // Skip the normal pc increment
                         }
                     }
-                    logs.push(format!("JLE r{}, {}, no jump (PC={})", dst, imm, pc));
+                    logs.push(format!("{} r{}, {}, no jump (PC={})", opcode_name, dst, imm, pc));
                 },
                 0x85 => { // JA offset (unconditional jump)
                     let jump_offset = offset as i64;
                     if jump_offset > 0 && (pc as i64 + jump_offset * 8) < bpf_bytecode.len() as i64 {
                         pc = (pc as i64 + jump_offset * 8) as usize;
-                        logs.push(format!("JA jump to PC={}", pc));
+                        logs.push(format!("{} jump to PC={}", opcode_name, pc));
                         continue; // Skip the normal pc increment
                     }
-                    logs.push(format!("JA no jump (PC={})", pc));
+                    logs.push(format!("{} no jump (PC={})", opcode_name, pc));
                 },
                 _ => {
-                    logs.push(format!("Unknown opcode 0x{:02X} at PC={}", opcode, pc));
+                    logs.push(format!("{} (0x{:02X}) at PC={}", opcode_name, opcode, pc));
                 }
             }
             

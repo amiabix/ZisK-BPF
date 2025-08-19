@@ -1,4 +1,5 @@
 use serde::{Deserialize, Serialize};
+use crate::opcode_implementations::OPCODE_REGISTRY;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct VmState {
@@ -98,6 +99,7 @@ impl BpfInterpreter {
                 }
                 let immediate = instruction.imm as u64;
                 self.context.registers.registers[dst_reg] = self.context.registers.registers[dst_reg].wrapping_add(immediate);
+                self.context.logs.push(format!("{} r{}, {} (PC={})", self.get_opcode_name(instruction.opcode), instruction.dst, immediate, self.context.program_counter));
                 self.context.program_counter += 8;
                 Ok(true)
             },
@@ -111,6 +113,7 @@ impl BpfInterpreter {
                 }
                 let src_val = self.context.registers.registers[src_reg];
                 self.context.registers.registers[dst_reg] = self.context.registers.registers[dst_reg].wrapping_sub(src_val);
+                self.context.logs.push(format!("{} r{}, r{} (PC={})", self.get_opcode_name(instruction.opcode), instruction.dst, instruction.src, self.context.program_counter));
                 self.context.program_counter += 8;
                 Ok(true)
             },
@@ -129,6 +132,7 @@ impl BpfInterpreter {
                 // Simulate memory read (in real implementation, this would access actual memory)
                 let loaded_value = self.simulate_memory_read(mem_addr);
                 self.context.registers.registers[dst_reg] = loaded_value;
+                self.context.logs.push(format!("{} r{}, [r{}+{}] = {} (PC={})", self.get_opcode_name(instruction.opcode), instruction.dst, instruction.src, offset, loaded_value, self.context.program_counter));
                 self.context.program_counter += 8;
                 Ok(true)
             },
@@ -147,6 +151,7 @@ impl BpfInterpreter {
                 
                 // Simulate memory write
                 self.simulate_memory_write(mem_addr, store_value & 0xFFFFFFFF);
+                self.context.logs.push(format!("{} [r{}+{}], r{} = {} (PC={})", self.get_opcode_name(instruction.opcode), instruction.dst, offset, instruction.src, store_value, self.context.program_counter));
                 self.context.program_counter += 8;
                 Ok(true)
             },
@@ -161,6 +166,7 @@ impl BpfInterpreter {
                     return Err(format!("Invalid jump target: {}", target_pc));
                 }
                 
+                self.context.logs.push(format!("{} jump to PC={} (PC={})", self.get_opcode_name(instruction.opcode), target_pc, self.context.program_counter));
                 self.context.program_counter = target_pc as usize;
                 Ok(true)
             },
@@ -184,9 +190,11 @@ impl BpfInterpreter {
                         return Err(format!("Invalid jump target: {}", target_pc));
                     }
                     
+                    self.context.logs.push(format!("{} r{}, {}, jump to PC={} (PC={})", self.get_opcode_name(instruction.opcode), instruction.src, immediate, target_pc, self.context.program_counter));
                     self.context.program_counter = target_pc as usize;
                 } else {
                     // No jump, just advance PC
+                    self.context.logs.push(format!("{} r{}, {}, no jump (PC={})", self.get_opcode_name(instruction.opcode), instruction.src, immediate, self.context.program_counter));
                     self.context.program_counter += 8;
                 }
                 Ok(true)
@@ -213,27 +221,24 @@ impl BpfInterpreter {
             0x95 => {
                 // Set exit code in r0
                 self.context.registers.registers[0] = instruction.imm as u64;
-                self.context.logs.push(format!("EXIT with code: {}", instruction.imm));
+                self.context.logs.push(format!("{} with code: {} (PC={})", self.get_opcode_name(instruction.opcode), instruction.imm, self.context.program_counter));
                 Ok(false) // Stop execution
             },
             
             // Unknown opcode
             _ => {
-                Err(format!("Unsupported opcode: 0x{:02x}", instruction.opcode))
+                Err(format!("Unsupported opcode: {} (0x{:02x})", self.get_opcode_name(instruction.opcode), instruction.opcode))
             }
         }
     }
     
     fn get_compute_cost(&self, instruction: &BpfInstruction) -> u64 {
-        // Real compute costs based on Solana BPF
-        match instruction.opcode {
-            0x07 | 0x1F => 1,      // ADD/SUB: 1 compute unit
-            0x61 | 0x62 => 10,     // Memory ops: 10 compute units
-            0x05 | 0x15 => 1,      // Jumps: 1 compute unit
-            0x85 => 5,              // CALL: 5 compute units
-            0x95 => 1,              // EXIT: 1 compute unit
-            _ => 1,                 // Default: 1 compute unit
-        }
+        // Use centralized registry for compute costs
+        OPCODE_REGISTRY.get_compute_cost(instruction.opcode)
+    }
+    
+    fn get_opcode_name(&self, opcode: u8) -> String {
+        OPCODE_REGISTRY.get_opcode_name(opcode)
     }
     
     fn simulate_memory_read(&self, _addr: u64) -> u64 {
