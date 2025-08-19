@@ -110,6 +110,18 @@ pub struct SolanaExecutionOutput {
     
     /// Error details if execution failed
     pub error: Option<String>,
+    
+    /// CRITICAL: The actual execution trace with all instruction details
+    pub execution_trace: Option<ExecutionTraceData>,
+    
+    /// CRITICAL: Mathematical witnesses for ZK proof generation
+    pub mathematical_witnesses: Option<Vec<MathematicalWitnessData>>,
+    
+    /// CRITICAL: Register state snapshots for each instruction
+    pub register_states: Option<Vec<RegisterStateSnapshot>>,
+    
+    /// CRITICAL: Memory operations during execution
+    pub memory_operations: Option<Vec<MemoryOperationData>>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -143,6 +155,107 @@ pub struct ExecutionStats {
     
     /// Peak memory usage
     pub peak_memory_usage: u64,
+}
+
+/// CRITICAL: Detailed execution trace data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct ExecutionTraceData {
+    /// Total number of instructions executed
+    pub total_instructions: usize,
+    
+    /// Program counter progression
+    pub program_counters: Vec<u64>,
+    
+    /// Opcode sequence
+    pub opcode_sequence: Vec<u8>,
+    
+    /// Instruction details for each step
+    pub instruction_details: Vec<InstructionDetail>,
+}
+
+/// CRITICAL: Individual instruction detail
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct InstructionDetail {
+    /// Step number
+    pub step: usize,
+    
+    /// Program counter
+    pub pc: u64,
+    
+    /// Opcode
+    pub opcode: u8,
+    
+    /// Opcode name
+    pub opcode_name: String,
+    
+    /// Destination register
+    pub dst_reg: u8,
+    
+    /// Source register
+    pub src_reg: u8,
+    
+    /// Immediate value
+    pub immediate: i32,
+    
+    /// Offset value
+    pub offset: i16,
+    
+    /// Raw instruction bytes
+    pub raw_bytes: Vec<u8>,
+}
+
+/// CRITICAL: Mathematical witness data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MathematicalWitnessData {
+    /// Step number
+    pub step: usize,
+    
+    /// Opcode
+    pub opcode: u8,
+    
+    /// Pre-execution state
+    pub pre_state: RegisterStateSnapshot,
+    
+    /// Post-execution state
+    pub post_state: RegisterStateSnapshot,
+    
+    /// Mathematical constraints
+    pub constraints: Vec<String>,
+}
+
+/// CRITICAL: Register state snapshot
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RegisterStateSnapshot {
+    /// All 11 registers
+    pub registers: [u64; 11],
+    
+    /// Program counter
+    pub pc: u64,
+    
+    /// Step count
+    pub step_count: usize,
+    
+    /// Compute units consumed
+    pub compute_units: u64,
+}
+
+/// CRITICAL: Memory operation data
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct MemoryOperationData {
+    /// Step number
+    pub step: usize,
+    
+    /// Memory address
+    pub address: u64,
+    
+    /// Operation type (read/write)
+    pub operation_type: String,
+    
+    /// Data size
+    pub size: usize,
+    
+    /// Data value
+    pub value: u64,
 }
 
 // =====================================================
@@ -245,6 +358,10 @@ impl SolanaExecutionOutput {
                 peak_memory_usage: 0,
             },
             error: None,
+            execution_trace: None,
+            mathematical_witnesses: None,
+            register_states: None,
+            memory_operations: None,
         }
     }
     
@@ -265,6 +382,10 @@ impl SolanaExecutionOutput {
                 peak_memory_usage: 0,
             },
             error: Some(error_msg.to_string()),
+            execution_trace: None,
+            mathematical_witnesses: None,
+            register_states: None,
+            memory_operations: None,
         }
     }
     

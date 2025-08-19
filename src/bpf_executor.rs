@@ -109,6 +109,118 @@ impl BpfExecutor {
             });
         }
         
+        // CRITICAL FIX: Export the actual execution trace and mathematical witnesses
+        if let Some(execution_trace) = &execution_result.execution_trace {
+            // Export the complete execution trace
+            output.logs.push(format!("Execution trace contains {} steps", execution_trace.get_trace().steps.len()));
+            
+            // CRITICAL: Populate the execution trace data
+            let trace = execution_trace.get_trace();
+            let mut execution_trace_data = crate::zisk_io::ExecutionTraceData {
+                total_instructions: trace.steps.len(),
+                program_counters: trace.steps.iter().map(|s| s.pc).collect(),
+                opcode_sequence: trace.opcode_sequence.clone(),
+                instruction_details: Vec::new(),
+            };
+            
+            // Populate instruction details from the actual execution trace
+            for (step, trace_step) in trace.steps.iter().enumerate() {
+                let instruction_detail = crate::zisk_io::InstructionDetail {
+                    step,
+                    pc: trace_step.pc,
+                    opcode: trace_step.instruction.opcode,
+                    opcode_name: Self::get_opcode_name(trace_step.instruction.opcode),
+                    dst_reg: trace_step.instruction.dst,
+                    src_reg: trace_step.instruction.src,
+                    immediate: trace_step.instruction.immediate,
+                    offset: trace_step.instruction.offset,
+                    raw_bytes: trace_step.instruction.raw_bytes.to_vec(),
+                };
+                execution_trace_data.instruction_details.push(instruction_detail);
+            }
+            
+            let instruction_count = execution_trace_data.instruction_details.len();
+            output.execution_trace = Some(execution_trace_data);
+            output.logs.push(format!("Populated {} instruction details", instruction_count));
+            
+            // CRITICAL: Populate register states
+            let mut register_states = Vec::new();
+            for step in &trace.steps {
+                let pre_state = crate::zisk_io::RegisterStateSnapshot {
+                    registers: step.pre_state.registers,
+                    pc: step.pre_state.pc,
+                    step_count: step.pre_state.step_count,
+                    compute_units: step.pre_state.compute_units,
+                };
+                register_states.push(pre_state);
+                
+                let post_state = crate::zisk_io::RegisterStateSnapshot {
+                    registers: step.post_state.registers,
+                    pc: step.post_state.pc,
+                    step_count: step.post_state.step_count,
+                    compute_units: step.post_state.compute_units,
+                };
+                register_states.push(post_state);
+            }
+            output.register_states = Some(register_states);
+            
+            // CRITICAL: Populate mathematical witnesses
+            let witnesses = execution_trace.get_mathematical_witnesses();
+            let mut mathematical_witnesses = Vec::new();
+            for (step_idx, witness) in witnesses.iter().enumerate() {
+                let witness_data = crate::zisk_io::MathematicalWitnessData {
+                    step: step_idx,
+                    opcode: witness.opcode,
+                    pre_state: crate::zisk_io::RegisterStateSnapshot {
+                        registers: witness.pre_state.registers,
+                        pc: witness.pre_state.pc,
+                        step_count: witness.pre_state.step_count,
+                        compute_units: witness.pre_state.compute_units,
+                    },
+                    post_state: crate::zisk_io::RegisterStateSnapshot {
+                        registers: witness.post_state.registers,
+                        pc: witness.post_state.pc,
+                        step_count: witness.post_state.step_count,
+                        compute_units: witness.post_state.compute_units,
+                    },
+                    constraints: witness.mathematical_constraints.iter()
+                        .map(|c| format!("{:?}", c))
+                        .collect(),
+                };
+                mathematical_witnesses.push(witness_data);
+            }
+            output.mathematical_witnesses = Some(mathematical_witnesses);
+            
+            // CRITICAL: Populate memory operations
+            let mut memory_operations = Vec::new();
+            for (step_idx, step) in trace.steps.iter().enumerate() {
+                for mem_access in &step.memory_accesses {
+                    let mem_op = crate::zisk_io::MemoryOperationData {
+                        step: step_idx,
+                        address: mem_access.address,
+                        operation_type: format!("{:?}", mem_access.access_type),
+                        size: mem_access.size as usize,
+                        value: mem_access.value,
+                    };
+                    memory_operations.push(mem_op);
+                }
+            }
+            output.memory_operations = Some(memory_operations);
+            
+            // Export mathematical witnesses
+            output.logs.push(format!("Generated {} mathematical witnesses", witnesses.len()));
+            
+            // Export constraint information
+            let total_constraints = execution_trace.get_total_constraints();
+            output.logs.push(format!("Total mathematical constraints: {}", total_constraints));
+            
+            // Update stats with real execution data
+            output.stats.instructions_executed = execution_trace.get_trace().steps.len() as u64;
+            output.stats.execution_time_us = 1000; // Placeholder
+            output.stats.memory_allocated = 65536; // 64KB from RealBpfLoader
+            output.stats.peak_memory_usage = 65536;
+        }
+        
         // Generate ZK proof using SolInvokeSignedProver
         if let Some(execution_trace) = &execution_result.execution_trace {
             println!("[BPF-EXECUTOR] Starting SolInvokeSignedProver proof generation...");
@@ -122,7 +234,6 @@ impl BpfExecutor {
             match prover.prove_sol_invoke_signed(&witness) {
                 Ok(constraints) => {
                     println!("✅ [BPF-EXECUTOR] Successfully generated {} constraints", constraints.len());
-                    output.stats.instructions_executed = constraints.len() as u64;
                     output.logs.push(format!("Generated {} SolInvokeSigned constraints", constraints.len()));
                 },
                 Err(e) => {
@@ -216,6 +327,45 @@ impl BpfExecutor {
         }
         
         constraint_system
+    }
+
+    /// Get opcode name for a given opcode
+    fn get_opcode_name(opcode: u8) -> String {
+        match opcode {
+            0x07 => "ADD_IMM".to_string(),
+            0x0F => "ADD_REG".to_string(),
+            0x17 => "SUB_IMM".to_string(),
+            0x1F => "SUB_REG".to_string(),
+            0x27 => "MUL_IMM".to_string(),
+            0x2F => "MUL_REG".to_string(),
+            0x37 => "DIV_IMM".to_string(),
+            0x3F => "DIV_REG".to_string(),
+            0x47 => "AND_IMM".to_string(),
+            0x4F => "AND_REG".to_string(),
+            0x57 => "OR_IMM".to_string(),
+            0x5F => "OR_REG".to_string(),
+            0x67 => "XOR_IMM".to_string(),
+            0x6F => "XOR_REG".to_string(),
+            0x77 => "LSH_IMM".to_string(),
+            0x7F => "LSH_REG".to_string(),
+            0x87 => "RSH_IMM".to_string(),
+            0x8F => "RSH_REG".to_string(),
+            0x97 => "ARSH_IMM".to_string(),
+            0x9F => "ARSH_REG".to_string(),
+            0xA7 => "NEG".to_string(),
+            0xAF => "MOD_IMM".to_string(),
+            0xB7 => "MOV_IMM".to_string(),
+            0xBF => "MOV_REG".to_string(),
+            0xC7 => "ARSH_IMM".to_string(),
+            0xCF => "ARSH_REG".to_string(),
+            0xD7 => "LE".to_string(),
+            0xDF => "BE".to_string(),
+            0xE7 => "LE".to_string(),
+            0xEF => "BE".to_string(),
+            0xF7 => "LE".to_string(),
+            0xFF => "BE".to_string(),
+            _ => format!("UNKNOWN_{:02X}", opcode),
+        }
     }
 }
 

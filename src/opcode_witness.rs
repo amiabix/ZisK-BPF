@@ -626,6 +626,18 @@ impl Default for VmStateSnapshot {
     }
 }
 
+impl Default for OpcodeOperands {
+    fn default() -> Self {
+        Self {
+            dst_reg: 0,
+            src_reg: 0,
+            src_reg2: 0,
+            offset: 0,
+            immediate: 0,
+        }
+    }
+}
+
 /// Mathematical proof verifier for opcode execution
 pub struct MathematicalProofVerifier;
 
