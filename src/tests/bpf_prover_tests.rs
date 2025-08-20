@@ -409,57 +409,57 @@ fn test_register_bounds_safety() {
 // End of test file
 
 fn main() {
-    println!("🧪 Running BPF Prover Tests...");
+    println!("[TEST] Running BPF Prover Tests...");
     
     // Run all tests
     test_mov_imm_full_width_immediate_and_destination_bounds();
-    println!("✅ MOV_IMM test passed");
+            println!("[SUCCESS] MOV_IMM test passed");
     
     test_add_reg_overflow_wraps_mod_2_pow_64();
-    println!("✅ ADD_REG test passed");
+            println!("[SUCCESS] ADD_REG test passed");
     
     test_sub64_underflow_wraps();
-    println!("✅ SUB64_REG test passed");
+            println!("[SUCCESS] SUB64_REG test passed");
     
     test_mul64_overflow_consistency();
-    println!("✅ MUL64_REG test passed");
+            println!("[SUCCESS] MUL64_REG test passed");
     
     test_and64_bitwise();
-    println!("✅ AND64_REG test passed");
+            println!("[SUCCESS] AND64_REG test passed");
     
     test_ldxb_in_bounds_and_out_of_bounds();
-    println!("✅ LDXB test passed");
+            println!("[SUCCESS] LDXB test passed");
     
     test_jne_reg_branch_taken_and_not_taken_pc_behavior();
-    println!("✅ JNE_REG test passed");
+            println!("[SUCCESS] JNE_REG test passed");
     
     test_call_pushes_return_address_and_updates_sp_and_pc();
-    println!("✅ CALL test passed");
+            println!("[SUCCESS] CALL test passed");
     
     test_cpi_invoke_success_and_failure_flags();
-    println!("✅ CPI_INVOKE test passed");
+            println!("[SUCCESS] CPI_INVOKE test passed");
     
     test_pda_seed_extraction_boundaries();
-    println!("✅ PDA derivation test passed");
+            println!("[SUCCESS] PDA derivation test passed");
     
     test_witnesses_replay_reconstructs_state();
-    println!("✅ Witness replay test passed");
+            println!("[SUCCESS] Witness replay test passed");
     
     test_mathematical_constraint_generation();
-    println!("✅ Mathematical constraint generation test passed");
+            println!("[SUCCESS] Mathematical constraint generation test passed");
     
     test_cpi_mathematical_constraints();
-    println!("✅ CPI mathematical constraints test passed");
+            println!("[SUCCESS] CPI mathematical constraints test passed");
     
     test_memory_bounds_safety();
-    println!("✅ Memory bounds safety test passed");
+            println!("[SUCCESS] Memory bounds safety test passed");
     
     test_register_bounds_safety();
-    println!("✅ Register bounds safety test passed");
+            println!("[SUCCESS] Register bounds safety test passed");
     
     // Run stress tests
     stress_randomized_small_programs();
-    println!("✅ Stress tests passed");
+            println!("[SUCCESS] Stress tests passed");
     
-    println!("🎉 All tests passed successfully!");
+    println!("[SUCCESS] All tests passed successfully!");
 }

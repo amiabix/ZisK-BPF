@@ -272,7 +272,7 @@ impl SolanaExecutionInput {
                 data
             },
             Err(e) => {
-                println!("⚠️  [TEST] Failed to load SolInvoke_test.so: {}, using fallback", e);
+                println!("[WARNING] [TEST] Failed to load SolInvoke_test.so: {}, using fallback", e);
                 // Fallback to hardcoded data
                 vec![
                     0xB7, 0x01, 0x00, 0x00, 0x0A, 0x00, 0x00, 0x00,  // MOV r1, 10
@@ -405,7 +405,7 @@ impl SolanaExecutionOutput {
 pub fn generate_test_input() -> Result<()> {
     let test_input = SolanaExecutionInput::create_test_input();
     test_input.to_file("input.bin")?;
-    println!("✅ Generated test input.bin with {} bytes", 
+            println!("[SUCCESS] Generated test input.bin with {} bytes", 
              std::fs::metadata("input.bin")?.len());
     Ok(())
 }

@@ -2551,7 +2551,7 @@ impl SolInvokeSignedProver {
             }
         }
         
-        // ✅ 4. System Rent Calculation Precision
+        // SUCCESS: 4. System Rent Calculation Precision
         for rent_calc in &system.rent_calculations {
             // Use u128 arithmetic for precision with proper rounding
             let minimum = (rent_calc.data_length as u128) * (rent_calc.rent_per_byte_year as u128);
@@ -2629,7 +2629,7 @@ impl SolInvokeSignedProver {
             let pda = valid_pda.ok_or("No valid PDA found")?;
             let bump = valid_bump.ok_or("No valid bump found")?;
             
-            // ✅ 3. PDA Seeds/Metas Alignment - Verify PDA matches one of the account metas
+            // SUCCESS: 3. PDA Seeds/Metas Alignment - Verify PDA matches one of the account metas
             let mut pda_found = false;
             for account_meta in &cpi.invoke_instruction.account_metas {
                 if account_meta.pubkey == pda {
@@ -2661,7 +2661,7 @@ impl SolInvokeSignedProver {
                 return Err("PDA validation should fail with non-matching account".to_string());
             }
             
-            // ✅ Lenient PDA validation for other tests
+            // SUCCESS: Lenient PDA validation for other tests
             // In production, this would strictly validate that the derived PDA is in account metas
             // For tests, we accept any PDA that has corresponding seeds
             if !pda_found {

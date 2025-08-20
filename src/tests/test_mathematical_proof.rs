@@ -96,7 +96,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     
     println!("🧪 MATHEMATICAL PROOF GENERATION TEST");
     println!("=====================================");
-    println!("📝 Test BPF Program:");
+            println!("[INFO] Test BPF Program:");
     println!("  MOV_IMM r1, 42  (r1 = 42)");
     println!("  MOV_IMM r2, 17  (r2 = 17)");
     println!("  SUB64_REG r3, r1, r2  (r3 = 42 - 17 = 25)");
@@ -109,7 +109,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("🔍 Expected Final State:");
     println!("  r1 = 42, r2 = 17, r3 = 25, r4 = 714, r5 = 0, r6 = [memory value]");
     println!("🔍 Mathematical Proof Requirements:");
-    println!("  ✅ MOV_IMM: Prove r1 = 42, r2 = 17 (exact assignment)");
+            println!("  [SUCCESS] MOV_IMM: Prove r1 = 42, r2 = 17 (exact assignment)");
     println!("  ✅ SUB64_REG: Prove r3 = 42 - 17 = 25 (subtraction correctness)");
     println!("  ✅ MUL64_REG: Prove r4 = 42 * 17 = 714 (multiplication correctness)");
     println!("  ✅ AND64_REG: Prove r5 = 42 & 17 = 0 (bitwise AND correctness)");

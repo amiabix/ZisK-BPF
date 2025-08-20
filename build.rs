@@ -3,7 +3,7 @@ use std::path::Path;
 use std::env;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-    println!("🔧 [BUILD] Starting REAL BPF execution build script...");
+    println!("[BUILD] Starting REAL BPF execution build script...");
     
     // Get the output directory from cargo
     let out_dir = env::var("OUT_DIR").unwrap();
@@ -17,22 +17,22 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let bin_file_path = format!("{}/bpf_execution_result.bin", manifest_dir);
     
     if !Path::new(&so_file_path).exists() {
-        println!("❌ [BUILD] SolInvoke_test.so not found!");
+        println!("[ERROR] [BUILD] SolInvoke_test.so not found!");
         println!("   Cannot generate real execution data without BPF program.");
         return Ok(());
     }
     
-    println!("✅ [BUILD] Found SolInvoke_test.so: {} bytes", fs::metadata(&so_file_path)?.len());
+            println!("[SUCCESS] [BUILD] Found SolInvoke_test.so: {} bytes", fs::metadata(&so_file_path)?.len());
     
     // Check if we have the BPF executor binary (it should be built by now)
     let executor_path = format!("{}/target/debug/run_bpf_executor", manifest_dir);
     
     if Path::new(&executor_path).exists() {
-        println!("✅ [BUILD] Found BPF executor binary: {}", executor_path);
+        println!("[SUCCESS] [BUILD] Found BPF executor binary: {}", executor_path);
         println!("   The build script will generate REAL execution data when run.");
         println!("   To generate the .bin file, run: cargo run --bin run_bpf_executor");
     } else {
-        println!("⚠️  [BUILD] BPF executor binary not found at: {}", executor_path);
+        println!("[WARNING] [BUILD] BPF executor binary not found at: {}", executor_path);
         println!("   This means the build script cannot generate real execution data yet.");
         println!("   The binary will be available after the first successful build.");
     }

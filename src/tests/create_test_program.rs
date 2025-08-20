@@ -1,7 +1,7 @@
 use std::fs;
 
 fn main() {
-    println!("🔧 [TEST] Creating complex BPF test program...");
+    println!("[TEST] Creating complex BPF test program...");
     
     // Create a complex BPF program that tests multiple opcodes
     let mut bpf_program = Vec::new();
@@ -76,11 +76,11 @@ fn main() {
     // Write the test program to a file
     fs::write("test_program.bpf", &bpf_program).expect("Failed to write test program");
     
-    println!("✅ [TEST] Created complex BPF test program:");
-    println!("   📊 Size: {} bytes", bpf_program.len());
-    println!("   🧮 Instructions: {}", bpf_program.len() / 8);
-    println!("   🎯 Expected result: r4 = 27, r11 = 0xDEAD");
-    println!("   📁 Saved to: test_program.bpf");
+    println!("[SUCCESS] [TEST] Created complex BPF test program:");
+            println!("   [INFO] Size: {} bytes", bpf_program.len());
+            println!("   [INFO] Instructions: {}", bpf_program.len() / 8);
+            println!("   [RESULT] Expected result: r4 = 27, r11 = 0xDEAD");
+            println!("   [INFO] Saved to: test_program.bpf");
     
     // Also create a simple test with just arithmetic
     let mut simple_program = Vec::new();
@@ -94,10 +94,10 @@ fn main() {
     
     fs::write("simple_test.bpf", &simple_program).expect("Failed to write simple test");
     
-    println!("✅ [TEST] Created simple test program:");
-    println!("   📊 Size: {} bytes", simple_program.len());
-    println!("   🎯 Expected: r3 = 8");
-    println!("   📁 Saved to: simple_test.bpf");
+    println!("[SUCCESS] [TEST] Created simple test program:");
+            println!("   [INFO] Size: {} bytes", simple_program.len());
+            println!("   [RESULT] Expected: r3 = 8");
+            println!("   [INFO] Saved to: simple_test.bpf");
     
-    println!("🚀 [TEST] Ready for testing enhanced BPF opcodes!");
+    println!("[TEST] Ready for testing enhanced BPF opcodes!");
 }

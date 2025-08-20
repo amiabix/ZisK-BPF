@@ -1,7 +1,7 @@
 use zisk_solana_prover::cpi_handler::{CpiHandler, derive_program_address, find_program_address};
 
 fn main() {
-    println!("🧪 Testing CPI and PDA Implementation");
+    println!("[TEST] Testing CPI and PDA Implementation");
     
     // Test PDA derivation
     test_pda_derivation();
@@ -9,7 +9,7 @@ fn main() {
     // Test CPI handling
     test_cpi_invocation();
     
-    println!("✅ All CPI/PDA tests completed");
+    println!("[SUCCESS] All CPI/PDA tests completed");
 }
 
 fn test_pda_derivation() {
@@ -20,7 +20,7 @@ fn test_pda_derivation() {
     
     match derive_program_address(&seeds, &program_id) {
         Ok(pda) => {
-            println!("✅ PDA derived successfully");
+            println!("[SUCCESS] PDA derived successfully");
             println!("   Address: {:?}", hex::encode(pda.address));
             println!("   Bump seed: {}", pda.bump_seed);
             
@@ -29,12 +29,12 @@ fn test_pda_derivation() {
                 Ok(found_pda) => {
                     assert_eq!(found_pda.address, pda.address);
                     assert_eq!(found_pda.bump_seed, pda.bump_seed);
-                    println!("✅ find_program_address matches derive_program_address");
+                    println!("[SUCCESS] find_program_address matches derive_program_address");
                 },
-                Err(e) => println!("❌ find_program_address failed: {:?}", e),
+                Err(e) => println!("[ERROR] find_program_address failed: {:?}", e),
             }
         },
-        Err(e) => println!("❌ PDA derivation failed: {:?}", e),
+        Err(e) => println!("[ERROR] PDA derivation failed: {:?}", e),
     }
 }
 
@@ -67,14 +67,14 @@ fn test_cpi_invocation() {
     let mut memory = vec![0u8; 4096];
     
     match cpi_handler.handle_invoke(target_program, &accounts, &instruction_data, &mut registers, &mut memory) {
-        Ok(()) => println!("✅ Basic CPI invoke successful"),
-        Err(e) => println!("❌ CPI invoke failed: {:?}", e),
+        Ok(()) => println!("[SUCCESS] Basic CPI invoke successful"),
+        Err(e) => println!("[ERROR] CPI invoke failed: {:?}", e),
     }
     
     // Test invoke_signed
     let seeds = vec![b"signer_seed".to_vec()]; // Keep as Vec<Vec<u8>> for seeds
     match cpi_handler.handle_invoke_signed(target_program, &accounts, &instruction_data, &seeds, &mut registers, &mut memory) {
-        Ok(()) => println!("✅ CPI invoke_signed successful"),
-        Err(e) => println!("❌ CPI invoke_signed failed: {:?}", e),
+        Ok(()) => println!("[SUCCESS] CPI invoke_signed successful"),
+        Err(e) => println!("[ERROR] CPI invoke_signed failed: {:?}", e),
     }
 }

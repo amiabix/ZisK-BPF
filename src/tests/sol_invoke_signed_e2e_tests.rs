@@ -20,7 +20,7 @@ mod e2e_tests {
 
     #[test]
     fn test_sha256_cryptographic_security() {
-        println!("🧪 Testing SHA256 Cryptographic Security...");
+        println!("[TEST] Testing SHA256 Cryptographic Security...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -53,12 +53,12 @@ mod e2e_tests {
         let result3 = prover.prove_sol_invoke_signed(&witness2);
         assert!(result3.is_ok(), "Different inputs should work");
         
-        println!("✅ SHA256 Cryptographic Security tests passed!");
+        println!("[SUCCESS] SHA256 Cryptographic Security tests passed!");
     }
 
     #[test]
     fn test_ed25519_curve_validation() {
-        println!("🧪 Testing Ed25519 Curve Validation...");
+        println!("[TEST] Testing Ed25519 Curve Validation...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -79,12 +79,12 @@ mod e2e_tests {
         let result = prover.prove_sol_invoke_signed(&witness);
         assert!(result.is_ok(), "Ed25519 validation should work through public API");
         
-        println!("✅ Ed25519 Curve Validation tests passed!");
+        println!("[SUCCESS] Ed25519 Curve Validation tests passed!");
     }
 
     #[test]
     fn test_field_arithmetic_correctness() {
-        println!("🧪 Testing Field Arithmetic Correctness...");
+        println!("[TEST] Testing Field Arithmetic Correctness...");
         
         // Test field arithmetic through constraints
         let field1 = Field::new([100, 0, 0, 0]);
@@ -96,7 +96,7 @@ mod e2e_tests {
         assert_eq!(sum.get_limb(0), 300, "Field addition should work correctly");
         assert!(product.get_limb(0) < 10007, "Field multiplication should be reduced");
         
-        println!("✅ Field Arithmetic Correctness tests passed!");
+        println!("[SUCCESS] Field Arithmetic Correctness tests passed!");
     }
 
     // ============================================================================
@@ -105,7 +105,7 @@ mod e2e_tests {
 
     #[test]
     fn test_pda_derivation_end_to_end() {
-        println!("🧪 Testing PDA Derivation End-to-End...");
+        println!("[TEST] Testing PDA Derivation End-to-End...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -127,12 +127,12 @@ mod e2e_tests {
         let result = prover.prove_sol_invoke_signed(&witness);
         assert!(result.is_ok(), "PDA derivation should work through public API");
         
-        println!("✅ PDA Derivation End-to-End tests passed!");
+        println!("[SUCCESS] PDA Derivation End-to-End tests passed!");
     }
 
     #[test]
     fn test_permission_inheritance_validation() {
-        println!("🧪 Testing Permission Inheritance Validation...");
+        println!("[TEST] Testing Permission Inheritance Validation...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -164,7 +164,7 @@ mod e2e_tests {
         let result = prover.prove_sol_invoke_signed(&witness);
         assert!(result.is_ok(), "Privilege inheritance should work through public API");
         
-        println!("✅ Permission Inheritance Validation tests passed!");
+        println!("[SUCCESS] Permission Inheritance Validation tests passed!");
     }
 
     // ============================================================================
@@ -173,7 +173,7 @@ mod e2e_tests {
 
     #[test]
     fn test_complete_cpi_flow() {
-        println!("🧪 Testing Complete CPI Flow...");
+        println!("[TEST] Testing Complete CPI Flow...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -199,7 +199,7 @@ mod e2e_tests {
         let result = prover.prove_sol_invoke_signed(&witness);
         assert!(result.is_ok(), "Complete CPI flow should work");
         
-        println!("✅ Complete CPI Flow tests passed!");
+        println!("[SUCCESS] Complete CPI Flow tests passed!");
     }
 
     // ============================================================================
@@ -208,7 +208,7 @@ mod e2e_tests {
 
     #[test]
     fn test_constraint_generation() {
-        println!("🧪 Testing Constraint Generation...");
+        println!("[TEST] Testing Constraint Generation...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -233,7 +233,7 @@ mod e2e_tests {
             assert!(!constraint_vec.is_empty(), "Should have generated constraints");
         }
         
-        println!("✅ Constraint Generation tests passed!");
+        println!("[SUCCESS] Constraint Generation tests passed!");
     }
 
     // ============================================================================
@@ -242,7 +242,7 @@ mod e2e_tests {
 
     #[test]
     fn test_complete_sol_invoke_signed_integration() {
-        println!("🧪 Testing Complete sol_invoke_signed Integration...");
+        println!("[TEST] Testing Complete sol_invoke_signed Integration...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -284,7 +284,7 @@ mod e2e_tests {
             assert!(!constraints.is_empty(), "Should generate constraints in integration");
         }
         
-        println!("✅ Complete sol_invoke_signed Integration test passed!");
+        println!("[SUCCESS] Complete sol_invoke_signed Integration test passed!");
     }
 
     // ============================================================================
@@ -293,7 +293,7 @@ mod e2e_tests {
 
     #[test]
     fn test_stress_conditions() {
-        println!("🧪 Testing Stress Conditions...");
+        println!("[TEST] Testing Stress Conditions...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -334,7 +334,7 @@ mod e2e_tests {
         let result2 = prover.prove_sol_invoke_signed(&large_instruction_witness);
         assert!(result2.is_ok(), "Should handle large instruction data");
         
-        println!("✅ Stress Conditions tests passed!");
+        println!("[SUCCESS] Stress Conditions tests passed!");
     }
 
     // ============================================================================
@@ -343,7 +343,7 @@ mod e2e_tests {
 
     #[test]
     fn test_security_validations() {
-        println!("🧪 Testing Security Validations...");
+        println!("[TEST] Testing Security Validations...");
         
         let prover = SolInvokeSignedProver::new();
         
@@ -376,15 +376,15 @@ mod e2e_tests {
         let sum2 = field2.add(&field1);
         assert_eq!(sum1.get_limb(0), sum2.get_limb(0), "Field addition should be commutative");
         
-        println!("✅ Security Validations tests passed!");
+        println!("[SUCCESS] Security Validations tests passed!");
     }
 }
 
 /// Test runner for the comprehensive end-to-end test suite
 pub fn run_comprehensive_e2e_tests() {
-    println!("🚀 Starting Comprehensive End-to-End Test Suite for sol_invoke_signed");
+    println!("[TEST] Starting Comprehensive End-to-End Test Suite for sol_invoke_signed");
     println!("{}", "=".repeat(80));
     
-    println!("✅ Comprehensive End-to-End Test Suite completed!");
+    println!("[SUCCESS] Comprehensive End-to-End Test Suite completed!");
     println!("{}", "=".repeat(80));
 }

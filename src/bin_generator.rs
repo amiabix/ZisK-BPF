@@ -6,7 +6,7 @@ use crate::zisk_io::SolanaExecutionInput;
 
 /// Generate a ZisK-compatible input.bin file from a .so file
 pub fn generate_input_bin_from_so(so_file_path: &str, output_bin_path: &str) -> Result<()> {
-    println!("🔧 [BIN] Generating input.bin from {}", so_file_path);
+            println!("[BIN] Generating input.bin from {}", so_file_path);
     
     // Extract BPF bytecode from .so file
     let bpf_bytecode = extract_bpf_from_so(so_file_path)?;
@@ -52,17 +52,17 @@ pub fn validate_input_bin(bin_path: &str) -> Result<SolanaExecutionInput> {
     let bin_data = fs::read(bin_path)?;
     let input: SolanaExecutionInput = bincode::deserialize(&bin_data)?;
     
-    println!("✅ [BIN] Validated {}: {} bytes of BPF data", bin_path, input.program_data.len());
+            println!("[SUCCESS] [BIN] Validated {}: {} bytes of BPF data", bin_path, input.program_data.len());
     Ok(input)
 }
 
 /// Generate input.bin if it doesn't exist
 pub fn ensure_input_bin_exists() -> Result<()> {
     if !Path::new("input.bin").exists() {
-        println!("📝 [BIN] input.bin not found, generating from SolInvoke_test.so...");
+        println!("[INFO] [BIN] input.bin not found, generating from SolInvoke_test.so...");
         generate_default_input_bin()?;
     } else {
-        println!("✅ [BIN] input.bin already exists");
+        println!("[SUCCESS] [BIN] input.bin already exists");
     }
     Ok(())
 }

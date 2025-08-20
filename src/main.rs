@@ -71,7 +71,7 @@ struct SolanaProofOutput {
 }
 
 fn main() {
-    println!("🚀 [ZISK-SOLANA] Starting COMPREHENSIVE Solana proof generation...");
+    println!("[ZISK-SOLANA] Starting COMPREHENSIVE Solana proof generation...");
     
     // Read input using ZisK's standard mechanism
     let input = read_input();
@@ -132,8 +132,8 @@ fn main() {
     set_output(15, proof_result.total_constraints_generated);
     set_output(16, proof_result.solana_specific_constraints);
     
-    println!("🎉 [ZISK] COMPREHENSIVE Solana proof generation complete!");
-    println!("   📊 Proof Results:");
+    println!("[ZISK] COMPREHENSIVE Solana proof generation complete!");
+            println!("   [INFO] Proof Results:");
     println!("      Message Privileges: {}", proof_result.message_privileges_valid);
     println!("      ALT Resolution: {}", proof_result.alt_resolution_valid);
     println!("      Loader Semantics: {}", proof_result.loader_semantics_valid);
@@ -143,7 +143,7 @@ fn main() {
     println!("      System Program: {}", proof_result.system_program_valid);
     println!("      PDA Authorization: {}", proof_result.pda_authorization_valid);
     println!("      Sysvar Consistency: {}", proof_result.sysvar_consistency_valid);
-    println!("   🎯 Overall Proof Valid: {}", proof_result.overall_proof_valid);
+            println!("   [RESULT] Overall Proof Valid: {}", proof_result.overall_proof_valid);
     println!("   🔢 Total Constraints: {} ({} Solana-specific)", 
              proof_result.total_constraints_generated, proof_result.solana_specific_constraints);
 }
@@ -232,12 +232,12 @@ struct ExtractedExecutionData {
 }
 
 fn generate_comprehensive_solana_proofs(input: &ExtractedExecutionData) -> SolanaProofOutput {
-    println!("🔧 [ZISK] Creating comprehensive Solana witness...");
+    println!("[ZISK] Creating comprehensive Solana witness...");
     
     // Create the complete SolInvokeSignedWitness that the prover expects
     let witness = create_comprehensive_solana_witness(input);
     
-    println!("⚡ [ZISK] Generating comprehensive Solana proofs...");
+    println!("[ZISK] Generating comprehensive Solana proofs...");
     
     // Use the REAL Solana proof system
     let mut prover = SolInvokeSignedProver::new();
@@ -247,7 +247,7 @@ fn generate_comprehensive_solana_proofs(input: &ExtractedExecutionData) -> Solan
     
     match constraints_result {
         Ok(constraints) => {
-            println!("✅ [ZISK] Successfully generated {} Solana constraints", constraints.len());
+            println!("[ZISK] Successfully generated {} Solana constraints", constraints.len());
             
             // Validate individual proof components using actual constraint analysis
             let message_privileges_valid = validate_message_privileges(&constraints);
@@ -284,7 +284,7 @@ fn generate_comprehensive_solana_proofs(input: &ExtractedExecutionData) -> Solan
                                system_program_valid && pda_authorization_valid &&
                                sysvar_consistency_valid;
             
-            println!("📊 [ZISK] Proof validation results:");
+            println!("[INFO] [ZISK] Proof validation results:");
             println!("   Message Privileges: {}", message_privileges_valid);
             println!("   ALT Resolution: {}", alt_resolution_valid);
             println!("   Loader Semantics: {}", loader_semantics_valid);
@@ -316,7 +316,7 @@ fn generate_comprehensive_solana_proofs(input: &ExtractedExecutionData) -> Solan
             }
         },
         Err(e) => {
-            println!("❌ [ZISK] Solana proof generation failed: {}", e);
+            println!("[ERROR] [ZISK] Solana proof generation failed: {}", e);
             
             // Return failure state
             SolanaProofOutput {
@@ -429,14 +429,14 @@ fn create_comprehensive_solana_witness(input: &ExtractedExecutionData) -> SolInv
     let total_compute_units: u64 = vm_trace.iter().map(|step| step.compute_consumed).sum();
     
     // Debug: Print compute units information
-    println!("🔍 [DEBUG] Compute units analysis:");
+            println!("[DEBUG] [ZISK] Compute units analysis:");
     println!("   Original compute units consumed: {}", input.compute_units_consumed);
     println!("   Number of instructions: {}", input.instructions.len());
     println!("   Total step compute costs: {}", total_compute_units);
     println!("   VM trace steps: {}", vm_trace.len());
     
     // Debug: Print compute budget details
-    println!("🔍 [DEBUG] Compute budget details:");
+            println!("[DEBUG] [ZISK] Compute budget details:");
     println!("   max_units: {}", total_compute_units);
     println!("   consumed_units: {}", total_compute_units);
     println!("   per_instruction_costs size: {}", create_instruction_costs().len());

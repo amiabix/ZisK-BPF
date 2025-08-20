@@ -2499,7 +2499,7 @@ mod comprehensive_tests {
                 }
             }
             
-            println!("✅ Memory bounds edge cases verified");
+            println!("[SUCCESS] Memory bounds edge cases verified");
         }
     }
     
@@ -3317,8 +3317,8 @@ mod comprehensive_tests {
             assert!(result.is_ok());
             let constraints = result.unwrap();
             
-            println!("⏱️  Constraint generation took: {:?}", duration);
-            println!("📊 Generated {} constraints", constraints.len());
+            println!("[TIME] Constraint generation took: {:?}", duration);
+            println!("[INFO] Generated {} constraints", constraints.len());
             println!("🚀 Rate: {:.2} constraints/ms", constraints.len() as f64 / duration.as_millis() as f64);
             
             // Performance expectations
