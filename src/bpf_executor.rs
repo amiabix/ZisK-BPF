@@ -1,8 +1,8 @@
 use std::collections::HashMap;
 use anyhow::Result;
-use crate::real_bpf_loader::RealBpfLoader;
+use crate::real_bpf_loader::{RealBpfLoader, TestContextObject};
 use crate::opcode_implementations::{ZkConstraintSystem, VmState, decode_bpf_instruction};
-use crate::zisk_io::{SolanaExecutionInput, SolanaExecutionOutput, convert_accounts, convert_execution_params};
+use crate::zisk_io::{SolanaExecutionInput, SolanaExecutionOutput, ExecutionParams, convert_accounts, convert_execution_params};
 use crate::trace_recorder::TraceRecorder;
 use crate::sol_invoke_signed_prover::{SolInvokeSignedProver, SolInvokeSignedWitness};
 
@@ -25,14 +25,14 @@ impl BpfExecutor {
     
     /// Execute a BPF program and return the execution result with trace
     pub fn execute_bpf_program(&mut self, input: &SolanaExecutionInput) -> Result<SolanaExecutionOutput> {
-        println!("🔧 [BPF-EXECUTOR] Starting BPF execution...");
+        println!("[BPF-EXECUTOR] Starting BPF execution...");
         
         // Convert input to RealBpfLoader format
         let accounts = convert_accounts(&input.accounts);
         let _context = convert_execution_params(&input.execution_params);
         
         // Load the BPF program
-        println!("🔧 [BPF-EXECUTOR] Loading BPF program...");
+        println!("[BPF-EXECUTOR] Loading BPF program...");
         match self.loader.load_program("main_program", &input.program_data) {
             Ok(_) => println!("[BPF-EXECUTOR] Program loaded successfully"),
             Err(e) => {
@@ -45,9 +45,14 @@ impl BpfExecutor {
             }
         }
         
+        // Convert accounts to the format expected by execute_program
+        let account_data: Vec<Vec<u8>> = accounts.iter()
+            .map(|acc| acc.data.clone())
+            .collect();
+        
         // Execute the BPF program
-        println!("⚡ [BPF-EXECUTOR] Executing BPF program...");
-        let mut execution_result = match self.loader.execute_program("main_program", &input.instruction_data, &accounts) {
+        println!("[BPF-EXECUTOR] Executing BPF program...");
+        let mut execution_result = match self.loader.execute_program("main_program", &input.instruction_data, &account_data, &mut TestContextObject::new(1_400_000)) {
             Ok(result) => {
                 println!("[BPF-EXECUTOR] Execution completed successfully");
                 result
@@ -67,28 +72,28 @@ impl BpfExecutor {
             if let Err(e) = execution_trace.export_trace("execution_trace.json") {
                 println!("[BPF-EXECUTOR] Failed to export trace: {}", e);
             } else {
-                println!("✅ [BPF-EXECUTOR] Execution trace exported to execution_trace.json");
-                println!("📊 [BPF-EXECUTOR] Trace contains {} steps, {} constraints", 
+                println!("[BPF-EXECUTOR] Execution trace exported to execution_trace.json");
+                println!("BPF-EXECUTOR] Trace contains {} steps, {} constraints", 
                         execution_trace.get_trace().steps.len(),
                         execution_trace.get_constraint_count());
             }
             
             // Generate Mathematical Proofs for Every BPF Operation
-            println!("🧮 [BPF-EXECUTOR] Generating mathematical proofs for every BPF operation...");
+            println!("[BPF-EXECUTOR] Generating mathematical proofs for every BPF operation...");
             execution_trace.generate_mathematical_witnesses();
             
             let total_constraints = execution_trace.get_total_constraints();
             let mathematical_proof_valid = execution_trace.is_mathematical_proof_valid();
             
-            println!("✅ [BPF-EXECUTOR] Mathematical proof generation complete:");
+            println!("[BPF-EXECUTOR] Mathematical proof generation complete:");
             println!("   Total constraints generated: {}", total_constraints);
             println!("   Mathematical proof valid: {}", mathematical_proof_valid);
             
             // Export mathematical proof to file
             if let Err(e) = execution_trace.export_mathematical_proof("mathematical_proof.json") {
-                println!("⚠️  [BPF-EXECUTOR] Failed to export mathematical proof: {}", e);
+                println!("[BPF-EXECUTOR] Failed to export mathematical proof: {}", e);
             } else {
-                println!("✅ [BPF-EXECUTOR] Mathematical proof exported to mathematical_proof.json");
+                println!("[BPF-EXECUTOR] Mathematical proof exported to mathematical_proof.json");
             }
         }
         
@@ -233,11 +238,11 @@ impl BpfExecutor {
             // Generate the proof
             match prover.prove_sol_invoke_signed(&witness) {
                 Ok(constraints) => {
-                    println!("✅ [BPF-EXECUTOR] Successfully generated {} constraints", constraints.len());
+                    println!("[BPF-EXECUTOR] Successfully generated {} constraints", constraints.len());
                     output.logs.push(format!("Generated {} SolInvokeSigned constraints", constraints.len()));
                 },
                 Err(e) => {
-                    println!("❌ [BPF-EXECUTOR] Failed to generate proof: {}", e);
+                    println!("[BPF-EXECUTOR] Failed to generate proof: {}", e);
                     output.logs.push(format!("Proof generation failed: {}", e));
                 }
             }

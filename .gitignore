@@ -26,3 +26,9 @@ __pycache__/
 Thumbs.db
 enhanced_execution_trace.json
 enhanced_mathematical_proof.json
+# Generated files during build
+bpf_execution_result.bin
+input.bin
+# Large generated files
+enhanced_execution_trace.json
+enhanced_mathematical_proof.json

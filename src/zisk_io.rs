@@ -424,12 +424,12 @@ pub fn convert_accounts(input_accounts: &[AccountInput]) -> Vec<crate::real_bpf_
         owner_bytes[..acc_owner.len().min(32)].copy_from_slice(&acc_owner[..acc_owner.len().min(32)]);
         
         crate::real_bpf_loader::BpfAccount {
-            pubkey: pubkey_bytes,
+            pubkey: pubkey_bytes.to_vec(),
             data: acc.data.clone(),
-            owner: owner_bytes,
+            owner: owner_bytes.to_vec(),
+            lamports: acc.lamports,
             executable: acc.is_executable,
             rent_epoch: acc.rent_epoch,
-            lamports: acc.lamports,
         }
     }).collect()
 }

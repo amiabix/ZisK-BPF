@@ -18,39 +18,41 @@ rand = "0.8"
 chrono = { version = "0.4", features = ["serde"] }
 lazy_static = "1.4"
 
+[build-dependencies]
+anyhow = "1.0"
+bincode = "1.3.3"
 
+# Build script to automatically generate bpf_execution_result.bin
+[build]
+script = "build.rs"
 
 [[bin]]
 name = "zisk_solana_prover"
 path = "src/main.rs"
 
 [[bin]]
-name = "generate_input"
-path = "src/bin/generate_input.rs"
-
-[[bin]]
 name = "create_test_program"
-path = "src/bin/create_test_program.rs"
+path = "src/tests/create_test_program.rs"
 
 [[bin]]
 name = "test_bpf_runner"
-path = "src/bin/test_bpf_runner.rs"
-
-[[bin]]
-name = "test_mathematical_proof"
-path = "src/bin/test_mathematical_proof.rs"
-
-[[bin]]
-name = "test_cpi"
-path = "src/bin/test_cpi.rs"
+path = "src/tests/test_bpf_runner.rs"
 
 [[bin]]
 name = "run_bpf_executor"
-path = "src/bin/run_bpf_executor.rs"
+path = "src/tests/run_bpf_executor.rs"
+
+[[bin]]
+name = "test_mathematical_proof"
+path = "src/tests/test_mathematical_proof.rs"
+
+[[bin]]
+name = "test_cpi"
+path = "src/tests/test_cpi.rs"
 
 [[bin]]
 name = "bpf_prover_tests"
-path = "src/bin/bpf_prover_tests.rs"
+path = "src/tests/bpf_prover_tests.rs"
 
 [profile.release]
 panic = "abort"
