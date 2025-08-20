@@ -8,6 +8,7 @@ pub mod cpi_handler;
 pub mod elf_parser;
 pub mod enhanced_bpf_loader;
 pub mod enhanced_trace_recorder;
+pub mod instruction_costs;
 pub mod opcode_implementations;
 pub mod opcode_witness;
 pub mod real_bpf_loader;
