@@ -94,7 +94,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         0x95, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
     ];
     
-    println!("🧪 MATHEMATICAL PROOF GENERATION TEST");
+    println!("[TEST] MATHEMATICAL PROOF GENERATION TEST");
     println!("=====================================");
             println!("[INFO] Test BPF Program:");
     println!("  MOV_IMM r1, 42  (r1 = 42)");
@@ -106,54 +106,54 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  JNE_REG r1, r2  (jump if r1 != r2)");
     println!("  CALL  (function call)");
     println!("  EXIT            (end program)");
-    println!("🔍 Expected Final State:");
+    println!("[INFO] Expected Final State:");
     println!("  r1 = 42, r2 = 17, r3 = 25, r4 = 714, r5 = 0, r6 = [memory value]");
-    println!("🔍 Mathematical Proof Requirements:");
+    println!("[INFO] Mathematical Proof Requirements:");
             println!("  [SUCCESS] MOV_IMM: Prove r1 = 42, r2 = 17 (exact assignment)");
-    println!("  ✅ SUB64_REG: Prove r3 = 42 - 17 = 25 (subtraction correctness)");
-    println!("  ✅ MUL64_REG: Prove r4 = 42 * 17 = 714 (multiplication correctness)");
-    println!("  ✅ AND64_REG: Prove r5 = 42 & 17 = 0 (bitwise AND correctness)");
-    println!("  ✅ LDXB: Prove r6 = [memory at address 42] (memory load correctness)");
-    println!("  ✅ JNE_REG: Prove jump taken (r1 != r2, so 42 != 17)");
-    println!("  ✅ CALL: Prove function call execution and return");
-    println!("  ✅ State Consistency: Prove all other registers unchanged");
-    println!("  ✅ Program Counter: Prove PC advances correctly with jumps");
-    println!("  ✅ Resource Bounds: Prove execution within limits");
+    println!("  [SUCCESS] SUB64_REG: Prove r3 = 42 - 17 = 25 (subtraction correctness)");
+    println!("  [SUCCESS] MUL64_REG: Prove r4 = 42 * 17 = 714 (multiplication correctness)");
+    println!("  [SUCCESS] AND64_REG: Prove r5 = 42 & 17 = 0 (bitwise AND correctness)");
+    println!("  [SUCCESS] LDXB: Prove r6 = [memory at address 42] (memory load correctness)");
+    println!("  [SUCCESS] JNE_REG: Prove jump taken (r1 != r2, so 42 != 17)");
+    println!("  [SUCCESS] CALL: Prove function call execution and return");
+    println!("  [SUCCESS] State Consistency: Prove all other registers unchanged");
+    println!("  [SUCCESS] Program Counter: Prove PC advances correctly with jumps");
+    println!("  [SUCCESS] Resource Bounds: Prove execution within limits");
     
     // Test individual opcode witnesses
-    println!("🔍 Testing Individual Opcode Witnesses:");
+    println!("[INFO] Testing Individual Opcode Witnesses:");
     
     // Test MOV instruction witness
     let mov_witness = create_mov_witness();
     let mov_proof = MathematicalProofVerifier::verify_opcode_execution(&mov_witness);
-    println!("  MOV instruction: {}", if mov_proof.is_valid { "✅ VALID" } else { "❌ INVALID" });
+            println!("  MOV instruction: {}", if mov_proof.is_valid { "[SUCCESS] VALID" } else { "[ERROR] INVALID" });
     
     // Test ADD instruction witness
     let add_witness = create_add_witness();
     let add_proof = MathematicalProofVerifier::verify_opcode_execution(&add_witness);
-    println!("  ADD instruction: {}", if add_proof.is_valid { "✅ VALID" } else { "❌ INVALID" });
+            println!("  ADD instruction: {}", if add_proof.is_valid { "[SUCCESS] VALID" } else { "[ERROR] INVALID" });
     
     // Test LDXW instruction witness
     let ldxw_witness = create_ldxw_witness();
     let ldxw_proof = MathematicalProofVerifier::verify_opcode_execution(&ldxw_witness);
-    println!("  LDXW instruction: {}", if ldxw_proof.is_valid { "✅ VALID" } else { "❌ INVALID" });
+            println!("  LDXW instruction: {}", if ldxw_proof.is_valid { "[SUCCESS] VALID" } else { "[ERROR] INVALID" });
     
     println!();
     
     // Test complete program execution
-    println!("🚀 Testing Complete Program Execution:");
+    println!("[TEST] Testing Complete Program Execution:");
             let mut loader = EnhancedBpfLoader::new([0; 4]); // Default program ID
     loader.load_program("test", simple_program)?;
     
     let result = loader.execute_program("test")?;
-    println!("  Execution success: {}", if result.success { "✅" } else { "❌" });
+            println!("  Execution success: {}", if result.success { "[SUCCESS]" } else { "[ERROR]" });
     println!("  Final r1 value: {}", result.final_registers[1]);
     println!("  Final r2 value: {}", result.final_registers[2]);
     println!("  Compute units: {}", result.compute_units_consumed);
     
     if let Some(proof) = result.mathematical_proof {
         println!();
-        println!("📊 Mathematical Proof Summary:");
+        println!("[INFO] Mathematical Proof Summary:");
         println!("{}", proof.get_summary());
         
         // Export the proof
@@ -166,7 +166,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("  Trace exported to: enhanced_trace.json");
     
     println!();
-    println!("🎯 Mathematical Proof System Test Complete!");
+    println!("[SUCCESS] Mathematical Proof System Test Complete!");
     
     // ============================================================================
     // 🚀 CPI (Cross-Program Invocation) TEST

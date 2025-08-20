@@ -574,7 +574,7 @@ fn create_sol_invoke_signed_witness(
         },
     };
     
-    println!("📊 [WITNESS] Created witness with {} trace steps", witness.execution.vm_trace.len());
+            println!("[WITNESS] Created witness with {} trace steps", witness.execution.vm_trace.len());
     
     witness
 }

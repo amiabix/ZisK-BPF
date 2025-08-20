@@ -144,7 +144,7 @@ fn main() {
     println!("      PDA Authorization: {}", proof_result.pda_authorization_valid);
     println!("      Sysvar Consistency: {}", proof_result.sysvar_consistency_valid);
             println!("   [RESULT] Overall Proof Valid: {}", proof_result.overall_proof_valid);
-    println!("   🔢 Total Constraints: {} ({} Solana-specific)", 
+    println!("   [INFO] Total Constraints: {} ({} Solana-specific)", 
              proof_result.total_constraints_generated, proof_result.solana_specific_constraints);
 }
 

@@ -3301,7 +3301,7 @@ mod tests {
     
     #[test]
     fn test_simple_regression() {
-        println!("🧪 Simple regression test starting...");
+        println!("[TEST] Simple regression test starting...");
         
         let prover = SolInvokeSignedProver::new();
         
