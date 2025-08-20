@@ -1,6 +1,6 @@
 # ZisK Solana Prover
 
-A ZisK-based zero-knowledge proof system for Solana BPF program execution verification.
+A ZisK-based proof system for Solana BPF program execution verification.
 
 ## Overview
 
@@ -46,13 +46,13 @@ cargo-zisk rom-setup -e target/riscv64ima-zisk-zkvm-elf/release/zisk_solana_prov
 ### Constraint Verification
 
 ```bash
-cargo-zisk verify-constraints -e target/riscv64ima-zisk-zkvm-elf/release/zisk_solana_prover -i input.bin -w $HOME/.zisk/bin/libzisk_witness.so -k $HOME/.zisk/provingKey
+cargo-zisk verify-constraints -e target/riscv64ima-zisk-zkvm-elf/release/zisk_solana_prover -i bpf_execution_result.bin -w $HOME/.zisk/bin/libzisk_witness.so -k $HOME/.zisk/provingKey
 ```
 
 ### Proof Generation
 
 ```bash
-cargo-zisk prove -e target/riscv64ima-zisk-zkvm-elf/release/zisk_solana_prover -i input.bin -o proof -a -y
+cargo-zisk prove -e target/riscv64ima-zisk-zkvm-elf/release/zisk_solana_prover -i bpf_execution_result.bin -o proof -a -y
 ```
 
 ### Proof Verification
@@ -78,8 +78,4 @@ The system expects input data in the format of `SolanaExecutionOutput`, which co
 
 ## Development Status
 
-This is a research implementation. The system has been tested with basic BPF programs and demonstrates the capability to generate zero-knowledge proofs of Solana program execution, but may require additional optimization for production use.
-
-## License
-
-[Add your license information here]
+This is a work in progress implementation. The system has been tested with basic BPF programs and demonstrates the capability to generate zero-knowledge proofs of Solana program execution, but may require additional optimization for production use.
